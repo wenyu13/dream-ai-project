@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>筑梦AI支教 - 学生学习端</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --primary-green: #2d6a4f;
+            --accent-orange: #ff9f1c;
+            --soft-green: #d8f3dc;
+            --text-main: #1b4332;
+            --glass: rgba(255, 255, 255, 0.85);
+            --bg-light: #f4f7f5;
+            --danger-red: #991b1b;
+            --card-shadow: 0 10px 30px rgba(45, 106, 79, 0.08);
+
+            --sunrise-gold: #fff7ed;
+            --sunrise-amber: #ffedd5;
+            --sunrise-text: #451a03;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg-light);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+            cursor: default;
+        }
+
+        .bg-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .firefly {
+            position: absolute; width: 4px; height: 4px; background: var(--accent-orange);
+            border-radius: 50%; filter: blur(2px); opacity: 0.3; animation: move 20s infinite linear;
+        }
+        @keyframes move {
+            0% { transform: translate(0, 0); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translate(100vw, 100vh); opacity: 0; }
+        }
+
+        nav {
+            display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 8%;
+            background: var(--glass); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 100;
+            border-bottom: 1px solid rgba(45, 106, 79, 0.05);
+        }
+        .brand { font-size: 1.5rem; font-weight: 800; color: var(--primary-green); letter-spacing: 1px; }
+        .nav-links { display: flex; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--text-main); margin-left: 2rem; font-weight: 500; transition: 0.3s; }
+        .nav-links a:hover { color: var(--accent-orange); }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 8%;
+        }
+
+        .learning-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 0;
+            background: linear-gradient(135deg, var(--soft-green) 0%, #fff 100%);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .learning-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 159, 28, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .learning-header h1 {
+            font-size: 2.5rem;
+            color: var(--primary-green);
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .learning-header p {
+            color: #666;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .learning-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(45, 106, 79, 0.1);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(45, 106, 79, 0.12);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--soft-green);
+        }
+
+        .card-header h2 {
+            font-size: 1.5rem;
+            color: var(--primary-green);
+            margin: 0;
+        }
+
+        .card-header .icon {
+            width: 40px;
+            height: 40px;
+            background: var(--soft-green);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .card-header .icon svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--primary-green);
+        }
+
+        .materials-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .materials-table th,
+        .materials-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(45, 106, 79, 0.1);
+        }
+
+        .materials-table th {
+            background: var(--soft-green);
+            color: var(--primary-green);
+            font-weight: 600;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .materials-table tr:hover {
+            background: rgba(216, 243, 220, 0.3);
+        }
+
+        .type-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .type-doc { background: #e0f2fe; color: #0284c7; }
+        .type-video { background: #fef3c7; color: #d97706; }
+        .type-ppt { background: #fce7f3; color: #db2777; }
+
+        .download-btn {
+            padding: 8px 16px;
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .download-btn:hover {
+            background: #1b4332;
+            transform: scale(1.05);
+        }
+
+        .bottle-section {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .bottle-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent-orange) 0%, #ff6b6b 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+
+        .bottle-icon svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+        }
+
+        .bottle-section h3 {
+            color: var(--primary-green);
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+
+        .bottle-section p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        .bottle-btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, var(--accent-orange) 0%, #ff6b6b 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 159, 28, 0.3);
+        }
+
+        .bottle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 159, 28, 0.4);
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid rgba(45, 106, 79, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .task-item:hover {
+            border-color: var(--accent-orange);
+            transform: translateX(5px);
+        }
+
+        .task-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            cursor: pointer;
+            accent-color: var(--primary-green);
+        }
+
+        .task-item.completed {
+            opacity: 0.6;
+            text-decoration: line-through;
+        }
+
+        .progress-container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .progress-circle {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .progress-circle svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .progress-circle .bg {
+            fill: none;
+            stroke: var(--soft-green);
+            stroke-width: 10;
+        }
+
+        .progress-circle .progress {
+            fill: none;
+            stroke: var(--primary-green);
+            stroke-width: 10;
+            stroke-linecap: round;
+            stroke-dasharray: 440;
+            stroke-dashoffset: 53;
+            transition: stroke-dashoffset 1s ease;
+        }
+
+        .progress-score {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .progress-score .number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-green);
+        }
+
+        .progress-score .label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .ai-comment {
+            background: var(--sunrise-gold);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent-orange);
+            margin-top: 15px;
+        }
+
+        .ai-comment strong {
+            color: var(--primary-green);
+        }
+
+        .chat-container {
+            height: 300px;
+            overflow-y: auto;
+            background: #fafafa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 2px solid rgba(45, 106, 79, 0.1);
+        }
+
+        .chat-message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 80%;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .chat-message.teacher {
+            background: var(--soft-green);
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+
+        .chat-message.student {
+            background: var(--sunrise-amber);
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+
+        .chat-message .sender {
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+
+        .chat-message.teacher .sender {
+            color: var(--primary-green);
+        }
+
+        .chat-message.student .sender {
+            color: var(--sunrise-text);
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid rgba(45, 106, 79, 0.1);
+            border-radius: 25px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 0 3px rgba(255, 159, 28, 0.1);
+        }
+
+        .send-btn {
+            padding: 12px 25px;
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .send-btn:hover {
+            background: #1b4332;
+            transform: scale(1.05);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(45, 106, 79, 0.3);
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--soft-green);
+        }
+
+        .modal-header h3 {
+            color: var(--primary-green);
+            margin: 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid rgba(45, 106, 79, 0.1);
+            border-radius: 10px;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 0 3px rgba(255, 159, 28, 0.1);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn-cancel {
+            padding: 10px 25px;
+            background: #f5f5f5;
+            color: #666;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cancel:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-submit {
+            padding: 10px 25px;
+            background: linear-gradient(135deg, var(--accent-orange) 0%, #ff6b6b 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 159, 28, 0.3);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .radio-item input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-green);
+            cursor: pointer;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(45, 106, 79, 0.1);
+            border-radius: 25px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .back-btn:hover {
+            background: var(--soft-green);
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+            transform: translateX(-5px);
+        }
+
+        .back-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            transition: transform 0.3s ease;
+        }
+
+        .back-btn:hover svg {
+            transform: translateX(-3px);
+        }
+
+        /* --- 元素浮现效果 --- */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-scale {
+            opacity: 0;
+            transform: scale(0.9);
+            animation: fadeInScale 0.5s ease forwards;
+        }
+
+        @keyframes fadeInScale {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .fade-in-left {
+            opacity: 0;
+            transform: translateX(-30px);
+            animation: fadeInLeft 0.5s ease forwards;
+        }
+
+        @keyframes fadeInLeft {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .fade-in-right {
+            opacity: 0;
+            transform: translateX(30px);
+            animation: fadeInRight 0.5s ease forwards;
+        }
+
+        @keyframes fadeInRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* 延迟类 */
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        .delay-6 { animation-delay: 0.6s; }
+        .delay-7 { animation-delay: 0.7s; }
+        .delay-8 { animation-delay: 0.8s; }
+        .delay-9 { animation-delay: 0.9s; }
+        .delay-10 { animation-delay: 1.0s; }
+
+        @media (max-width: 992px) {
+            .learning-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-glow">
+        <div class="firefly" style="top: 15%; left: 8%;"></div>
+        <div class="firefly" style="top: 45%; left: 85%;"></div>
+        <div class="firefly" style="top: 75%; left: 12%;"></div>
+    </div>
+
+    <nav>
+        <div class="brand">筑梦AI支教</div>
+        <div class="nav-links">
+            <a href="index.html">首页</a>
+            <a href="index.html#jobs">寻找岗位</a>
+            <a href="index.html#tools">3D教具库</a>
+            <div class="dropdown">
+                <a href="javascript:void(0)" class="dropdown-toggle">更多 ▼</a>
+                <div class="dropdown-menu">
+                    <a href="#about">关于我们</a>
+                    <a href="javascript:void(0)" id="aiConsult">AI咨询</a>
+                    <a href="admin.html">系统后台</a>
+                </div>
+            </div>
+            <div class="menu-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+                <div class="identity-menu">
+                    <a href="javascript:void(0)" id="switchIdentity">切换身份</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <a href="index.html" class="back-btn page-transition fade-in-left">
+            <svg viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/></svg>
+            返回首页
+        </a>
+        <div class="learning-header fade-in-up delay-1">
+            <h1>欢迎回来，同学！</h1>
+            <p>继续你的学习之旅，探索知识的无限可能</p>
+        </div>
+
+        <div class="learning-grid">
+            <div class="left-column">
+                <div class="card fade-in-up delay-2">
+                    <div class="card-header">
+                        <div class="icon">
+                            <svg viewBox="0 0 24 24"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/></svg>
+                        </div>
+                        <h2>我的学习资料库</h2>
+                    </div>
+                    <table class="materials-table">
+                        <thead>
+                            <tr>
+                                <th>资料名称</th>
+                                <th>类型</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>斯特林发动机原理入门.pdf</td>
+                                <td><span class="type-badge type-doc">文档</span></td>
+                                <td><button class="download-btn">下载</button></td>
+                            </tr>
+                            <tr>
+                                <td>3D打印零件拼装指南.mp4</td>
+                                <td><span class="type-badge type-video">视频</span></td>
+                                <td><button class="download-btn">下载</button></td>
+                            </tr>
+                            <tr>
+                                <td>人工智能基础课件.pptx</td>
+                                <td><span class="type-badge type-ppt">演示文稿</span></td>
+                                <td><button class="download-btn">下载</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="card fade-in-up delay-3">
+                    <div class="card-header">
+                        <div class="icon">
+                            <svg viewBox="0 0 24 24"><path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.41,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.59,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"/></svg>
+                        </div>
+                        <h2>萤火虫提问箱</h2>
+                    </div>
+                    <div class="bottle-section">
+                        <div class="bottle-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.41,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.59,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"/></svg>
+                        </div>
+                        <h3>投递一个萤火虫漂流瓶</h3>
+                        <p>你的每一个学习难题或小小的心事，都会被志愿者认领并温柔回应。</p>
+                        <button class="bottle-btn" id="openBottleModal">立刻投递漂流瓶</button>
+                    </div>
+                </div>
+
+                <div class="card fade-in-up delay-4">
+                    <div class="card-header">
+                        <div class="icon">
+                            <svg viewBox="0 0 24 24"><path d="M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,19H5V5H19V19M17,17H7V15H17V17M17,13H7V11H17V13M17,9H7V7H17V9Z"/></svg>
+                        </div>
+                        <h2>待完成任务</h2>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" id="task1">
+                        <label for="task1">观看斯特林发动机原理视频</label>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" id="task2">
+                        <label for="task2">完成第三章课后练习题</label>
+                    </div>
+                    <div class="task-item">
+                        <input type="checkbox" id="task3">
+                        <label for="task3">提交3D打印教具申请</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="card fade-in-right delay-5">
+                    <div class="card-header">
+                        <div class="icon">
+                            <svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16Z"/></svg>
+                        </div>
+                        <h2>成绩概览</h2>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-circle">
+                            <svg>
+                                <circle class="bg" cx="75" cy="75" r="70"/>
+                                <circle class="progress" cx="75" cy="75" r="70"/>
+                            </svg>
+                            <div class="progress-score">
+                                <div class="number">88</div>
+                                <div class="label">综合评分</div>
+                            </div>
+                        </div>
+                        <div class="ai-comment">
+                            <strong>AI 评语：</strong>机械原理理解深刻，继续保持！
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card fade-in-right delay-6">
+                    <div class="card-header">
+                        <div class="icon">
+                            <svg viewBox="0 0 24 24"><path d="M20,2H4A2,2 0 0,0 2,4V22L6,18H20A2,2 0 0,0 22,16V4A2,2 0 0,0 20,2M20,16H6L4,18V4H20V16Z"/></svg>
+                        </div>
+                        <h2>与支教老师在线交流</h2>
+                    </div>
+                    <div class="chat-container" id="chatContainer">
+                        <div class="chat-message teacher">
+                            <div class="sender">李老师</div>
+                            <div>同学们，这周的机械原理模型大家做完了吗？</div>
+                        </div>
+                        <div class="chat-message student">
+                            <div class="sender">学生(我)</div>
+                            <div>老师，那个斯特林发动机的教具怎么组装？</div>
+                        </div>
+                        <div class="chat-message teacher">
+                            <div class="sender">李老师</div>
+                            <div>你可以参考左侧资料库里的"拼装指南"视频哦。</div>
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" class="chat-input" id="chatInput" placeholder="问问老师...">
+                        <button class="send-btn" id="sendBtn">发送</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="bottleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>写下你的萤火虫愿望</h3>
+                <button class="modal-close" id="closeBottleModal">✕</button>
+            </div>
+            <div class="form-group">
+                <label>分类</label>
+                <div class="radio-group">
+                    <label class="radio-item">
+                        <input type="radio" name="category" value="学习难题" checked>
+                        学习难题
+                    </label>
+                    <label class="radio-item">
+                        <input type="radio" name="category" value="心里话">
+                        心里话
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="bottleContent">内容</label>
+                <textarea id="bottleContent" placeholder="在这里写下你想对志愿者哥哥姐姐说的话..."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" id="cancelBottle">取消</button>
+                <button class="btn-submit" id="submitBottle">投向大海</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 身份切换模态窗口 -->
+    <div class="identity-modal" id="identityModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>切换模拟身份</h3>
+                <button class="modal-close" id="modalClose">✕</button>
+            </div>
+            <div class="modal-body">
+                <button class="identity-btn" data-identity="student">
+                    <div class="identity-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"/></svg>
+                    </div>
+                    <span>学生</span>
+                </button>
+                <button class="identity-btn" data-identity="teacher">
+                    <div class="identity-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z"/></svg>
+                    </div>
+                    <span>老师</span>
+                </button>
+                <button class="identity-btn" data-identity="volunteer">
+                    <div class="identity-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.41,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.59,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"/></svg>
+                    </div>
+                    <span>志愿者</span>
+                </button>
+                <button class="identity-btn" data-identity="admin">
+                    <div class="identity-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,11.95L12,12.05L12,12.05L12,11.95M12,5.5L17.5,8.5L12,11.5L6.5,8.5L12,5.5M12,13.5L16.5,11V16.5L12,19L7.5,16.5V11L12,13.5Z"/></svg>
+                    </div>
+                    <span>管理员</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI助手 -->
+    <div class="ai-assistant-btn" id="aiAssistantBtn">
+        <svg viewBox="0 0 24 24">
+            <path d="M20,2H4A2,2 0 0,0 2,4V22L6,18H20A2,2 0 0,0 22,16V4A2,2 0 0,0 20,2M20,16H6L4,18V4H20V16Z" fill="white"/>
+            <circle cx="12" cy="10" r="1.5" fill="white"/>
+            <circle cx="8" cy="10" r="1.5" fill="white"/>
+            <circle cx="16" cy="10" r="1.5" fill="white"/>
+        </svg>
+    </div>
+
+    <div class="ai-assistant-window" id="aiAssistantWindow">
+        <div class="ai-assistant-header">
+            <h3>AI 支教智能助手</h3>
+            <button class="ai-assistant-close" id="aiAssistantClose">✕</button>
+        </div>
+        <div class="ai-assistant-content" id="aiAssistantContent">
+            <div class="ai-message">
+                <strong>您好！我是"筑梦"AI 助手。</strong><br><br>
+                我将用智慧与热情，助您点亮乡村教育的红烛。
+            </div>
+        </div>
+        <div class="ai-assistant-input-area">
+            <input type="text" class="ai-assistant-input" id="aiAssistantInput" placeholder="输入您的问题...">
+            <button class="ai-assistant-submit" id="aiAssistantSubmit">提问</button>
+        </div>
+    </div>
+
+    <div class="page-transition-overlay" id="pageTransition"></div>
+
+    <script src="learning.js?v=2"></script>
+</body>
+</html>

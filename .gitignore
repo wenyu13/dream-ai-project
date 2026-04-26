@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+*.egg
+
+# 虚拟环境
+.venv/
+venv/
+env/
+
+# Node.js
+node_modules/
+package-lock.json
+
+# 环境变量
+.env
+.env.local
+.env.backup
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 系统
+.DS_Store
+Thumbs.db
+
+# 上传文件
+backend/uploads/*
+
+# 日志
+backend/logs/*
+
+# 模型文件（体积大）
+models/*.glb
+models/*.gltf
+
+# 临时文件
+*.tmp
+*.bak
