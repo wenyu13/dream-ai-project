@@ -3,7 +3,7 @@
  * 连接FastAPI后端服务
  */
 
-const API_BASE = 'http://localhost:8000/api';
+const API_BASE = 'https://cghsdcnklsd-dream-ai-api.hf.space/api';
 
 // 存储token
 let accessToken = localStorage.getItem('access_token');
