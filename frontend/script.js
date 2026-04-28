@@ -84,7 +84,7 @@ function reveal() {
     });
 }
 
-// AI助手功能
+// ==================== AI助手功能 (已接入 DeepSeek 真实联网版) ====================
 const aiAssistantBtn = document.getElementById('aiAssistantBtn');
 const aiAssistantWindow = document.getElementById('aiAssistantWindow');
 const aiAssistantClose = document.getElementById('aiAssistantClose');
@@ -114,12 +114,13 @@ if (aiAssistantClose && aiAssistantWindow) {
     });
 }
 
-// 提交问题
+// 提交问题逻辑
 if (aiAssistantSubmit && aiAssistantInput && aiAssistantContent) {
-    aiAssistantSubmit.addEventListener('click', () => {
+    // 关键：这里使用了 async 确保可以等待 AI 回复
+    aiAssistantSubmit.addEventListener('click', async () => {
         const question = aiAssistantInput.value.trim();
         if (question) {
-            // 添加用户问题
+            // 1. 添加用户问题到聊天框
             const userMessage = document.createElement('div');
             userMessage.className = 'ai-message';
             userMessage.style.background = 'rgba(255, 165, 0, 0.1)';
@@ -131,49 +132,43 @@ if (aiAssistantSubmit && aiAssistantInput && aiAssistantContent) {
             // 清空输入框
             aiAssistantInput.value = '';
             
-            // 显示加载状态
+            // 2. 显示加载中状态
             const loadingMessage = document.createElement('div');
             loadingMessage.className = 'ai-message loading';
-            loadingMessage.innerHTML = '<strong>AI助手：</strong><span class="loading-dots">正在思考</span>';
+            loadingMessage.innerHTML = '<strong>AI助手：</strong><span class="loading-dots">正在思考中...</span>';
             aiAssistantContent.appendChild(loadingMessage);
             
             // 滚动到底部
             aiAssistantContent.scrollTop = aiAssistantContent.scrollHeight;
             
-            // 模拟AI回复
-            setTimeout(() => {
-                // 移除加载消息
+            try {
+                // 3. 🚀 核心：调用你在 api.js 里定义的联网接口
+                // 注意：它会通过我们在 api.js 配置的 Hugging Face 地址去访问 DeepSeek
+                const data = await window.DreamAI.AI.chat(question);
+                
+                // 移除加载提示
                 loadingMessage.remove();
                 
+                // 4. 显示 AI 的真实回复
                 const aiMessage = document.createElement('div');
                 aiMessage.className = 'ai-message';
-                
-                // 根据问题类型提供不同的回复
-                let response = '';
-                const questionLower = question.toLowerCase();
-                
-                if (questionLower.includes('支教') || questionLower.includes('申请')) {
-                    response = '关于支教申请，您可以点击页面上的"立即申请"按钮填写申请表。我们通常会在3个工作日内回复您的申请。';
-                } else if (questionLower.includes('教具') || questionLower.includes('模型')) {
-                    response = '我们提供多种3D教具，包括斯特林发动机、平面四连杆机构和AI巡检机器人。您可以点击"3D互动预览"按钮查看详细模型。';
-                } else if (questionLower.includes('时间') || questionLower.includes('什么时候')) {
-                    response = '支教项目全年开放申请，具体支教时间会根据学校安排和您的个人情况协商确定。';
-                } else if (questionLower.includes('要求') || questionLower.includes('条件')) {
-                    response = '支教申请的基本要求：1）在校大学生或应届毕业生；2）热爱教育事业；3）具备一定的专业知识；4）能适应山区生活环境。';
-                } else if (questionLower.includes('联系') || questionLower.includes('电话')) {
-                    response = '您可以通过以下方式联系我们：电话：400-123-4567；邮箱：contact@dreamai.edu；地址：北京市海淀区中关村大街1号。';
-                } else {
-                    response = '感谢您的提问！我正在为您处理这个问题。如果您需要更详细的帮助，请提供更多具体信息，或者联系我们的客服团队。';
-                }
-                
-                aiMessage.innerHTML = `<strong>AI助手：</strong>${response}`;
+                // 使用 reply 字段（对应后端返回的 JSON 结构）
+                aiMessage.innerHTML = `<strong>AI助手：</strong>${data.reply}`;
                 aiAssistantContent.appendChild(aiMessage);
                 
-                // 滚动到底部
-                aiAssistantContent.scrollTop = aiAssistantContent.scrollHeight;
-            }, 1500);
+            } catch (error) {
+                console.error("AI对话失败:", error);
+                loadingMessage.remove();
+                
+                // 报错处理
+                const aiMessage = document.createElement('div');
+                aiMessage.className = 'ai-message';
+                aiMessage.style.color = 'var(--danger-red)';
+                aiMessage.innerHTML = `<strong>AI助手：</strong>抱歉，大脑连接出了一点小问题，请稍后再试。`;
+                aiAssistantContent.appendChild(aiMessage);
+            }
             
-            // 滚动到底部
+            // 再次滚动到底部
             aiAssistantContent.scrollTop = aiAssistantContent.scrollHeight;
         }
     });
@@ -185,6 +180,8 @@ if (aiAssistantSubmit && aiAssistantInput && aiAssistantContent) {
         }
     });
 }
+// ==================== AI助手功能结束 ====================
+    
 
 window.addEventListener("scroll", reveal);
 reveal();
@@ -582,8 +579,8 @@ function showSuccessMessage(message) {
 }
 
 // 添加CSS动画
-const scriptStyles = document.createElement('style');
-scriptStyles.textContent = `
+const style = document.createElement('style');
+style.textContent = `
     @keyframes slideIn {
         from {
             transform: translateX(100%);
@@ -606,7 +603,7 @@ scriptStyles.textContent = `
         }
     }
 `;
-document.head.appendChild(scriptStyles);
+document.head.appendChild(style);
 
 // 实时表单验证
 function setupRealTimeValidation() {
