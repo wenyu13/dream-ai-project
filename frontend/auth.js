@@ -1,85 +1,63 @@
 /**
- * 微光循迹 - 用户认证管理器
+ * 微光循迹 - 用户认证逻辑
  */
-class AuthManager {
-    constructor() {
-        this.currentUser = null;
-        this.init();
-    }
-    
-    init() {
-        const userData = localStorage.getItem('user');
-        if (userData) {
-            this.currentUser = JSON.parse(userData);
-            this.updateUI();
-        }
-        this.bindEvents();
-    }
-    
-    bindEvents() {
-        // 绑定按钮逻辑
-        document.getElementById('doRegister')?.addEventListener('click', () => this.register());
-        document.getElementById('doLogin')?.addEventListener('click', () => this.login());
-        document.getElementById('logoutBtn')?.addEventListener('click', () => this.logout());
-    }
-    
-    async login() {
-        const email = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
+document.addEventListener('DOMContentLoaded', () => {
+    // 更新导航栏 UI
+    function updateNavUI() {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const guestNav = document.getElementById('guestNav');
+        const userNav = document.getElementById('userNav');
 
-        try {
-            // 1. 获取 Token
-            const result = await window.DreamAI.Auth.login(email, password);
-            localStorage.setItem('access_token', result.access_token);
-            
-            // 2. 获取详细资料 (刚才报错的地方)
-            const userInfo = await window.DreamAI.Auth.getCurrentUser();
-            this.currentUser = userInfo;
-            localStorage.setItem('user', JSON.stringify(userInfo));
-            
-            alert(`登录成功！欢迎回来，${userInfo.username}`);
-            window.location.reload(); 
-        } catch (error) {
-            alert(`登录失败: ${error.message}`);
+        if (user && userNav && guestNav) {
+            guestNav.style.display = 'none';
+            userNav.style.display = 'flex';
+            document.querySelector('.user-name').textContent = user.username;
+            document.querySelector('.user-role').textContent = "志愿者伙伴";
         }
     }
-    
-    async register() {
+
+    // 注册逻辑
+    document.getElementById('doRegister')?.addEventListener('click', async () => {
         const userData = {
-            username: document.getElementById('regUsername').value,
-            email: document.getElementById('regEmail').value,
-            password: document.getElementById('regPassword').value,
-            real_name: document.getElementById('regRealName').value,
-            role: "volunteer"
+            email: document.getElementById('regEmail').value.trim(),
+            username: document.getElementById('regUsername').value.trim(),
+            password: document.getElementById('regPassword').value.trim(),
+            real_name: document.getElementById('regRealName').value.trim(),
+            role: document.getElementById('regRole').value
         };
+
+        if (!userData.email || !userData.password) return alert("请填写邮箱和密码");
 
         try {
             await window.DreamAI.Auth.register(userData);
-            alert("注册成功！即将为您自动登录...");
-            // 自动调用上面的登录
-            document.getElementById('loginEmail').value = userData.email;
-            document.getElementById('loginPassword').value = userData.password;
-            this.login();
-        } catch (error) {
-            alert("注册失败，请检查邮箱是否重复");
-        }
-    }
-    
-    logout() {
-        window.DreamAI.Auth.logout();
+            alert("🎉 注册成功！资料已存入云端，请登录。");
+            closeModal('registerModal');
+            openModal('loginModal');
+        } catch (e) { alert(e.message); }
+    });
+
+    // 登录逻辑
+    document.getElementById('doLogin')?.addEventListener('click', async () => {
+        const email = document.getElementById('loginEmail').value.trim();
+        const password = document.getElementById('loginPassword').value.trim();
+
+        try {
+            const res = await window.DreamAI.Auth.login(email, password);
+            localStorage.setItem('access_token', res.access_token);
+            
+            const userInfo = await window.DreamAI.Auth.getCurrentUser();
+            localStorage.setItem('user', JSON.stringify(userInfo));
+            
+            alert("欢迎回来，" + userInfo.username);
+            window.location.reload(); 
+        } catch (e) { alert("登录失败：" + e.message); }
+    });
+
+    // 退出逻辑
+    document.getElementById('logoutBtn')?.addEventListener('click', () => {
+        localStorage.clear();
         window.location.href = 'index.html';
-    }
+    });
 
-    updateUI() {
-        const userNav = document.getElementById('userNav');
-        const guestNav = document.getElementById('guestNav');
-        if (this.currentUser) {
-            if (userNav) userNav.style.display = 'flex';
-            if (guestNav) guestNav.style.display = 'none';
-            const nameEl = document.querySelector('.user-name');
-            if (nameEl) nameEl.textContent = this.currentUser.username;
-        }
-    }
-}
-
-window.AuthManager = new AuthManager();
+    updateNavUI();
+});
