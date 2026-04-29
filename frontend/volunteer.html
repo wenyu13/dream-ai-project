@@ -12,260 +12,243 @@
             --accent-orange: #ff9f1c;
             --soft-green: #d8f3dc;
             --text-main: #1b4332;
-            --bg-light: #f8fafc;
-            --glass: rgba(255, 255, 255, 0.8);
+            --bg-light: #f4f7f5;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; }
-        body { display: flex; min-height: 100vh; background: var(--bg-light); color: var(--text-main); overflow-x: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "PingFang SC", sans-serif; }
+        body { display: flex; min-height: 100vh; background: var(--bg-light); color: var(--text-main); }
 
-        /* --- 侧边栏还原图1排版 --- */
+        /* --- 侧边栏 (符合图1) --- */
         .sidebar {
             width: 260px; background: white; border-right: 1px solid #e5e7eb;
             position: fixed; height: 100vh; display: flex; flex-direction: column; z-index: 1000;
         }
-        .sidebar-header { padding: 30px 20px; font-size: 1.4rem; font-weight: bold; color: var(--primary-green); border-bottom: 1px solid #f3f4f6; }
-        .sidebar-menu { flex: 1; padding: 15px 0; }
+        .sidebar-header { padding: 35px 25px; font-size: 1.4rem; font-weight: bold; color: var(--primary-green); }
+        .sidebar-menu { flex: 1; }
         .menu-item {
-            padding: 15px 25px; color: #64748b; cursor: pointer; transition: 0.3s;
+            padding: 18px 25px; color: #64748b; cursor: pointer; transition: 0.3s;
             display: flex; align-items: center; text-decoration: none; font-weight: 500;
         }
-        .menu-item i { margin-right: 12px; width: 20px; font-size: 1.1rem; }
-        .menu-item:hover, .menu-item.active { background: #ecfdf5; color: var(--primary-green); border-right: 4px solid var(--primary-green); }
+        .menu-item i { margin-right: 15px; font-size: 1.2rem; }
+        .menu-item:hover, .menu-item.active { background: #f0fdf4; color: var(--primary-green); border-right: 4px solid var(--primary-green); }
         .menu-item.logout { margin-top: auto; color: #ef4444; margin-bottom: 20px; }
 
         /* --- 主内容区 --- */
-        .main-content { margin-left: 260px; flex: 1; padding: 40px; position: relative; }
-        .tab-panel { display: none; width: 100%; }
+        .main-content { margin-left: 260px; flex: 1; padding: 40px; }
+        .tab-panel { display: none; }
         .tab-panel.active { display: block; }
 
-        /* --- 动态揭幕效果 --- */
-        .reveal { position: relative; transform: translateY(30px); opacity: 0; transition: 0.8s all ease; }
-        .reveal.active { transform: translateY(0); opacity: 1; }
-
-        /* --- 像素级还原图2/3卡片 --- */
-        .glass-card {
-            background: var(--glass); backdrop-filter: blur(10px);
-            border-radius: 25px; padding: 25px; box-shadow: 0 10px 30px rgba(45, 106, 79, 0.05);
-            margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.6); transition: 0.4s;
-        }
-        .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-        .header-icon { 
-            width: 40px; height: 40px; background: var(--soft-green); 
-            border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary-green);
-        }
-
-        /* 欢迎横幅动画 */
+        /* --- 像素级还原图2/3的主体排版 --- */
         .welcome-banner {
             background: linear-gradient(135deg, #d8f3dc 0%, #f0fdf4 100%);
-            padding: 45px; border-radius: 25px; margin-bottom: 30px;
-            animation: slideIn 0.8s ease-out; border: 1px solid rgba(255,255,255,0.5);
+            padding: 50px; border-radius: 30px; margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(45, 106, 79, 0.05);
         }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+        .welcome-banner h2 { font-size: 2.2rem; margin-bottom: 10px; }
 
-        /* 统计与勋章 */
-        .counter { font-size: 3rem; font-weight: 800; color: var(--primary-green); margin: 10px 0; }
-        .medal-box { display: flex; justify-content: space-around; padding: 15px 0; }
-        .medal { font-size: 2.5rem; filter: grayscale(1); transition: 0.5s; opacity: 0.3; }
-        .medal.active { filter: grayscale(0); opacity: 1; transform: scale(1.1); }
+        .dashboard-grid { display: grid; grid-template-columns: 1.8fr 1fr; gap: 30px; }
 
-        /* 漂流瓶表格 */
+        /* 原本的精美卡片样式 */
+        .glass-card {
+            background: white; border-radius: 25px; padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.03); margin-bottom: 30px;
+            border: 1px solid rgba(255,255,255,0.8); transition: 0.3s;
+        }
+        .card-title { display: flex; align-items: center; gap: 12px; margin-bottom: 25px; font-size: 1.2rem; font-weight: 800; }
+        .card-title i { background: var(--soft-green); width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: var(--primary-green); }
+
+        /* 招募列表样式 */
+        .job-item { display: flex; align-items: center; gap: 20px; padding: 20px 0; border-bottom: 1px solid #f1f5f9; }
+        .job-tag { padding: 5px 15px; border-radius: 10px; font-weight: bold; font-size: 0.85rem; }
+        .tag-red { background: #fee2e2; color: #ef4444; }
+        .tag-green { background: #dcfce7; color: #22c55e; }
+        .tag-yellow { background: #fef9c3; color: #ca8a04; }
+
+        /* 漂流瓶表格还原 */
         .bottle-table { width: 100%; border-collapse: collapse; }
-        .bottle-table th { text-align: left; padding: 12px; color: #64748b; font-size: 0.9rem; border-bottom: 1px solid #f1f5f9; }
-        .bottle-table td { padding: 18px 12px; border-bottom: 1px solid #f1f5f9; }
-        .tag { padding: 4px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; }
-        .btn-orange { 
+        .bottle-table th { text-align: left; padding: 15px; color: #888; font-weight: 500; border-bottom: 2px solid #f1f5f9; }
+        .bottle-table td { padding: 20px 15px; border-bottom: 1px solid #f8fafc; }
+        .btn-claim { 
             background: var(--accent-orange); color: white; border: none; 
-            padding: 8px 18px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.3s;
+            padding: 8px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.3s;
         }
-        .btn-orange:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(255, 159, 28, 0.4); }
+        .btn-claim:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255, 159, 28, 0.4); }
 
-        /* 申请进度条 */
-        .step-container { padding: 10px 0 10px 20px; border-left: 2px solid #e5e7eb; margin-left: 10px; }
-        .step-item { position: relative; padding-bottom: 30px; padding-left: 30px; }
-        .step-dot { 
-            position: absolute; left: -31px; top: 0; width: 20px; height: 20px; 
-            background: white; border: 4px solid #e5e7eb; border-radius: 50%; z-index: 2;
-        }
-        .step-item.done .step-dot { background: var(--primary-green); border-color: var(--primary-green); }
-        .step-item.active .step-dot { background: white; border-color: var(--primary-green); animation: pulse 2s infinite; }
+        /* 勋章还原 */
+        .medals { display: flex; justify-content: space-around; padding: 20px 0; }
+        .medal-item { text-align: center; }
+        .medal-icon { width: 60px; height: 60px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 10px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); }
+        .medal-item.active .medal-icon { background: #ffedd5; box-shadow: 0 5px 15px rgba(245, 158, 11, 0.2); }
+
+        /* 进度条还原 */
+        .stepper { padding-left: 20px; border-left: 2px solid #f1f5f9; margin-left: 15px; }
+        .step { position: relative; padding-bottom: 30px; padding-left: 30px; }
+        .step-dot { position: absolute; left: -41px; top: 0; width: 20px; height: 20px; border-radius: 50%; background: white; border: 4px solid #f1f5f9; }
+        .step.done .step-dot { background: var(--primary-green); border-color: var(--primary-green); }
+        .step.active .step-dot { border-color: var(--primary-green); animation: pulse 2s infinite; }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(45, 106, 79, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(45, 106, 79, 0); } 100% { box-shadow: 0 0 0 0 rgba(45, 106, 79, 0); } }
 
-        /* 鼠标随动光晕 */
-        .cursor-glow {
-            position: fixed; width: 400px; height: 400px;
-            background: radial-gradient(circle, rgba(45, 106, 79, 0.04) 0%, transparent 70%);
-            border-radius: 50%; pointer-events: none; z-index: 1; transform: translate(-50%, -50%);
-        }
+        /* 小海豚计划 */
+        .dolphin-card { background: linear-gradient(135deg, #ffffff 0%, #fff7ed 100%); border: 1px solid #ffedd5; }
+        .btn-participate { background: #ff9f1c; color: white; border: none; width: 100%; padding: 15px; border-radius: 15px; font-weight: bold; margin-top: 15px; cursor: pointer; }
 
-        /* 响应式网格 */
-        .dashboard-grid { display: grid; grid-template-columns: 1.8fr 1fr; gap: 30px; }
-        @media (max-width: 1100px) { .dashboard-grid { grid-template-columns: 1fr; } }
-
-        /* 弹窗样式 */
-        .identity-modal { 
+        /* --- 弹窗样式 --- */
+        .modal { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(0,0,0,0.5); display: none; align-items: center; 
             justify-content: center; z-index: 2000; backdrop-filter: blur(5px);
         }
-        .identity-modal.active { display: flex; }
-        .modal-content { background: white; padding: 35px; border-radius: 25px; width: 90%; max-width: 500px; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; }
-        .form-group input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; padding: 40px; border-radius: 30px; width: 90%; max-width: 500px; animation: pop 0.3s ease; }
+        @keyframes pop { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        /* 动态揭幕效果 */
+        .reveal { opacity: 0; transform: translateY(20px); transition: 0.6s all ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
     </style>
 </head>
 <body>
 
-    <div class="cursor-glow" id="cursorGlow"></div>
-
-    <!-- 侧边栏导航 -->
+    <!-- 侧边栏 -->
     <div class="sidebar">
         <div class="sidebar-header">志愿者中心</div>
         <div class="sidebar-menu">
             <a href="index.html" class="menu-item"><i class="fas fa-home"></i> 微光循迹官网</a>
-            <div class="menu-item active" onclick="showTab('tab-home', this)"><i class="fas fa-tachometer-alt"></i> 工作台首页</div>
+            <div class="menu-item active" onclick="showTab('tab-home', this)"><i class="fas fa-th-large"></i> 工作台首页</div>
             <div class="menu-item" onclick="showTab('tab-info', this)"><i class="fas fa-user-edit"></i> 信息填写</div>
             <div class="menu-item" onclick="showTab('tab-safe', this)"><i class="fas fa-shield-alt"></i> 账号安全</div>
             <div class="menu-item logout" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> 退出账号</div>
         </div>
     </div>
 
-    <!-- 主内容区 -->
+    <!-- 主内容 -->
     <div class="main-content">
         
-        <!-- --- Tab 1: 动态工作台 (完全还原图2/3) --- -->
+        <!-- Tab 1: 工作台首页 -->
         <div id="tab-home" class="tab-panel active">
-            <div class="welcome-banner">
-                <h2 id="welcomeUser">欢迎回来，志愿者伙伴！</h2>
+            <div class="welcome-banner reveal">
+                <h2 id="helloUser">欢迎回来，伙伴！</h2>
                 <p>微光循迹：赋能乡村振兴的数字化志愿服务交互平台</p>
             </div>
 
             <div class="dashboard-grid">
-                <!-- 左列 -->
                 <div class="col-left">
-                    <!-- 最新招募 -->
                     <div class="glass-card reveal">
-                        <div class="card-header"><div class="header-icon"><i class="fas fa-bullhorn"></i></div><h3>最新支教与助学招募</h3></div>
-                        <div class="recruitment-list">
-                            <div style="display:flex; align-items:center; gap:15px; padding:15px; border-bottom:1px solid #f1f5f9;">
-                                <span class="tag" style="background:#fee2e2; color:#ef4444;">四川</span>
-                                <div><strong>【紧急招募】凉山美姑县小学支教 (2人)</strong><p style="font-size:0.8rem;color:#999;">03-22发布</p></div>
-                            </div>
-                            <div style="display:flex; align-items:center; gap:15px; padding:15px; border-bottom:1px solid #f1f5f9;">
-                                <span class="tag" style="background:#dcfce7; color:#22c55e;">云南</span>
-                                <div><strong>【正在招募】怒江中心小学数学科普老师</strong><p style="font-size:0.8rem;color:#999;">03-21发布</p></div>
-                            </div>
-                            <div style="display:flex; align-items:center; gap:15px; padding:15px;">
-                                <span class="tag" style="background:#fef9c3; color:#ca8a04;">贵州</span>
-                                <div><strong>【即将截止】大山镇希望小学机械科普支教</strong><p style="font-size:0.8rem;color:#999;">03-20发布</p></div>
-                            </div>
+                        <div class="card-title"><i class="fas fa-bullhorn"></i> 最新支教与助学招募</div>
+                        <div class="job-item">
+                            <span class="job-tag tag-red">四川</span>
+                            <div><strong>【紧急招募】凉山美姑县小学支教 (2人)</strong><p style="font-size:0.8rem;color:#999;">03-22 发布</p></div>
+                        </div>
+                        <div class="job-item">
+                            <span class="job-tag tag-green">云南</span>
+                            <div><strong>【正在招募】怒江中心小学数学科普老师</strong><p style="font-size:0.8rem;color:#999;">03-21 发布</p></div>
+                        </div>
+                        <div class="job-item" style="border:none;">
+                            <span class="job-tag tag-yellow">贵州</span>
+                            <div><strong>【即将截止】大山镇希望小学机械科普支教</strong><p style="font-size:0.8rem;color:#999;">03-20 发布</p></div>
                         </div>
                     </div>
 
-                    <!-- 萤火虫互助 -->
                     <div class="glass-card reveal">
-                        <div class="card-header"><div class="header-icon"><i class="fas fa-heart"></i></div><h3>萤火虫互助 - 认领虚拟漂流瓶</h3></div>
+                        <div class="card-title"><i class="fas fa-heart"></i> 萤火虫互助 - 认领虚拟漂流瓶</div>
                         <table class="bottle-table">
                             <thead><tr><th>类型</th><th>内容</th><th>操作</th></tr></thead>
                             <tbody>
                                 <tr>
-                                    <td><span class="tag" style="background:#fef9c3; color:#ca8a04;">学习难题</span></td>
+                                    <td><span style="color:#ca8a04; background:#fef9c3; padding:4px 10px; border-radius:8px; font-size:0.8rem;">学习难题</span></td>
                                     <td>老师，那个斯特林发动机的教具怎么组装？</td>
-                                    <td><button class="btn-orange" onclick="openReplyModal('斯特林发动机的教具怎么组装？')">认领回复</button></td>
+                                    <td><button class="btn-claim" onclick="openClaimModal('学习难题','老师，那个斯特林发动机的教具怎么组装？')">认领回复</button></td>
                                 </tr>
                                 <tr>
-                                    <td><span class="tag" style="background:#fdf2f8; color:#db2777;">心里话</span></td>
+                                    <td><span style="color:#db2777; background:#fdf2f8; padding:4px 10px; border-radius:8px; font-size:0.8rem;">心里话</span></td>
                                     <td>志愿者哥哥姐姐，我想知道外面的世界是什么样的...</td>
-                                    <td><button class="btn-orange" onclick="openReplyModal('我想知道外面的世界是什么样的...')">认领回复</button></td>
+                                    <td><button class="btn-claim" onclick="openClaimModal('心里话','志愿者哥哥姐姐，我想知道外面的世界是什么样的...')">认领回复</button></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- 右列 -->
                 <div class="col-right">
-                    <!-- 勋章 -->
                     <div class="glass-card reveal" style="text-align:center;">
-                        <div class="card-header"><div class="header-icon"><i class="fas fa-medal"></i></div><h3>我的萤火虫勋章</h3></div>
-                        <div class="medal-box">
-                            <div class="medal active">🥉</div><div class="medal">🥈</div><div class="medal">🥇</div>
+                        <div class="card-title"><i class="fas fa-medal"></i> 我的萤火虫勋章</div>
+                        <div class="medals">
+                            <div class="medal-item active"><div class="medal-icon">🥉</div><p style="font-size:0.8rem;">初试锋芒</p></div>
+                            <div class="medal-item"><div class="medal-icon">🥈</div><p style="font-size:0.8rem;">爱心使者</p></div>
+                            <div class="medal-item"><div class="medal-icon">🥇</div><p style="font-size:0.8rem;">筑梦先锋</p></div>
                         </div>
-                        <div class="counter" data-target="1">0</div>
-                        <p style="color:#666; font-size:0.9rem;">已点亮 1 枚数字勋章</p>
+                        <p style="color:#888; font-size:0.85rem; margin-top:15px;">已点亮 1 枚数字勋章</p>
                     </div>
 
-                    <!-- 进度 -->
                     <div class="glass-card reveal">
-                        <div class="card-header"><div class="header-icon"><i class="fas fa-tasks"></i></div><h3>我的申请进度</h3></div>
-                        <div class="step-container">
-                            <div class="step-item done"><div class="step-dot"></div><strong>1. 提交申请</strong><p style="font-size:0.8rem;color:#888;">您已成功提交贵州小学岗位</p></div>
-                            <div class="step-item active"><div class="step-dot"></div><strong>2. AI 审核中</strong><p style="font-size:0.8rem;color:#888;">DeepSeek 正在分析专业对标</p></div>
-                            <div class="step-item"><div class="step-dot"></div><strong>3. 学校面试</strong><p style="font-size:0.8rem;color:#888;">等待安排</p></div>
+                        <div class="card-title"><i class="fas fa-spinner"></i> 我的申请进度</div>
+                        <div class="stepper">
+                            <div class="step done"><div class="step-dot"></div><strong>提交申请</strong><p style="font-size:0.8rem;color:#888;">您已成功提交贵州小学岗位</p></div>
+                            <div class="step active"><div class="step-dot"></div><strong style="color:var(--primary-green);">AI 审核中</strong><p style="font-size:0.8rem;color:#888;">DeepSeek 正在分析专业对标</p></div>
+                            <div class="step"><div class="step-dot"></div><strong>学校面试</strong><p style="font-size:0.8rem;color:#888;">等待安排</p></div>
                         </div>
                     </div>
 
-                    <!-- 小海豚 -->
-                    <div class="glass-card reveal" style="background: linear-gradient(to bottom, #fff, #fff7ed); border: 1px solid #ffedd5;">
-                        <div class="card-header"><div class="header-icon"><i class="fas fa-dove"></i></div><h3>小海豚助学计划</h3></div>
-                        <p style="color:#c2410c; font-weight:bold; margin-bottom:5px;">爱心益智盒配送</p>
+                    <div class="glass-card dolphin-card reveal">
+                        <div class="card-title"><i class="fas fa-dove"></i> 小海豚助学计划</div>
+                        <p style="color:#c2410c; font-weight:bold; margin-bottom:10px;">爱心益智盒配送</p>
                         <p style="font-size:0.85rem; color:#666;">已为偏远学校配送 3D 打印机械教具 124 套。</p>
-                        <button class="btn-orange" style="width:100%; margin-top:15px; padding:12px;" onclick="alert('感谢您的关注，捐赠通道即将开启！')">参与捐赠</button>
+                        <button class="btn-participate" onclick="openParticipateModal()">参与捐赠</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- --- Tab 2: 信息填写 (还原图1+图4) --- -->
+        <!-- Tab 2: 信息填写 -->
         <div id="tab-info" class="tab-panel">
             <div class="glass-card reveal">
-                <h2 style="margin-bottom:25px;">个人信息登记</h2>
-                <div class="form-group"><label>用户名</label><input type="text" id="prof-user" disabled></div>
-                <div class="form-group"><label>电子邮箱</label><input type="text" id="prof-mail" disabled></div>
-                <div class="form-group"><label>真实姓名</label><input type="text" id="prof-realname" disabled></div>
-                <div class="form-group"><label>我的身份</label><input type="text" value="志愿者" disabled></div>
-                <hr style="margin:25px 0; opacity:0.1;">
-                <div class="form-group"><label>就读学校</label><input type="text" placeholder="请输入学校名称"></div>
-                <div class="form-group"><label>专业名称</label><input type="text" placeholder="请输入专业名称"></div>
-                <div class="form-group"><label>最高学历</label>
-                    <select style="width:100%; padding:12px; border-radius:10px; border:1px solid #ddd;">
-                        <option>本科</option><option>硕士</option><option>博士</option>
-                    </select>
+                <h2 style="margin-bottom:30px;">个人信息登记</h2>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:30px; margin-bottom:20px;">
+                    <div><label style="font-weight:bold;">用户名</label><input type="text" id="prof-user" style="width:100%; padding:12px; margin-top:10px; border-radius:10px; border:1px solid #ddd;" disabled></div>
+                    <div><label style="font-weight:bold;">电子邮箱</label><input type="text" id="prof-mail" style="width:100%; padding:12px; margin-top:10px; border-radius:10px; border:1px solid #ddd;" disabled></div>
                 </div>
-                <div class="form-group"><label>联系手机</label><input type="text" placeholder="请输入手机号"></div>
-                <div class="form-group"><label>上传照片</label>
-                    <input type="file" id="fileInp" hidden>
-                    <button class="btn-orange" style="background:#10b981;" onclick="document.getElementById('fileInp').click()">访问电脑文件</button>
+                <div style="margin-bottom:30px;">
+                    <label style="font-weight:bold;">真实姓名</label>
+                    <input type="text" id="prof-name" style="width:100%; padding:12px; margin-top:10px; border-radius:10px; border:1px solid #ddd;" disabled>
                 </div>
-                <div style="display:flex; gap:15px; margin-top:30px;">
-                    <button class="btn-orange" style="background:#10b981; padding:12px 40px;">保存信息</button>
-                    <button class="btn-orange" style="background:white; color:#10b981; border:1px solid #10b981; padding:12px 40px;">编辑模式</button>
+                <hr style="opacity:0.1; margin-bottom:30px;">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:30px; margin-bottom:20px;">
+                    <div><label style="font-weight:bold;">就读学校</label><input type="text" placeholder="请输入学校" style="width:100%; padding:12px; margin-top:10px; border-radius:10px; border:1px solid #ddd;"></div>
+                    <div><label style="font-weight:bold;">专业</label><input type="text" placeholder="请输入专业" style="width:100%; padding:12px; margin-top:10px; border-radius:10px; border:1px solid #ddd;"></div>
+                </div>
+                <div style="margin-bottom:30px;"><label style="font-weight:bold;">证件照片</label><br>
+                    <button class="btn-claim" style="background:#10b981; margin-top:10px;" onclick="alert('正在调取本地文件...')">访问电脑文件</button>
+                </div>
+                <div style="display:flex; gap:15px;">
+                    <button class="btn-claim" style="background:#10b981; padding:12px 40px;">保存信息</button>
+                    <button class="btn-claim" style="background:white; color:#10b981; border:1px solid #10b981; padding:12px 40px;">编辑模式</button>
                 </div>
             </div>
         </div>
 
-        <!-- --- Tab 3: 账号安全 --- -->
+        <!-- Tab 3: 账号安全 -->
         <div id="tab-safe" class="tab-panel">
             <div class="glass-card reveal" style="max-width:500px;">
-                <h2 style="margin-bottom:25px;">修改安全密码</h2>
-                <div class="form-group"><label>* 旧密码</label><input type="password"></div>
-                <div class="form-group"><label>* 新密码</label><input type="password"></div>
-                <div class="form-group"><label>* 确认新密码</label><input type="password"></div>
-                <button class="btn-orange" style="width:100%; background:#10b981; padding:12px;">确定修改</button>
+                <h2 style="margin-bottom:25px;">修改登录密码</h2>
+                <div style="margin-bottom:20px;"><label>* 旧密码</label><input type="password" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:10px; margin-top:8px;"></div>
+                <div style="margin-bottom:20px;"><label>* 新密码</label><input type="password" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:10px; margin-top:8px;"></div>
+                <div style="margin-bottom:30px;"><label>* 确认新密码</label><input type="password" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:10px; margin-top:8px;"></div>
+                <button class="btn-claim" style="width:100%; background:var(--primary-green); padding:15px;">确定修改</button>
             </div>
         </div>
     </div>
 
     <!-- 认领回复弹窗 -->
-    <div class="identity-modal" id="replyModal">
+    <div class="modal" id="claimModal">
         <div class="modal-content">
-            <h3 style="margin-bottom:15px;">认领漂流瓶</h3>
-            <p style="color:#666; margin-bottom:20px; font-style:italic;" id="targetBottle"></p>
-            <textarea style="width:100%; height:150px; padding:15px; border-radius:12px; border:1px solid #ddd;" placeholder="写下你的暖心回复..."></textarea>
-            <div style="display:flex; gap:10px; margin-top:20px;">
-                <button class="btn-orange" style="flex:1;" onclick="alert('回信已寄出！'); closeModal('replyModal')">发送回信</button>
-                <button style="flex:1; border:none; background:#eee; border-radius:10px; cursor:pointer;" onclick="closeModal('replyModal')">取消</button>
+            <h3 style="margin-bottom:15px;">认领漂流瓶 - <span id="bottleType"></span></h3>
+            <div style="background:#f8fafc; padding:20px; border-radius:15px; margin-bottom:20px;">
+                <p id="bottleMsg" style="font-style:italic; color:#4b5563;"></p>
+            </div>
+            <textarea style="width:100%; height:120px; padding:15px; border-radius:15px; border:1px solid #ddd; margin-bottom:20px;" placeholder="请写下您温暖的回复..."></textarea>
+            <div style="display:flex; gap:15px;">
+                <button class="btn-claim" style="flex:1; padding:12px;" onclick="closeModal('claimModal'); alert('回复已寄出，您的爱心值+10！')">发送回信</button>
+                <button style="flex:1; background:#eee; border:none; border-radius:10px; cursor:pointer;" onclick="closeModal('claimModal')">取消</button>
             </div>
         </div>
     </div>
@@ -278,62 +261,47 @@
             glow.style.top = e.clientY + 'px';
         });
 
-        // 2. 滚动揭幕逻辑
+        // 2. 动态揭幕
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
                 var windowHeight = window.innerHeight;
                 var elementTop = reveals[i].getBoundingClientRect().top;
-                if (elementTop < windowHeight - 100) { reveals[i].classList.add("active"); }
+                if (elementTop < windowHeight - 50) { reveals[i].classList.add("active"); }
             }
         }
         window.addEventListener("scroll", reveal);
 
-        // 3. 数字计数动画
-        function animateCounters() {
-            const counters = document.querySelectorAll('.counter');
-            counters.forEach(c => {
-                const target = +c.dataset.target;
-                let current = 0;
-                const update = () => {
-                    current += target / 30;
-                    if (current < target) {
-                        c.innerText = Math.ceil(current);
-                        setTimeout(update, 30);
-                    } else { c.innerText = target; }
-                };
-                update();
-            });
-        }
-
-        // 4. 标签切换
-        function showTab(tabId, el) {
+        // 3. 标签切换
+        function showTab(id, el) {
             document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
+            document.getElementById(id).classList.add('active');
             el.classList.add('active');
-            reveal(); 
-            if(tabId === 'tab-home') animateCounters();
+            reveal();
         }
 
-        // 5. 弹窗控制
-        function openReplyModal(text) {
-            document.getElementById('targetBottle').innerText = `"${text}"`;
-            document.getElementById('replyModal').classList.add('active');
+        // 4. 弹窗逻辑
+        function openClaimModal(type, msg) {
+            document.getElementById('bottleType').innerText = type;
+            document.getElementById('bottleMsg').innerText = `“${msg}”`;
+            document.getElementById('claimModal').classList.add('active');
+        }
+        function openParticipateModal() {
+            alert('感谢您的关注！捐赠通道目前正在进行数字化升级，请于 3 个工作日后再次查看。');
         }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-        // 6. 初始化加载
+        // 5. 初始化
         window.onload = function() {
             const user = JSON.parse(localStorage.getItem('user'));
             if(user) {
-                document.getElementById('welcomeUser').innerText = `欢迎回来，${user.username}！`;
+                document.getElementById('helloUser').innerText = `欢迎回来，${user.username}！`;
                 document.getElementById('prof-user').value = user.username;
                 document.getElementById('prof-mail').value = user.email;
-                document.getElementById('prof-realname').value = user.real_name || user.username;
+                document.getElementById('prof-name').value = user.real_name || user.username;
             }
             reveal();
-            animateCounters();
         };
 
         function handleLogout() {
