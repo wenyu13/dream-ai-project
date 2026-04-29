@@ -521,28 +521,18 @@
                     src=""
                     alt="3D模型"
                     auto-rotate
-                    auto-rotate-speed="1rpm"
                     camera-controls
-                    touch-action="pan-y"
-                    interaction-prompt="none"
-                    shadow-intensity="1"
-                    shadow-softness="0.5"
                     camera-orbit="45deg 75deg auto"
-                    min-camera-orbit="auto auto 0.1m"
-                    max-camera-orbit="auto auto 20m"
-                    min-field-of-view="5deg"
-                    max-field-of-view="auto"
-                    exposure="1.5"
+                    min-camera-orbit="auto auto 0.05m"
+                    max-camera-orbit="auto auto 50m"
+                    min-field-of-view="1deg"
+                    max-field-of-view="180deg"
                     field-of-view="auto"
+                    interaction-prompt="auto"
+                    exposure="1.2"
+                    shadow-intensity="1"
                     loading="eager"
                     reveal="auto"
-                    disable-zoom="false"
-                    disable-pan="false"
-                    disable-tap="false"
-                    ar="false"
-                    ar-modes="webxr scene-viewer quick-look"
-                    ar-scale="auto"
-                    ios-src=""
                 ></model-viewer>
                 <div class="model-viewer-info">
                     <div class="info-item">
@@ -552,12 +542,6 @@
                     <div class="info-item">
                         <span class="info-label">操作提示：</span>
                         <span class="info-value">鼠标拖拽旋转 | 滚轮缩放 | 右键平移</span>
-                    </div>
-                    <div class="debug-info" id="debugInfo" style="display: none;">
-                        <div class="info-item">
-                            <span class="info-label">调试信息：</span>
-                            <span class="info-value" id="debugMessage">-</span>
-                        </div>
                     </div>
                 </div>
             </div>
