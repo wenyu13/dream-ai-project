@@ -1,5 +1,5 @@
 /**
- * 筑梦AI支教项目 - 前端API工具 (完整合并版)
+ * 微光循迹 - 核心 API 配置文件 (全功能补全版)
  */
 const API_BASE = 'https://cghsdcnklsd-dream-ai-api.hf.space/api';
 
@@ -7,34 +7,29 @@ window.DreamAI = {
     // === AI 助手模块 ===
     AI: {
         async chat(message) {
-            try {
-                const response = await fetch(`${API_BASE}/ai/chat`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({ message: message })
-                });
-                if (!response.ok) throw new Error('网络响应不正常');
-                return await response.json();
-            } catch (error) {
-                console.error('AI API 调用失败:', error);
-                throw error;
-            }
+            const response = await fetch(`${API_BASE}/ai/chat`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message })
+            });
+            return await response.json();
         }
     },
 
-    // === 原有的用户认证模块 (保留你队友的代码逻辑) ===
+    // === 用户认证模块 ===
     Auth: {
+        // 登录
         async login(email, password) {
             const response = await fetch(`${API_BASE}/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password })
             });
+            if (!response.ok) throw new Error('账号或密码错误');
             return await response.json();
         },
+
+        // 注册
         async register(userData) {
             const response = await fetch(`${API_BASE}/auth/register`, {
                 method: 'POST',
@@ -42,7 +37,40 @@ window.DreamAI = {
                 body: JSON.stringify(userData)
             });
             return await response.json();
+        },
+
+        // 🚀 补全这个缺失的函数：获取当前用户信息
+        async getCurrentUser() {
+            const token = localStorage.getItem('access_token');
+            const response = await fetch(`${API_BASE}/auth/me`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (!response.ok) throw new Error('身份验证过期');
+            return await response.json();
+        },
+
+        // 退出
+        logout() {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('user');
+        }
+    },
+
+    // === 工具模块 ===
+    Utils: {
+        getRoleName(role) {
+            const roles = {
+                'admin': '管理员',
+                'teacher': '支教老师',
+                'volunteer': '志愿者',
+                'student': '学生'
+            };
+            return roles[role] || '用户';
         }
     }
 };
-console.log("✅ 筑梦AI支教API工具(含AI功能)已加载");
+
+console.log('✅ 核心 API 已补全：getCurrentUser 已就绪');
