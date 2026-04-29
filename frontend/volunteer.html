@@ -7,303 +7,264 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* 1. 保留并增强你原本的 CSS 变量 */
         :root {
             --primary-green: #2d6a4f;
             --accent-orange: #ff9f1c;
             --soft-green: #d8f3dc;
             --text-main: #1b4332;
-            --glass: rgba(255, 255, 255, 0.85);
             --bg-light: #f4f7f5;
+            --glass: rgba(255, 255, 255, 0.85);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "PingFang SC", sans-serif; }
-        
-        body { 
-            display: flex; 
-            min-height: 100vh; 
-            background: var(--bg-light); 
-            color: var(--text-main); 
-            overflow-x: hidden;
-            background-image: radial-gradient(circle at 0% 0%, rgba(45, 106, 79, 0.03) 0%, transparent 50%),
-                              radial-gradient(circle at 100% 100%, rgba(255, 159, 28, 0.03) 0%, transparent 50%);
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; }
+        body { display: flex; min-height: 100vh; background: var(--bg-light); color: var(--text-main); overflow-x: hidden; }
 
-        /* --- 1. 鼠标跟随光晕 --- */
-        .cursor-glow {
-            position: fixed; width: 400px; height: 400px;
-            background: radial-gradient(circle, rgba(45, 106, 79, 0.06) 0%, transparent 70%);
-            border-radius: 50%; pointer-events: none; z-index: 1; transform: translate(-50%, -50%);
-            transition: opacity 0.3s ease;
-        }
-
-        /* --- 2. 侧边栏 (玻璃态) --- */
+        /* 2. 侧边栏样式 (图1排版) */
         .sidebar {
-            width: 260px; background: var(--glass); backdrop-filter: blur(20px);
-            border-right: 1px solid rgba(0,0,0,0.05); position: fixed; height: 100vh;
-            display: flex; flex-direction: column; z-index: 1000;
+            width: 260px; background: white; border-right: 1px solid #e5e7eb;
+            position: fixed; height: 100vh; display: flex; flex-direction: column; z-index: 1000;
         }
-        .sidebar-header { padding: 40px 25px; font-size: 1.5rem; font-weight: 900; color: var(--primary-green); letter-spacing: 1px; }
+        .sidebar-header { padding: 35px 25px; font-size: 1.4rem; font-weight: bold; color: var(--primary-green); border-bottom: 1px solid #f1f5f9; }
+        .sidebar-menu { flex: 1; padding: 15px 0; }
         .menu-item {
-            padding: 18px 25px; color: #64748b; cursor: pointer; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex; align-items: center; text-decoration: none; font-weight: 500; margin: 4px 15px; border-radius: 12px;
+            padding: 16px 25px; color: #64748b; cursor: pointer; transition: 0.3s;
+            display: flex; align-items: center; text-decoration: none; font-weight: 500;
         }
-        .menu-item i { margin-right: 15px; font-size: 1.1rem; transition: 0.3s; }
-        .menu-item:hover { color: var(--primary-green); background: rgba(45, 106, 79, 0.05); transform: translateX(5px); }
-        .menu-item.active { background: var(--primary-green); color: white; box-shadow: 0 10px 20px rgba(45, 106, 79, 0.2); }
-        .menu-item.active i { color: white; }
-        .menu-item.logout { margin-top: auto; color: #ef4444; margin-bottom: 30px; }
-        .menu-item.logout:hover { background: #fee2e2; }
+        .menu-item i { margin-right: 15px; width: 20px; text-align: center; }
+        .menu-item:hover, .menu-item.active { background: #ecfdf5; color: var(--primary-green); border-right: 4px solid var(--primary-green); }
+        .menu-item.logout { margin-top: auto; color: #ef4444; margin-bottom: 20px; }
 
-        /* --- 3. 动态内容区 --- */
-        .main-content { margin-left: 260px; flex: 1; padding: 40px; position: relative; z-index: 2; }
-        .tab-panel { display: none; }
-        .tab-panel.active { display: block; animation: contentAppear 0.6s ease-out forwards; }
-        @keyframes contentAppear { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* 3. 主内容区布局 */
+        .main-content { margin-left: 260px; flex: 1; padding: 40px; position: relative; }
+        .tab-panel { display: none; width: 100%; }
+        .tab-panel.active { display: block; }
 
-        /* 滚动浮现动画 */
-        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        /* 4. 还原你原本的精美卡片样式 (图2/3) */
+        .glass-card {
+            background: var(--glass); backdrop-filter: blur(10px);
+            border-radius: 24px; padding: 30px; border: 1px solid rgba(255,255,255,0.6);
+            box-shadow: 0 10px 30px rgba(45, 106, 79, 0.05); margin-bottom: 25px;
+        }
+        .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 25px; }
+        .icon-circle { 
+            width: 38px; height: 38px; background: var(--soft-green); 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary-green);
+        }
+        .welcome-banner {
+            background: linear-gradient(135deg, #d8f3dc 0%, #f0fdf4 100%);
+            padding: 45px; border-radius: 25px; margin-bottom: 30px; border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        /* 5. 进度条与标签 (像素级还原) */
+        .job-tag { padding: 4px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: bold; }
+        .step-list { border-left: 2px solid #e2e8f0; margin-left: 10px; padding-left: 25px; }
+        .step-item { position: relative; padding-bottom: 30px; }
+        .step-dot { position: absolute; left: -36px; top: 0; width: 20px; height: 20px; border-radius: 50%; background: white; border: 4px solid #e2e8f0; }
+        .step-item.active .step-dot { border-color: var(--primary-green); box-shadow: 0 0 10px rgba(45,106,79,0.3); }
+        .step-item.done .step-dot { background: var(--primary-green); border-color: var(--primary-green); }
+
+        /* 6. 还原 Reveal 动画 */
+        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s all ease; }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        /* 玻璃卡片 */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px);
-            border-radius: 24px; padding: 30px; border: 1px solid rgba(255,255,255,0.4);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.02); margin-bottom: 30px; transition: 0.4s;
-        }
-        .glass-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(45, 106, 79, 0.08); }
-
-        /* 欢迎横幅 */
-        .welcome-banner {
-            background: linear-gradient(135deg, #2d6a4f 0%, #1b4332 100%);
-            padding: 50px; border-radius: 30px; color: white; margin-bottom: 40px;
-            position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(45, 106, 79, 0.2);
-        }
-        .welcome-banner::after {
-            content: ''; position: absolute; top: -50%; right: -10%; width: 300px; height: 300px;
-            background: rgba(255,255,255,0.1); border-radius: 50%;
-        }
-
-        /* 数字跳动 */
-        .counter { font-size: 3.5rem; font-weight: 800; color: var(--primary-green); margin: 10px 0; display: block; }
-
-        /* 磁性按钮 */
-        .mag-btn {
-            background: var(--accent-orange); color: white; border: none; padding: 10px 20px;
-            border-radius: 12px; cursor: pointer; font-weight: bold; transition: 0.3s;
-        }
-        .mag-btn:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(255, 159, 28, 0.3); }
-
-        /* 进度条呼吸灯 */
-        .pulse-dot {
-            width: 12px; height: 12px; background: var(--primary-green); border-radius: 50%;
-            position: relative; display: inline-block; margin-right: 10px;
-        }
-        .pulse-dot::after {
-            content: ''; position: absolute; width: 100%; height: 100%;
-            background: inherit; border-radius: 50%; animation: pulse 2s infinite;
-        }
-        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(3); opacity: 0; } }
-
-        /* 表单 */
-        .form-group { margin-bottom: 25px; }
-        .form-group label { display: block; margin-bottom: 10px; font-weight: 600; color: #4b5563; }
-        .form-group input, .form-group select { 
-            width: 100%; padding: 14px; border: 2px solid #f1f5f9; border-radius: 12px; 
-            transition: 0.3s; background: #f8fafc;
-        }
-        .form-group input:focus { border-color: var(--primary-green); outline: none; background: white; }
+        /* 7. 表单排版 (图1) */
+        .form-row { display: flex; align-items: center; margin-bottom: 20px; gap: 15px; }
+        .form-row label { width: 100px; font-weight: 600; color: #4b5563; }
+        .form-row input { flex: 1; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; background: white; }
+        .form-row input:disabled { background: #f8fafc; color: #94a3b8; }
+        .btn-green { background: #10b981; color: white; border: none; padding: 12px 30px; border-radius: 10px; cursor: pointer; font-weight: bold; }
+        .btn-white { background: white; color: #10b981; border: 1px solid #10b981; padding: 12px 30px; border-radius: 10px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
-
-    <!-- 动态光晕 -->
-    <div class="cursor-glow" id="cursorGlow"></div>
 
     <!-- 侧边栏 -->
     <div class="sidebar">
         <div class="sidebar-header">志愿者中心</div>
         <div class="sidebar-menu">
             <a href="index.html" class="menu-item"><i class="fas fa-home"></i> 微光循迹官网</a>
-            <div class="menu-item active" onclick="showTab('tab-home', this)"><i class="fas fa-tachometer-alt"></i> 工作台首页</div>
-            <div class="menu-item" onclick="showTab('tab-info', this)"><i class="fas fa-id-card"></i> 信息填写</div>
-            <div class="menu-item" onclick="showTab('tab-safe', this)"><i class="fas fa-user-shield"></i> 账号安全</div>
-            <div class="menu-item logout" onclick="handleLogout()"><i class="fas fa-power-off"></i> 退出账号</div>
+            <div class="menu-item active" onclick="switchTab('tab-home', this)"><i class="fas fa-tachometer-alt"></i> 工作台首页</div>
+            <div class="menu-item" onclick="switchTab('tab-info', this)"><i class="fas fa-user-edit"></i> 信息填写</div>
+            <div class="menu-item" onclick="switchTab('tab-safe', this)"><i class="fas fa-shield-alt"></i> 账号安全</div>
+            <div class="menu-item logout" onclick="handleLogout()"><i class="fas fa-sign-out-alt"></i> 退出账号</div>
         </div>
     </div>
 
-    <!-- 内容区 -->
     <div class="main-content">
         
-        <!-- Tab 1: 工作台 -->
+        <!-- --- Tab 1: 工作台首页 (100%还原图2/3) --- -->
         <div id="tab-home" class="tab-panel active">
-            <div class="welcome-banner reveal">
-                <h2 id="helloTitle">欢迎回来，伙伴！</h2>
-                <p style="opacity: 0.9;">愿微光汇聚成炬，照亮大山的孩子。</p>
+            <div class="welcome-banner">
+                <h2 id="helloUser">欢迎回来，伙伴！</h2>
+                <p>微光循迹：赋能乡村振兴的数字化志愿服务交互平台</p>
             </div>
 
             <div style="display: grid; grid-template-columns: 1.8fr 1fr; gap: 30px;">
-                <!-- 左列 -->
-                <div class="col">
+                <div class="col-left">
                     <div class="glass-card reveal">
-                        <h3 style="margin-bottom:20px;"><i class="fas fa-bullhorn" style="color:var(--accent-orange)"></i> 最新招募</h3>
-                        <div style="padding:15px; border-left:4px solid #ef4444; background:rgba(239,68,68,0.03); margin-bottom:15px; border-radius:0 10px 10px 0;">
-                            <strong>【紧急】凉山美姑县小学支教</strong>
-                            <p style="font-size:0.85rem; color:#888;">我们需要艺术类专业的志愿者...</p>
+                        <div class="card-header"><div class="icon-circle"><i class="fas fa-bullhorn"></i></div><h3>最新支教与助学招募</h3></div>
+                        <div style="display:flex; align-items:center; gap:15px; padding:15px; border-bottom:1px solid #f1f5f9;">
+                            <span class="job-tag" style="background:#fee2e2;color:#ef4444;">四川</span>
+                            <div><strong>【紧急招募】凉山美姑县小学支教 (2人)</strong><p style="font-size:0.8rem;color:#999;">03-22 发布</p></div>
                         </div>
-                        <div style="padding:15px; border-left:4px solid #22c55e; background:rgba(34,197,94,0.03); border-radius:0 10px 10px 0;">
-                            <strong>【火热】贵州大山镇机械科普</strong>
-                            <p style="font-size:0.85rem; color:#888;">3D打印教具组装指导...</p>
+                        <div style="display:flex; align-items:center; gap:15px; padding:15px; border-bottom:1px solid #f1f5f9;">
+                            <span class="job-tag" style="background:#dcfce7;color:#22c55e;">云南</span>
+                            <div><strong>【正在招募】怒江中心小学数学科普老师</strong><p style="font-size:0.8rem;color:#999;">03-21 发布</p></div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:15px; padding:15px;">
+                            <span class="job-tag" style="background:#fef9c3;color:#ca8a04;">贵州</span>
+                            <div><strong>【即将截止】大山镇希望小学机械科普支教</strong><p style="font-size:0.8rem;color:#999;">03-20 发布</p></div>
                         </div>
                     </div>
 
                     <div class="glass-card reveal">
-                        <h3 style="margin-bottom:20px;"><i class="fas fa-envelope-open-text" style="color:var(--primary-green)"></i> 认领漂流瓶</h3>
+                        <div class="card-header"><div class="icon-circle"><i class="fas fa-heart"></i></div><h3>萤火虫互助 - 认领虚拟漂流瓶</h3></div>
                         <table style="width:100%; border-collapse:collapse;">
                             <tr style="border-bottom:1px solid #f1f5f9;">
-                                <td style="padding:15px 0;">“老师，那个斯特林发动机怎么组装？”</td>
-                                <td style="text-align:right;"><button class="mag-btn" onclick="openAction('认领成功！')">认领</button></td>
+                                <td style="padding:15px;"><span class="job-tag" style="background:#fef9c3;color:#ca8a04;">学习难题</span></td>
+                                <td>老师，那个斯特林发动机怎么组装？</td>
+                                <td><button class="btn-orange claim-btn" style="background:var(--accent-orange); color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer;">认领回复</button></td>
                             </tr>
                             <tr>
-                                <td style="padding:15px 0;">“我想看看外面的世界...”</td>
-                                <td style="text-align:right;"><button class="mag-btn" onclick="openAction('认领成功！')">认领</button></td>
+                                <td style="padding:15px;"><span class="job-tag" style="background:#fdf2f8;color:#db2777;">心里话</span></td>
+                                <td>志愿者哥哥姐姐，我想知道外面的世界...</td>
+                                <td><button class="btn-orange claim-btn" style="background:var(--accent-orange); color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer;">认领回复</button></td>
                             </tr>
                         </table>
                     </div>
                 </div>
 
-                <!-- 右列 -->
-                <div class="col">
+                <div class="col-right">
                     <div class="glass-card reveal" style="text-align:center;">
-                        <h3>我的勋章</h3>
-                        <div style="font-size:4rem; margin:20px 0; filter: drop-shadow(0 10px 15px rgba(245,158,11,0.3));">🥉</div>
-                        <span class="counter" data-target="1">0</span>
-                        <p style="color:#64748b; font-weight:500;">已点亮勋章</p>
+                        <div class="card-header"><div class="icon-circle"><i class="fas fa-medal"></i></div><h3>我的萤火虫勋章</h3></div>
+                        <div style="display:flex; justify-content:space-around; padding:15px 0;">
+                            <span style="font-size:2.5rem;">🥉</span><span style="font-size:2.5rem; opacity:0.2;">🥈</span><span style="font-size:2.5rem; opacity:0.2;">🥇</span>
+                        </div>
+                        <div style="font-size:2.5rem; font-weight:800; color:var(--primary-green);">1</div>
+                        <p style="color:#888; font-size:0.85rem;">已点亮 1 枚数字勋章</p>
                     </div>
 
                     <div class="glass-card reveal">
-                        <h3>申请进度</h3>
-                        <div style="margin-top:25px; padding-left:15px; border-left:2px solid #e2e8f0;">
-                            <div style="margin-bottom:25px; position:relative;">
-                                <i class="fas fa-check-circle" style="color:var(--primary-green); position:absolute; left:-23px; background:white;"></i>
-                                <strong>提交申请</strong>
-                            </div>
-                            <div style="position:relative; color:var(--primary-green);">
-                                <span class="pulse-dot" style="position:absolute; left:-21px; top:5px;"></span>
-                                <strong>AI 智能审核中</strong>
-                            </div>
+                        <div class="card-header"><div class="icon-circle"><i class="fas fa-tasks"></i></div><h3>我的申请进度</h3></div>
+                        <div class="step-list">
+                            <div class="step-item done"><div class="step-dot"></div><strong>1. 提交申请</strong><p style="font-size:0.8rem;color:#888;">已成功提交贵州小学岗位</p></div>
+                            <div class="step-item active"><div class="step-dot"></div><strong>2. AI 审核中</strong><p style="font-size:0.8rem;color:#888;">DeepSeek 正在分析专业对标</p></div>
+                            <div class="step-item"><div class="step-dot"></div><strong>3. 学校面试</strong><p style="font-size:0.8rem;color:#888;">等待安排</p></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Tab 2: 信息修改 -->
+        <!-- --- Tab 2: 信息填写 (图1/4) --- -->
         <div id="tab-info" class="tab-panel">
             <div class="glass-card reveal">
-                <h2 style="margin-bottom:30px;">个人信息登记</h2>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:30px;">
-                    <div class="form-group"><label>用户名</label><input type="text" id="prof-user" disabled></div>
-                    <div class="form-group"><label>身份</label><input type="text" value="志愿者" disabled></div>
-                </div>
-                <div class="form-group"><label>电子邮箱</label><input type="text" id="prof-mail" disabled></div>
-                <hr style="margin:20px 0; opacity:0.1;">
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:30px;">
-                    <div class="form-group"><label>就读学校</label><input type="text" placeholder="输入学校名称"></div>
-                    <div class="form-group"><label>专业</label><input type="text" placeholder="输入专业名称"></div>
-                </div>
-                <div class="form-group">
-                    <label>个人证件照</label>
-                    <button class="mag-btn" style="background:#10b981;" onclick="document.getElementById('fileInp').click()">访问电脑文件</button>
-                    <input type="file" id="fileInp" hidden>
-                </div>
-                <div style="display:flex; gap:15px;">
-                    <button class="mag-btn" style="background:#10b981; padding:15px 40px;">保存信息</button>
-                    <button class="mag-btn" style="background:white; color:#10b981; border:2px solid #10b981; padding:15px 40px;">编辑模式</button>
+                <h2 style="margin-bottom:25px;">个人信息登记</h2>
+                <div class="form-row"><label>用户名</label><input type="text" id="prof-user" disabled></div>
+                <div class="form-row"><label>电子邮箱</label><input type="text" id="prof-mail" disabled></div>
+                <div class="form-row"><label>真实姓名</label><input type="text" id="prof-name" disabled></div>
+                <div class="form-row"><label>我的身份</label><input type="text" value="志愿者" disabled></div>
+                <hr style="margin:25px 0; opacity:0.1;">
+                <div class="form-row"><label>就读学校</label><input type="text" placeholder="请输入学校"></div>
+                <div class="form-row"><label>专业名称</label><input type="text" placeholder="请输入专业"></div>
+                <div class="form-row"><label>最高学历</label><select style="flex:1; padding:12px; border:1px solid #e2e8f0; border-radius:10px;"><option>本科</option><option>硕士</option></select></div>
+                <div class="form-row"><label>个人证照</label><button class="btn-green" onclick="alert('正在访问电脑文件...')">访问电脑文件</button></div>
+                <div style="display:flex; gap:15px; margin-top:10px;">
+                    <button class="btn-green">保存信息</button><button class="btn-white">编辑模式</button>
                 </div>
             </div>
         </div>
 
-        <!-- Tab 3: 安全 -->
+        <!-- --- Tab 3: 账号安全 --- -->
         <div id="tab-safe" class="tab-panel">
             <div class="glass-card reveal" style="max-width:500px;">
-                <h2 style="margin-bottom:30px;">账户安全设置</h2>
+                <h2 style="margin-bottom:25px;">修改安全密码</h2>
                 <div class="form-group"><label>旧密码</label><input type="password"></div>
                 <div class="form-group"><label>新密码</label><input type="password"></div>
                 <div class="form-group"><label>确认新密码</label><input type="password"></div>
-                <button class="mag-btn" style="width:100%; padding:15px; background:var(--primary-green);">保存修改</button>
+                <button class="btn-green" style="width:100%;">确定修改</button>
             </div>
         </div>
-
     </div>
 
+    <!-- 认领回复弹窗 (还原你原本的功能) -->
+    <div class="identity-modal" id="replyModal">
+        <div class="modal-content">
+            <h3>认领漂流瓶</h3><br>
+            <p id="bottleContent" style="font-style:italic; color:#666;"></p><br>
+            <textarea id="replyText" style="width:100%; height:100px; padding:10px; border-radius:10px; border:1px solid #ddd;" placeholder="输入你的回复..."></textarea>
+            <div style="display:flex; gap:10px; margin-top:20px;">
+                <button class="btn-green" style="flex:1;" id="submitReply">发送</button>
+                <button onclick="closeModal('replyModal')" style="flex:1; border:none; background:#eee; border-radius:10px;">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 所有的逻辑全部整合在这里，包括你给我的那段 JS -->
+    <script src="api.js?v=5"></script>
     <script>
-        // --- 1. 鼠标跟随特效 ---
+        // 1. 标签切换逻辑
+        function switchTab(tabId, el) {
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            el.classList.add('active');
+            reveal(); // 切换时重新触发揭幕动画
+        }
+
+        // 2. 注入你给我的所有动态逻辑
+        // 导航栏滚动变色
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (nav && window.scrollY > 50) nav.classList.add('scrolled');
+        });
+
+        // 鼠标跟随光晕
         const glow = document.getElementById('cursorGlow');
         document.addEventListener('mousemove', (e) => {
             glow.style.left = e.clientX + 'px';
             glow.style.top = e.clientY + 'px';
         });
 
-        // --- 2. 滚动浮现引擎 ---
+        // 滚动揭幕引擎
         function reveal() {
-            const reveals = document.querySelectorAll(".reveal");
-            reveals.forEach(el => {
-                const windowHeight = window.innerHeight;
-                const elementTop = el.getBoundingClientRect().top;
-                if (elementTop < windowHeight - 50) el.classList.add("active");
-            });
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                if (elementTop < windowHeight - 50) { reveals[i].classList.add("active"); }
+            }
         }
         window.addEventListener("scroll", reveal);
 
-        // --- 3. 数字跳动引擎 ---
-        function animateCounters() {
-            const counters = document.querySelectorAll('.counter');
-            counters.forEach(c => {
-                const target = +c.dataset.target;
-                let count = 0;
-                const update = () => {
-                    const inc = target / 20;
-                    if (count < target) {
-                        count += inc;
-                        c.innerText = Math.ceil(count);
-                        setTimeout(update, 50);
-                    } else { c.innerText = target; }
-                };
-                update();
-            });
+        // 认领弹窗逻辑
+        function openReplyModal(text) {
+            document.getElementById('bottleContent').innerText = `"${text}"`;
+            document.getElementById('replyModal').classList.add('active');
         }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-        // --- 4. 标签切换逻辑 ---
-        function showTab(tabId, el) {
-            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
-            
-            const activePanel = document.getElementById(tabId);
-            activePanel.classList.add('active');
-            el.classList.add('active');
+        // 绑定认领按钮
+        document.querySelectorAll('.claim-btn').forEach(btn => {
+            btn.onclick = function() {
+                const text = this.closest('tr').cells[1].innerText;
+                openReplyModal(text);
+            }
+        });
 
-            // 重新触发当前页面的动画
-            window.scrollTo(0,0);
-            setTimeout(() => {
-                reveal();
-                if(tabId === 'tab-home') animateCounters();
-            }, 100);
-        }
-
-        // --- 5. 初始化 ---
+        // 初始化
         window.onload = function() {
             const user = JSON.parse(localStorage.getItem('user'));
             if(user) {
-                document.getElementById('helloTitle').innerText = `欢迎回来，${user.username}！`;
-                document.getElementById('prof-user').value = user.username;
-                document.getElementById('prof-mail').value = user.email;
+                if(document.getElementById('prof-user')) document.getElementById('prof-user').value = user.username;
+                if(document.getElementById('prof-mail')) document.getElementById('prof-mail').value = user.email;
+                if(document.getElementById('prof-name')) document.getElementById('prof-name').value = user.real_name || user.username;
+                document.getElementById('helloUser').innerText = `欢迎回来，${user.username}！`;
             }
             reveal();
-            animateCounters();
         };
 
-        function openAction(msg) { alert(msg); }
-        
         function handleLogout() {
             localStorage.clear();
             window.location.href = 'index.html';
