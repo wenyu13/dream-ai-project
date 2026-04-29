@@ -24,7 +24,9 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; }
 
-        html { scroll-behavior: smooth; }
+        html {
+            scroll-behavior: smooth;
+        }
 
         body {
             background: var(--bg-light);
@@ -56,42 +58,96 @@
         .nav-links a:hover { color: var(--accent-orange); }
 
         .hero-section {
-            min-height: 85vh; padding: 100px 8%; display: flex; align-items: center; justify-content: center;
-            text-align: center; position: relative;
+            min-height: 85vh;
+            padding: 100px 8%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
             background: 
                 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none"><path fill="%23ffedd5" fill-opacity="0.4" d="M0,224L60,202.7C120,181,240,139,360,138.7C480,139,600,181,720,208C840,235,960,245,1080,224C1200,203,1320,149,1380,122.7L1440,96L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>'),
                 linear-gradient(180deg, var(--sunrise-gold) 0%, #ffffff 100%);
-            background-position: bottom; background-repeat: no-repeat; background-size: 100% 400px, 100% 100%; overflow: hidden;
+            background-position: bottom;
+            background-repeat: no-repeat;
+            background-size: 100% 400px, 100% 100%;
+            overflow: hidden;
         }
 
-        .hero-main-title { font-size: 3.8rem; font-weight: 900; color: var(--sunrise-text); margin-bottom: 25px; line-height: 1.2; }
-        .hero-main-title span { color: var(--primary-green); }
-        .hero-subtitle { font-size: 1.5rem; font-weight: 500; color: #78350f; margin-bottom: 50px; opacity: 0.8; }
-        .hero-btn { display: inline-block; padding: 1.1rem 3.5rem; border-radius: 50px; background: var(--primary-green); color: white; text-decoration: none; font-weight: 700; transition: 0.4s; }
-        .hero-btn:hover { background: var(--accent-orange); transform: scale(1.05); }
+        .hero-main-title {
+            font-size: 3.8rem;
+            font-weight: 900;
+            color: var(--sunrise-text);
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
+
+        .hero-main-title span {
+            color: var(--primary-green);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #78350f;
+            margin-bottom: 50px;
+            opacity: 0.8;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            padding: 1.1rem 3.5rem;
+            border-radius: 50px;
+            background: var(--primary-green);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 35px rgba(45, 106, 79, 0.2);
+        }
 
         .section-header { text-align: center; margin-bottom: 60px; }
         .section-header h2 { font-size: 2.4rem; color: var(--primary-green); margin-bottom: 15px; font-weight: 800; }
         .section-header .line { width: 60px; height: 4px; background: var(--accent-orange); margin: 0 auto; border-radius: 2px; }
 
         .container { max-width: 1300px; margin: 0 auto; padding: 100px 5%; }
+
         .portal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
-        .portal-card { background: white; border-radius: 2.5rem; padding: 4rem 2rem; text-align: center; border: 1px solid rgba(45, 106, 79, 0.05); box-shadow: var(--card-shadow); transition: 0.4s; }
+        .portal-card {
+            background: white; border-radius: 2.5rem; padding: 4rem 2rem; text-align: center;
+            transition: 0.4s; border: 1px solid rgba(45, 106, 79, 0.05); box-shadow: var(--card-shadow);
+        }
         .portal-card:hover { transform: translateY(-10px); border-color: var(--accent-orange); }
 
         .jobs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
-        .job-card { background: var(--bg-light); border-radius: 20px; padding: 35px; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid var(--danger-red); }
+        .job-card {
+            background: var(--bg-light); border-radius: 20px; padding: 35px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-left: 6px solid var(--danger-red); transition: 0.4s;
+        }
 
         .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 35px; }
-        .tool-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); border-radius: 30px; padding: 30px; text-align: center; transition: 0.4s; }
+        .tool-card {
+            background: rgba(255,255,255,0.7); backdrop-filter: blur(10px);
+            border-radius: 30px; padding: 30px; text-align: center; transition: 0.4s;
+        }
 
         /* 统一弹窗样式 */
-        .identity-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 1000; }
+        .identity-modal { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.6); display: none; align-items: center; 
+            justify-content: center; z-index: 1000; 
+        }
         .identity-modal.active { display: flex; }
-        .modal-content { background: white; padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; position: relative; }
-        .form-group { margin-bottom: 15px; text-align: left; }
+        .modal-content { 
+            background: white; padding: 30px; border-radius: 20px; 
+            width: 90%; max-width: 450px; 
+        }
+        .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; }
+        .form-group input, .form-group select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; }
 
         footer { text-align: center; padding: 5rem; background: var(--text-main); color: #88bd9e; font-size: 0.9rem; }
     </style>
@@ -119,11 +175,13 @@
                 </div>
             </div>
             
+            <!-- 访客导航 -->
             <div id="guestNav" class="guest-nav">
-                <button class="login-btn" onclick="openModal('loginModal')" style="cursor:pointer; background:none; border:2px solid var(--primary-green); padding:5px 15px; border-radius:8px; margin-left:10px;">登录</button>
+                <button class="login-btn" onclick="openModal('loginModal')" style="cursor:pointer; background:none; border:2px solid var(--primary-green); padding:5px 15px; border-radius:8px;">登录</button>
                 <button class="register-btn" onclick="openModal('registerModal')" style="cursor:pointer; background:var(--primary-green); color:white; border:none; padding:7px 15px; border-radius:8px; margin-left:5px;">注册</button>
             </div>
             
+            <!-- 用户导航 -->
             <div id="userNav" style="display: none; align-items:center; gap:10px; margin-left:20px;">
                 <span class="user-name" style="font-weight:bold;"></span>
                 <button onclick="handleLogout()" style="cursor:pointer; border:1px solid #ccc; background:none; padding:3px 8px; border-radius:5px;">退出</button>
@@ -190,12 +248,21 @@
         </div>
     </section>
 
-    <section id="tools" class="container" style="background: var(--soft-green);">
+    <section id="tools" class="container" style="background: var(--soft-green); border-radius: 3rem;">
         <div class="section-header reveal"><h2>数字化教具共享中心</h2><div class="line"></div></div>
         <div class="tools-grid">
-            <div class="tool-card reveal"><h3>斯特林发动机</h3><button class="hero-btn tool-btn" style="margin-top:20px;">3D 互动预览</button></div>
-            <div class="tool-card reveal"><h3>平面四连杆机构</h3><button class="hero-btn tool-btn" style="margin-top:20px;">3D 互动预览</button></div>
-            <div class="tool-card reveal"><h3>AI 巡检机器人</h3><button class="hero-btn tool-btn" style="margin-top:20px;">3D 互动预览</button></div>
+            <div class="tool-card reveal">
+                <h3>斯特林发动机</h3>
+                <button class="hero-btn tool-btn" style="margin-top:20px; font-size:0.9rem; padding:10px;">3D 互动预览</button>
+            </div>
+            <div class="tool-card reveal">
+                <h3>平面四连杆机构</h3>
+                <button class="hero-btn tool-btn" style="margin-top:20px; font-size:0.9rem; padding:10px;">3D 互动预览</button>
+            </div>
+            <div class="tool-card reveal">
+                <h3>AI 巡检机器人</h3>
+                <button class="hero-btn tool-btn" style="margin-top:20px; font-size:0.9rem; padding:10px;">3D 互动预览</button>
+            </div>
         </div>
     </section>
 
@@ -204,45 +271,41 @@
     <!-- 登录弹窗 -->
     <div class="identity-modal" id="loginModal">
         <div class="modal-content">
-            <div class="modal-header"><h3>用户登录</h3></div>
-            <div class="modal-body">
-                <div class="form-group"><label>邮箱</label><input type="email" id="loginEmail"></div>
-                <div class="form-group"><label>密码</label><input type="password" id="loginPassword"></div>
-                <button class="hero-btn" id="doLogin" style="width:100%; margin-top:10px;">登录</button>
-                <button onclick="closeModal('loginModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer;">取消</button>
-            </div>
+            <h3 style="margin-bottom:20px;">用户登录</h3>
+            <div class="form-group"><label>邮箱</label><input type="email" id="loginEmail"></div>
+            <div class="form-group"><label>密码</label><input type="password" id="loginPassword"></div>
+            <button class="hero-btn" id="doLogin" style="width:100%; margin-top:10px;">登录</button>
+            <button onclick="closeModal('loginModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer; color:#666;">取消</button>
         </div>
     </div>
 
     <!-- 注册弹窗 -->
     <div class="identity-modal" id="registerModal">
         <div class="modal-content">
-            <div class="modal-header"><h3>加入微光循迹</h3></div>
-            <div class="modal-body">
-                <div class="form-group"><label>用户名</label><input type="text" id="regUsername"></div>
-                <div class="form-group"><label>邮箱</label><input type="email" id="regEmail"></div>
-                <div class="form-group"><label>真实姓名</label><input type="text" id="regRealName"></div>
-                <div class="form-group"><label>密码</label><input type="password" id="regPassword"></div>
-                <div class="form-group">
-                    <label>注册身份</label>
-                    <select id="regRole"><option value="volunteer">志愿者</option><option value="teacher">教师</option></select>
-                </div>
-                <button class="hero-btn" id="doRegister" style="width:100%; margin-top:10px;">立即注册</button>
-                <button onclick="closeModal('registerModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer;">取消</button>
+            <h3 style="margin-bottom:20px;">加入微光循迹</h3>
+            <div class="form-group"><label>邮箱</label><input type="email" id="regEmail"></div>
+            <div class="form-group"><label>用户名</label><input type="text" id="regUsername"></div>
+            <div class="form-group"><label>真实姓名</label><input type="text" id="regRealName"></div>
+            <div class="form-group"><label>密码</label><input type="password" id="regPassword"></div>
+            <div class="form-group">
+                <label>注册身份</label>
+                <select id="regRole"><option value="volunteer">志愿者</option><option value="teacher">老师</option></select>
             </div>
+            <button class="hero-btn" id="doRegister" style="width:100%; margin-top:10px;">立即注册</button>
+            <button onclick="closeModal('registerModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer; color:#666;">取消</button>
         </div>
     </div>
 
     <!-- 3D模型查看器 -->
     <div class="identity-modal" id="modelViewerModal">
-        <div class="modal-content" style="max-width: 800px; height: 80vh;">
+        <div class="modal-content" style="max-width: 800px; height: 80vh; display: flex; flex-direction: column;">
             <h3>3D 模型查看器 - <span id="modelName">加载中</span></h3>
             <model-viewer id="modelViewer" src="" auto-rotate camera-controls 
                 camera-orbit="45deg 75deg auto" min-camera-orbit="auto auto 0.05m" 
                 max-camera-orbit="auto auto 50m" field-of-view="auto" exposure="1.2"
-                style="width:100%; height:80%;">
+                style="width:100%; flex:1;">
             </model-viewer>
-            <button onclick="closeModal('modelViewerModal')" style="margin-top:10px; padding:10px 20px; border-radius:10px; cursor:pointer;">关闭</button>
+            <button onclick="closeModal('modelViewerModal')" style="margin-top:10px; padding:10px; border-radius:10px; cursor:pointer;">关闭</button>
         </div>
     </div>
 
@@ -264,8 +327,8 @@
     </div>
 
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    <script src="api.js?v=12"></script>
-    <script src="auth.js?v=12"></script>
-    <script src="script.js?v=12"></script>
+    <script src="api.js?v=15"></script>
+    <script src="auth.js?v=15"></script>
+    <script src="script.js?v=15"></script>
 </body>
 </html>
