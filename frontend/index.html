@@ -225,7 +225,7 @@
     </div>
 
     <nav>
-        <!-- 1. 修改：左上角品牌名称 -->
+        <!-- 修改：左上角品牌名称 -->
         <div class="brand">微光循迹</div>
         <div class="nav-links">
             <a href="#">首页</a>
@@ -270,7 +270,7 @@
     <section class="hero-section">
         <div class="hero-content">
             <h1 class="hero-main-title">用<span>科技</span>点亮<span>大山</span>的晨曦</h1>
-            <!-- 2. 修改：中间下方的副标题 -->
+            <!-- 修改：中间下方的副标题 -->
             <p class="hero-subtitle">微光循迹：赋能乡村振兴的数字化志愿服务交互平台</p>
             <a href="#portals" class="hero-btn magnetic-btn">开启支教之旅</a>
         </div>
@@ -508,6 +508,62 @@
         <div class="ai-assistant-input-area">
             <input type="text" class="ai-assistant-input" id="aiAssistantInput" placeholder="输入您的问题...">
             <button class="ai-assistant-submit" id="aiAssistantSubmit">提问</button>
+        </div>
+    </div>
+
+    <!-- 登录弹窗 -->
+    <div class="identity-modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>用户登录</h3>
+                <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>邮箱</label>
+                    <input type="email" id="loginEmail" placeholder="请输入邮箱">
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" id="loginPassword" placeholder="请输入密码">
+                </div>
+                <div class="btn-group">
+                    <button class="btn-cancel" onclick="closeModal('loginModal')">取消</button>
+                    <button class="btn-submit" id="doLogin" style="background: var(--primary-green); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">登录</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 注册弹窗 -->
+    <div class="identity-modal" id="registerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>加入微光循迹</h3>
+                <button class="modal-close" onclick="closeModal('registerModal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>用户名</label>
+                    <input type="text" id="regUsername" placeholder="起个好听的名字">
+                </div>
+                <div class="form-group">
+                    <label>邮箱</label>
+                    <input type="email" id="regEmail" placeholder="用于找回账号">
+                </div>
+                <div class="form-group">
+                    <label>真实姓名</label>
+                    <input type="text" id="regRealName" placeholder="方便支教联系">
+                </div>
+                <div class="form-group">
+                    <label>设置密码</label>
+                    <input type="password" id="regPassword" placeholder="至少6位">
+                </div>
+                <div class="btn-group">
+                    <button class="btn-cancel" onclick="closeModal('registerModal')">取消</button>
+                    <button class="btn-submit" id="doRegister" style="background: var(--primary-green); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">立即注册</button>
+                </div>
+            </div>
         </div>
     </div>
 
