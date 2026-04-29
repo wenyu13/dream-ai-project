@@ -238,13 +238,11 @@
                 </div>
             </div>
             
-            <!-- 访客导航 -->
             <div class="guest-nav" id="guestNav">
                 <button class="login-btn" id="loginBtn">登录</button>
                 <button class="register-btn" id="registerBtn">注册</button>
             </div>
             
-            <!-- 用户导航 -->
             <div class="user-nav" id="userNav" style="display: none;">
                 <div class="user-info">
                     <div class="user-avatar"></div>
@@ -530,8 +528,10 @@
                     shadow-intensity="1"
                     shadow-softness="0.5"
                     camera-orbit="45deg 75deg auto"
-                    min-camera-orbit="auto auto auto"
-                    max-camera-orbit="auto auto auto"
+                    min-camera-orbit="auto auto 0.1m"
+                    max-camera-orbit="auto auto 20m"
+                    min-field-of-view="5deg"
+                    max-field-of-view="auto"
                     exposure="1.5"
                     field-of-view="auto"
                     loading="eager"
