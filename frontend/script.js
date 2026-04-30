@@ -15,48 +15,54 @@ function closeModal(id) {
     }
 }
 
-// ==================== 2. 数字跳动动画 (修复数据不跳动问题) ====================
-function animateCounters() {
-    const counters = document.querySelectorAll('.counter');
-    const speed = 200; // 速度越小跳得越快
+// ==================== 2. 数字跳动核心逻辑 ====================
+function startCounter(el) {
+    const target = parseInt(el.getAttribute('data-target'));
+    const duration = 2000; // 动画持续2秒
+    const stepTime = 20;   // 每20毫秒更新一次
+    const steps = duration / stepTime;
+    const increment = target / steps;
+    let current = 0;
 
-    counters.forEach(counter => {
-        const updateCount = () => {
-            const target = +counter.getAttribute('data-target');
-            const count = +counter.innerText;
-            const inc = target / speed;
-
-            if (count < target) {
-                counter.innerText = Math.ceil(count + inc);
-                setTimeout(updateCount, 15);
-            } else {
-                counter.innerText = target.toLocaleString(); // 最终显示带千分位的数字
-            }
-        };
-        updateCount();
-    });
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+            el.innerText = target.toLocaleString();
+            clearInterval(timer);
+        } else {
+            el.innerText = Math.floor(current).toLocaleString();
+        }
+    }, stepTime);
 }
 
-// ==================== 3. 页面动态揭幕逻辑 ====================
-function reveal() {
-    const reveals = document.querySelectorAll(".reveal");
-    reveals.forEach((element) => {
-        const windowHeight = window.innerHeight;
-        const elementTop = element.getBoundingClientRect().top;
-        const elementVisible = 100;
+// ==================== 3. 自动化观察器 (解决白屏与跳动问题) ====================
+const observerOptions = {
+    threshold: 0.1 // 只要元素露出 10% 就触发
+};
 
-        if (elementTop < windowHeight - elementVisible) {
-            element.classList.add("active");
-            // 如果这个元素里包含数字计数器，且还没动过，就触发数字动画
-            if (element.querySelector('.counter') && !element.classList.contains('counted')) {
-                animateCounters();
-                element.classList.add('counted');
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            // 触发揭幕动画
+            entry.target.classList.add('active');
+            
+            // 如果是计数器，且还没跳动过
+            if (entry.target.classList.contains('counter') && !entry.target.dataset.done) {
+                startCounter(entry.target);
+                entry.target.dataset.done = "true";
             }
+            
+            // 处理包含计数器的容器
+            const counters = entry.target.querySelectorAll('.counter');
+            counters.forEach(c => {
+                if (!c.dataset.done) {
+                    startCounter(c);
+                    c.dataset.done = "true";
+                }
+            });
         }
     });
-}
-
-window.addEventListener("scroll", reveal);
+}, observerOptions);
 
 // ==================== 4. AI 助手功能 (联网版) ====================
 const aiSubmit = document.getElementById('aiAssistantSubmit');
@@ -77,7 +83,6 @@ if (aiSubmit) {
             loadingDiv.remove();
             appendMsg('AI助手', data.reply, 'ai');
         } catch (error) {
-            console.error("AI对话失败:", error);
             loadingDiv.innerText = "连接失败，请检查后端状态。";
         }
     });
@@ -98,11 +103,10 @@ function appendMsg(sender, text, type) {
 function initModelViewer() {
     const modelViewer = document.getElementById('modelViewer');
     document.querySelectorAll('.tool-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        btn.onclick = (e) => {
             e.preventDefault();
             const name = btn.closest('.tool-card').querySelector('h3').innerText;
-            const modelNameEl = document.getElementById('modelName');
-            if (modelNameEl) modelNameEl.innerText = name;
+            document.getElementById('modelName').innerText = name;
             
             let path = '';
             if(name.includes('斯特林')) path = './models/stirling.glb';
@@ -111,7 +115,7 @@ function initModelViewer() {
 
             if(modelViewer && path) modelViewer.src = path;
             openModal('modelViewerModal');
-        });
+        };
     });
 
     document.getElementById('modelViewerClose')?.addEventListener('click', () => {
@@ -120,20 +124,18 @@ function initModelViewer() {
     });
 }
 
-// ==================== 6. 初始化 ====================
-window.addEventListener('load', () => {
+// ==================== 6. 初始化启动 ====================
+window.onload = () => {
+    console.log("🚀 全功能初始化中...");
+
     // 绑定导航按钮
     document.getElementById('loginBtn')?.addEventListener('click', () => openModal('loginModal'));
     document.getElementById('registerBtn')?.addEventListener('click', () => openModal('registerModal'));
 
     initModelViewer();
-    
-    // 立即执行一次 reveal
-    setTimeout(() => {
-        reveal();
-        // 如果首屏没出来，强制激活首屏
-        document.querySelectorAll('.reveal').forEach((el, i) => {
-            if(i < 5) el.classList.add('active');
-        });
-    }, 300);
-});
+
+    // 启动观察器：监视所有带 reveal 类的元素
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    // 启动观察器：监视所有带 counter 类的元素
+    document.querySelectorAll('.counter').forEach(el => observer.observe(el));
+};
