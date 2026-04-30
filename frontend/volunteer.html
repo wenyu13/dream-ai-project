@@ -3,366 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>志愿者中心 - 微光循迹</title>
+    <title>志愿者工作台 - 微光循迹</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary-green: #2d6a4f;
-            --accent-orange: #ff9f1c;
-            --soft-green: #d8f3dc;
-            --text-main: #1b4332;
-            --bg-light: #f4f7f5;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; }
-        body { display: flex; min-height: 100vh; background: var(--bg-light); color: var(--text-main); overflow-x: hidden; }
-
-        /* --- 动态光晕 --- */
-        .cursor-glow {
-            position: fixed; width: 400px; height: 400px;
-            background: radial-gradient(circle, rgba(45, 106, 79, 0.05) 0%, transparent 70%);
-            border-radius: 50%; pointer-events: none; z-index: 1; transform: translate(-50%, -50%);
-        }
-
-        /* --- 侧边栏 --- */
-        .sidebar {
-            width: 260px; background: white; border-right: 1px solid #e5e7eb;
-            position: fixed; height: 100vh; display: flex; flex-direction: column; z-index: 1000;
-        }
-        .sidebar-header { padding: 40px 25px; font-size: 1.5rem; font-weight: 900; color: var(--primary-green); border-bottom: 1px solid #f1f5f9; }
-        .sidebar-menu { flex: 1; padding: 10px 0; }
-        .menu-item {
-            padding: 16px 25px; color: #64748b; cursor: pointer; transition: 0.3s;
-            display: flex; align-items: center; text-decoration: none; font-weight: 500;
-        }
-        .menu-item i { margin-right: 15px; width: 20px; text-align: center; }
-        .menu-item:hover, .menu-item.active { background: #ecfdf5; color: var(--primary-green); border-right: 4px solid var(--primary-green); }
-        .menu-item.logout { margin-top: auto; color: #ef4444; margin-bottom: 20px; }
-
-        /* --- 内容区 --- */
-        .main-content { margin-left: 260px; flex: 1; padding: 40px; position: relative; }
-        .tab-panel { display: none; width: 100%; }
-        .tab-panel.active { display: block; }
-
-        /* --- 精美卡片 --- */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px);
-            border-radius: 25px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.03);
-            margin-bottom: 30px; border: 1px solid rgba(255,255,255,0.7);
-        }
-        .card-title { display: flex; align-items: center; gap: 12px; margin-bottom: 25px; font-size: 1.1rem; font-weight: 800; }
-        .card-title i { color: var(--primary-green); background: var(--soft-green); width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
-
-        /* --- 欢迎横幅 --- */
-        .welcome-banner {
-            background: linear-gradient(135deg, #d8f3dc 0%, #f0fdf4 100%);
-            padding: 50px; border-radius: 30px; margin-bottom: 40px; border: 1px solid rgba(255,255,255,0.5);
-        }
-
-        /* --- 统计数字 --- */
-        .counter { font-size: 3rem; font-weight: 800; color: var(--primary-green); margin: 5px 0; }
-
-        /* --- 进度条 --- */
-        .stepper { padding-left: 20px; border-left: 2px solid #f1f5f9; margin-left: 15px; }
-        .step { position: relative; padding-bottom: 30px; padding-left: 30px; }
-        .step-dot { position: absolute; left: -41px; top: 0; width: 20px; height: 20px; border-radius: 50%; background: white; border: 4px solid #f1f5f9; }
-        .step.done .step-dot { background: var(--primary-green); border-color: var(--primary-green); }
-        .step.active .step-dot { border-color: var(--primary-green); animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(45, 106, 79, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(45, 106, 79, 0); } 100% { box-shadow: 0 0 0 0 rgba(45, 106, 79, 0); } }
-
-        /* --- 小海豚计划 --- */
-        .dolphin-card { background: linear-gradient(135deg, #ffffff 0%, #fff7ed 100%); border: 1.5px solid #ffedd5; }
-        .dolphin-btn {
-            background: var(--accent-orange); color: white; border: none; width: 100%;
-            padding: 15px; border-radius: 15px; font-weight: bold; margin-top: 15px; cursor: pointer; transition: 0.3s;
-        }
-        .dolphin-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255, 159, 28, 0.3); }
-
-        /* --- 上传组件逻辑样式 --- */
-        .upload-row { display: flex; align-items: center; gap: 15px; margin-top: 8px; }
-        .status-text { font-size: 0.95rem; font-weight: bold; min-width: 60px; }
-        .btn-view { color: #2563eb; text-decoration: none; cursor: pointer; font-size: 0.9rem; border-bottom: 1px solid #2563eb; }
-        .btn-reupload { 
-            border: 1px solid #d1d5db; background: white; padding: 6px 14px; 
-            border-radius: 8px; cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; gap: 5px;
-        }
-
-        /* --- 账号安全 --- */
-        .btn-green-main { 
-            background: #10b981; color: white; border: none; width: 100%; 
-            padding: 14px; border-radius: 12px; font-weight: bold; cursor: pointer; margin-top: 15px;
-        }
-
-        /* --- 弹窗样式 --- */
-        .modal { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.4); display: none; align-items: center; 
-            justify-content: center; z-index: 2000; backdrop-filter: blur(8px);
-        }
-        .modal.active { display: flex; }
-        .modal-content { 
-            background: white; padding: 35px; border-radius: 30px; width: 90%; max-width: 480px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15); animation: pop 0.3s ease-out;
-        }
-        @keyframes pop { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-        /* 动态揭幕 */
-        .reveal { opacity: 0; transform: translateY(20px); transition: 0.6s all ease; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-
-        /* 表单输入框 */
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #4b5563; }
-        .form-group input, .form-group select { width: 100%; padding: 12px; border: 1px solid #e5e7eb; border-radius: 12px; background: #fff; }
-        .form-group input:disabled { background: #f8fafc; color: #94a3b8; border-color: #f1f5f9; }
-    </style>
 </head>
 <body>
-
-    <div class="cursor-glow" id="cursorGlow"></div>
-
-    <!-- 侧边栏 -->
-    <div class="sidebar">
-        <div class="sidebar-header">志愿者中心</div>
-        <div class="sidebar-menu">
-            <a href="index.html" class="menu-item"><i class="fas fa-home"></i> 微光循迹官网</a>
-            <div class="menu-item active" onclick="showTab('tab-home', this)"><i class="fas fa-tachometer-alt"></i> 工作台首页</div>
-            <div class="menu-item" onclick="showTab('tab-info', this)"><i class="fas fa-user-edit"></i> 信息填写</div>
-            <div class="menu-item" onclick="showTab('tab-safe', this)"><i class="fas fa-shield-alt"></i> 账号安全</div>
-            <div class="menu-item logout" onclick="handleLogout()"><i class="fas fa-power-off"></i> 退出账号</div>
+    <nav>
+        <div class="brand">微光循迹</div>
+        <div class="nav-links">
+            <a href="index.html">返回首页</a>
+            <button onclick="handleLogout()" style="margin-left:20px; border:none; background:none; color:red; cursor:pointer;">退出登录</button>
         </div>
-    </div>
+    </nav>
 
-    <!-- 主内容 -->
-    <div class="main-content">
-        
-        <!-- --- Tab 首页 --- -->
-        <div id="tab-home" class="tab-panel active">
-            <div class="welcome-banner reveal">
-                <h2 id="hiUser">欢迎回来，伙伴！</h2>
-                <p>微光循迹：赋能乡村振兴的数字化志愿服务交互平台</p>
-            </div>
-
-            <div style="display: grid; grid-template-columns: 1.8fr 1fr; gap: 30px;">
-                <div class="col-left">
-                    <div class="glass-card reveal">
-                        <div class="card-title"><i class="fas fa-bullhorn"></i> 最新支教招募</div>
-                        <div style="display:flex; align-items:center; gap:15px; padding:15px; border-bottom:1px solid #f1f5f9;">
-                            <span style="background:#fee2e2; color:#ef4444; padding:4px 10px; border-radius:8px; font-size:0.8rem; font-weight:bold;">四川</span>
-                            <div><strong>凉山美姑县小学支教</strong><p style="font-size:0.8rem;color:#999;">03-22 发布</p></div>
-                        </div>
-                        <div style="display:flex; align-items:center; gap:15px; padding:15px;">
-                            <span style="background:#fef9c3; color:#ca8a04; padding:4px 10px; border-radius:8px; font-size:0.8rem; font-weight:bold;">贵州</span>
-                            <div><strong>大山镇希望小学机械科普</strong><p style="font-size:0.8rem;color:#999;">03-20 发布</p></div>
-                        </div>
-                    </div>
-
-                    <div class="glass-card reveal">
-                        <div class="card-title"><i class="fas fa-comment-dots"></i> 萤火虫互助 - 认领虚拟漂流瓶</div>
-                        <table style="width:100%; border-collapse:collapse;">
-                            <thead><tr style="text-align:left; color:#888; font-size:0.9rem;"><th style="padding:10px;">类型</th><th>内容</th><th style="text-align:right; padding:10px;">操作</th></tr></thead>
-                            <tbody>
-                                <tr style="border-bottom:1px solid #f1f5f9;">
-                                    <td style="padding:15px;"><span style="background:#fef9c3; color:#ca8a04; padding:4px 10px; border-radius:8px; font-size:0.8rem;">学习难题</span></td>
-                                    <td>老师，那个斯特林发动机的教具怎么组装？</td>
-                                    <td style="text-align:right;"><button class="mag-btn" style="background:var(--accent-orange); color:white; border:none; padding:8px 18px; border-radius:10px; cursor:pointer; font-weight:bold;" onclick="openReply('学习难题','老师，那个斯特林发动机的教具怎么组装？')">认领回复</button></td>
-                                </tr>
-                                <tr>
-                                    <td style="padding:15px;"><span style="background:#fdf2f8; color:#db2777; padding:4px 10px; border-radius:8px; font-size:0.8rem;">心里话</span></td>
-                                    <td>志愿者哥哥姐姐，我想知道外面的世界是什么样的...</td>
-                                    <td style="text-align:right;"><button class="mag-btn" style="background:var(--accent-orange); color:white; border:none; padding:8px 18px; border-radius:10px; cursor:pointer; font-weight:bold;" onclick="openReply('心里话','志愿者哥哥姐姐，我想知道外面的世界是什么样的...')">认领回复</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="col-right">
-                    <div class="glass-card reveal" style="text-align:center;">
-                        <div class="card-title"><i class="fas fa-medal"></i> 我的勋章</div>
-                        <div style="display:flex; justify-content:space-around; margin:15px 0; font-size:2.5rem;">
-                            <span>🥉</span><span style="opacity:0.2;">🥈</span><span style="opacity:0.2;">🥇</span>
-                        </div>
-                        <div class="counter" data-target="1">0</div>
-                        <p style="color:#888; font-size:0.9rem;">已点亮 1 枚数字勋章</p>
-                    </div>
-
-                    <div class="glass-card reveal">
-                        <div class="card-title"><i class="fas fa-tasks"></i> 申请进度</div>
-                        <div class="stepper">
-                            <div class="step done"><div class="step-dot"></div><strong>提交申请</strong><p style="font-size:0.8rem;color:#888;">资料审核通过</p></div>
-                            <div class="step active"><div class="step-dot"></div><strong style="color:var(--primary-green);">AI 审核中</strong><p style="font-size:0.8rem;color:#888;">DeepSeek 正在分析...</p></div>
-                        </div>
-                    </div>
-
-                    <div class="glass-card dolphin-card reveal">
-                        <div class="card-title"><i class="fas fa-dove"></i> 小海豚助学计划</div>
-                        <p style="color:#c2410c; font-weight:bold; margin-bottom:5px;">爱心益智盒配送</p>
-                        <p style="font-size:0.85rem; color:#666;">已为偏远学校配送 3D 打印机械教具 124 套。</p>
-                        <button class="dolphin-btn" onclick="alert('感谢您的关注，捐赠通道即将开启！')">参与捐赠</button>
-                    </div>
-                </div>
-            </div>
+    <div class="container">
+        <!-- 还原图2的欢迎横幅 -->
+        <div class="welcome-banner" style="background: linear-gradient(135deg, #d8f3dc 0%, #f0fdf4 100%); padding: 50px; border-radius: 30px; margin-bottom: 30px;">
+            <h2 id="helloUser" style="font-size: 2.5rem; margin-bottom: 10px;">欢迎回来，志愿者伙伴！</h2>
+            <p>您已点亮 1 枚勋章，还有新的漂流瓶等待认领。</p>
         </div>
 
-        <!-- --- Tab 信息填写 --- -->
-        <div id="tab-info" class="tab-panel">
-            <div class="glass-card reveal">
-                <h2 style="margin-bottom:30px;">个人资料完善</h2>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:30px; margin-bottom:20px;">
-                    <div class="form-group"><label>用户名</label><input type="text" id="prof-user" disabled></div>
-                    <div class="form-group"><label>电子邮箱</label><input type="text" id="prof-mail" disabled></div>
-                </div>
-                <div class="form-group"><label>真实姓名</label><input type="text" id="prof-realname" disabled></div>
-                
-                <hr style="opacity:0.1; margin:30px 0;">
-                
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:30px;">
-                    <div class="form-group"><label>就读学校</label><input type="text" placeholder="请输入学校"></div>
-                    <div class="form-group"><label>专业名称</label><input type="text" placeholder="请输入专业"></div>
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+            <!-- 左侧：招募和漂流瓶 -->
+            <div>
+                <div class="glass-card" style="background:white; padding:30px; border-radius:20px; margin-bottom:30px; box-shadow:0 10px 30px rgba(0,0,0,0.05);">
+                    <h3>最新支教招募</h3><br>
+                    <p>【紧急】凉山美姑县小学支教 (03-22)</p>
+                    <p>【正在招募】怒江中心小学数学科普 (03-21)</p>
                 </div>
 
-                <!-- 动态图片上传 (模仿图2) -->
-                <div style="margin-bottom:25px;">
-                    <label style="font-weight:bold;">作者照片：</label>
-                    <div class="upload-row">
-                        <span id="status-photo" style="color:#999;" class="status-text">未上传</span>
-                        <a id="view-photo" class="btn-view" style="display:none;" onclick="previewImage('photo')">查看</a>
-                        <button class="btn-reupload" onclick="document.getElementById('input-photo').click()"><i class="fas fa-upload"></i> 重新上传</button>
-                        <input type="file" id="input-photo" hidden accept="image/*" onchange="handleFileChange(this, 'photo')">
-                    </div>
-                </div>
-
-                <div style="margin-bottom:25px;">
-                    <label style="font-weight:bold;">学生证照片：</label>
-                    <div class="upload-row">
-                        <span id="status-card" style="color:#999;" class="status-text">未上传</span>
-                        <a id="view-card" class="btn-view" style="display:none;" onclick="previewImage('card')">查看</a>
-                        <button class="btn-reupload" onclick="document.getElementById('input-card').click()"><i class="fas fa-upload"></i> 重新上传</button>
-                        <input type="file" id="input-card" hidden accept="image/*" onchange="handleFileChange(this, 'card')">
-                    </div>
-                </div>
-
-                <div style="display:flex; gap:15px; margin-top:30px;">
-                    <button class="btn-submit-green" style="width:auto; padding:12px 50px;">保存信息</button>
-                    <button class="btn-submit-green" style="width:auto; padding:12px 50px; background:white; color:#10b981; border:1px solid #10b981;">编辑模式</button>
+                <div class="glass-card" style="background:white; padding:30px; border-radius:20px; box-shadow:0 10px 30px rgba(0,0,0,0.05);">
+                    <h3>萤火虫互助 - 认领虚拟漂流瓶</h3><br>
+                    <table style="width:100%;">
+                        <tr><td>学习难题</td><td>斯特林发动机怎么组装？</td><td><button class="hero-btn" style="padding:5px 15px;">认领</button></td></tr>
+                    </table>
                 </div>
             </div>
-        </div>
 
-        <!-- --- Tab 安全 --- -->
-        <div id="tab-safe" class="tab-panel">
-            <div class="glass-card reveal" style="max-width:500px;">
-                <h2 style="margin-bottom:25px;">修改安全密码</h2>
-                <div class="form-group"><label>* 旧密码</label><input type="password" placeholder="请输入当前密码"></div>
-                <div class="form-group"><label>* 新密码</label><input type="password" placeholder="请输入新密码"></div>
-                <div class="form-group"><label>* 确认新密码</label><input type="password" placeholder="请再次输入新密码"></div>
-                <button class="btn-submit-green">确定修改</button>
+            <!-- 右侧：勋章和进度 -->
+            <div>
+                <div class="glass-card" style="background:white; padding:30px; border-radius:20px; margin-bottom:30px; text-align:center;">
+                    <h3>我的萤火虫勋章</h3>
+                    <div style="font-size:3rem; margin:20px 0;">🥉</div>
+                    <p>已点亮 1 枚数字勋章</p>
+                </div>
+
+                <div class="glass-card" style="background:white; padding:30px; border-radius:20px;">
+                    <h3>我的申请进度</h3><br>
+                    <p>✅ 提交申请</p>
+                    <p>⏳ AI 审核中 (DeepSeek)</p>
+                </div>
             </div>
-        </div>
-    </div>
-
-    <!-- 认领回复弹窗 -->
-    <div class="modal" id="replyModal">
-        <div class="modal-content">
-            <div style="font-size:1.3rem; font-weight:800; color:var(--primary-green); margin-bottom:15px;">认领漂流瓶</div>
-            <div style="background:#f8fafc; padding:20px; border-radius:15px; margin-bottom:20px; font-style:italic; color:#64748b; border-left:4px solid var(--primary-green);" id="bottleMsg"></div>
-            <textarea style="width:100%; height:120px; padding:15px; border-radius:15px; border:1px solid #ddd; margin-bottom:20px; outline:none;" placeholder="写下你的暖心回复..."></textarea>
-            <div style="display:flex; gap:15px;">
-                <button class="btn-submit-green" style="margin-top:0; flex:1;" onclick="closeModal('replyModal'); alert('回复已寄出！')">发送</button>
-                <button style="flex:1; border:none; background:#f1f5f9; border-radius:12px; cursor:pointer;" onclick="closeModal('replyModal')">取消</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 图片查看弹窗 -->
-    <div class="modal" id="imageModal" onclick="closeModal('imageModal')">
-        <div class="modal-content" style="max-width: 400px; text-align: center;">
-            <img id="fullImg" src="" style="width:100%; border-radius:15px;">
-            <p style="margin-top:10px; color:#888;">点击空白处关闭</p>
         </div>
     </div>
 
     <script>
-        // 鼠标跟随
-        const glow = document.getElementById('cursorGlow');
-        document.addEventListener('mousemove', (e) => { glow.style.left = e.clientX + 'px'; glow.style.top = e.clientY + 'px'; });
-
-        // 揭幕动画
-        function reveal() {
-            var reveals = document.querySelectorAll(".reveal");
-            for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                if (reveals[i].getBoundingClientRect().top < windowHeight - 50) { reveals[i].classList.add("active"); }
-            }
-        }
-        window.addEventListener("scroll", reveal);
-
-        // 数字计数
-        function animateCounters() {
-            const counters = document.querySelectorAll('.counter');
-            counters.forEach(c => {
-                const target = +c.dataset.target;
-                let cur = 0;
-                const update = () => {
-                    cur += target / 20;
-                    if (cur < target) { c.innerText = Math.ceil(cur); setTimeout(update, 50); } else { c.innerText = target; }
-                };
-                update();
-            });
-        }
-
-        // 标签切换
-        function showTab(id, el) {
-            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            el.classList.add('active');
-            reveal(); 
-            if(id === 'tab-home') animateCounters();
-        }
-
-        // 上传与预览核心逻辑 (修正图2)
-        let localImages = { photo: null, card: null };
-        function handleFileChange(input, type) {
-            const file = input.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    localImages[type] = e.target.result;
-                    const status = document.getElementById(`status-${type}`);
-                    status.innerText = '已上传';
-                    status.style.color = '#16a34a';
-                    document.getElementById(`view-${type}`).style.display = 'inline';
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-        function previewImage(type) {
-            document.getElementById('fullImg').src = localImages[type];
-            document.getElementById('imageModal').classList.add('active');
-        }
-
-        // 弹窗逻辑
-        function openReply(type, msg) {
-            document.getElementById('bottleMsg').innerText = `"${msg}"`;
-            document.getElementById('replyModal').classList.add('active');
-        }
-        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-
         window.onload = function() {
             const user = JSON.parse(localStorage.getItem('user'));
-            if(user) {
-                document.getElementById('hiUser').innerText = `欢迎回来，${user.username}！`;
-                document.getElementById('prof-user').value = user.username;
-                document.getElementById('prof-mail').value = user.email;
-                document.getElementById('prof-realname').value = user.real_name || user.username;
-            }
-            reveal();
-            animateCounters();
-        };
-
+            if (user) document.getElementById('helloUser').innerText = `欢迎回来，${user.username}！`;
+        }
         function handleLogout() { localStorage.clear(); window.location.href = 'index.html'; }
     </script>
 </body>
