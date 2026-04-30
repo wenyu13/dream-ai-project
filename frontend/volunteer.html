@@ -1,78 +1,298 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>志愿者工作台 - 微光循迹</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body style="background:#f4f7f5; color:#1b4332; font-family: sans-serif;">
-    <nav style="background:white; padding:1rem 8%; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 15px rgba(0,0,0,0.05);">
-        <div style="font-size:1.5rem; font-weight:800; color:#2d6a4f;">微光循迹</div>
-        <div style="display:flex; gap:20px; align-items:center;">
-            <a href="index.html" style="text-decoration:none; color:#333; font-weight:bold;">返回官网</a>
-            <button onclick="localStorage.clear(); location.href='index.html';" style="color:red; background:none; border:none; cursor:pointer;">退出登录</button>
-        </div>
-    </nav>
+// 导航栏滚动变色 (Glass Nav)
+const nav = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+    } else {
+        nav.classList.remove('scrolled');
+    }
+});
 
-    <div style="max-width:1200px; margin:40px auto; padding:0 20px;">
-        <!-- 欢迎横幅 -->
-        <div style="background: linear-gradient(135deg, #d8f3dc 0%, #f0fdf4 100%); padding: 50px; border-radius: 30px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(45, 106, 79, 0.05); border: 1px solid white;">
-            <h2 id="userName" style="font-size:2.5rem; margin-bottom:10px;">欢迎回来，志愿者伙伴！</h2>
-            <p>您已点亮 <span style="color:#ff9f1c; font-weight:bold;">1</span> 枚勋章，还有新的漂流瓶等待认领。</p>
-        </div>
+// 下拉菜单点击切换功能
+const dropdown = document.querySelector('.dropdown');
+const dropdownToggle = document.querySelector('.dropdown-toggle');
 
-        <div style="display: grid; grid-template-columns: 1.8fr 1fr; gap: 30px;">
-            <!-- 左侧内容 -->
-            <div>
-                <div style="background:white; padding:30px; border-radius:25px; margin-bottom:30px; box-shadow:0 5px 20px rgba(0,0,0,0.02);">
-                    <h3 style="color:#2d6a4f; margin-bottom:20px;"><i class="fas fa-bullhorn"></i> 最新支教招募</h3>
-                    <div style="padding:15px; border-left:4px solid #ef4444; background:#fff1f2; margin-bottom:15px; border-radius:0 10px 10px 0;">
-                        <strong>【紧急】凉山美姑县小学支教 (2人)</strong>
-                        <p style="font-size:0.8rem; color:#888;">03-22 发布</p>
-                    </div>
-                    <div style="padding:15px; border-left:4px solid #22c55e; background:#f0fdf4; border-radius:0 10px 10px 0;">
-                        <strong>【正在招募】大山镇希望小学机械科普</strong>
-                        <p style="font-size:0.8rem; color:#888;">03-20 发布</p>
-                    </div>
-                </div>
+if (dropdown && dropdownToggle) {
+    dropdownToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropdown.classList.toggle('active');
+    });
 
-                <div style="background:white; padding:30px; border-radius:25px; box-shadow:0 5px 20px rgba(0,0,0,0.02);">
-                    <h3 style="color:#2d6a4f; margin-bottom:20px;"><i class="fas fa-heart"></i> 认领漂流瓶</h3>
-                    <table style="width:100%; border-collapse:collapse;">
-                        <tr style="border-bottom:1px solid #f1f5f9;">
-                            <td style="padding:15px 0;">“老师，那个斯特林发动机怎么组装？”</td>
-                            <td style="text-align:right;"><button style="background:#ff9f1c; color:white; border:none; padding:8px 20px; border-radius:10px; cursor:pointer; font-weight:bold;">认领回复</button></td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
+    document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('active');
+        }
+    });
+}
 
-            <!-- 右侧 -->
-            <div>
-                <div style="background:white; padding:30px; border-radius:25px; text-align:center; margin-bottom:30px; box-shadow:0 5px 20px rgba(0,0,0,0.02);">
-                    <h3 style="color:#2d6a4f;">我的萤火虫勋章</h3>
-                    <div style="font-size:4rem; margin:20px 0;">🥉</div>
-                    <p style="color:#888;">已点亮 1 枚数字勋章</p>
-                </div>
+// 身份切换菜单
+const menuDots = document.querySelector('.menu-dots');
+if (menuDots) {
+    menuDots.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdown.classList.remove('active');
+    });
+}
 
-                <div style="background:white; padding:30px; border-radius:25px; box-shadow:0 5px 20px rgba(0,0,0,0.02);">
-                    <h3 style="color:#2d6a4f; margin-bottom:20px;">我的申请进度</h3>
-                    <div style="border-left:2px solid #e2e8f0; margin-left:15px; padding-left:25px;">
-                        <div style="margin-bottom:25px; position:relative;"><i class="fas fa-check-circle" style="position:absolute; left:-34px; color:#2d6a4f; background:white;"></i> 提交申请</div>
-                        <div style="color:#2d6a4f; font-weight:bold; position:relative;"><i class="fas fa-sync fa-spin" style="position:absolute; left:-34px; background:white;"></i> AI 智能审核中...</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+// 身份切换模态窗口功能
+const identityModal = document.getElementById('identityModal');
+const modalClose = document.getElementById('modalClose');
+const switchIdentityBtn = document.getElementById('switchIdentity');
 
-    <script>
-        window.onload = function() {
-            const user = JSON.parse(localStorage.getItem('user'));
-            if (user) document.getElementById('userName').innerText = `欢迎回来，${user.username}！`;
-        };
-    </script>
-</body>
-</html>
+// 打开模态窗口
+if (switchIdentityBtn && identityModal) {
+    switchIdentityBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        identityModal.classList.add('active');
+    });
+}
+
+// 关闭模态窗口
+if (modalClose && identityModal) {
+    modalClose.addEventListener('click', () => {
+        identityModal.classList.remove('active');
+    });
+}
+
+// 点击模态窗口外部关闭
+if (identityModal) {
+    identityModal.addEventListener('click', (e) => {
+        if (e.target === identityModal) {
+            identityModal.classList.remove('active');
+        }
+    });
+}
+
+// 身份按钮点击事件
+const identityButtons = document.querySelectorAll('.identity-btn');
+identityButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const identity = btn.dataset.identity;
+        console.log('切换身份为:', identity);
+        identityModal.classList.remove('active');
+        
+        // 根据身份跳转到相应页面
+        switch(identity) {
+            case 'student':
+                window.location.href = 'learning.html';
+                break;
+            case 'teacher':
+                window.location.href = 'teacher.html';
+                break;
+            case 'volunteer':
+                window.location.href = 'volunteer.html';
+                break;
+            case 'admin':
+                window.location.href = 'admin.html';
+                break;
+        }
+    });
+});
+
+// 认领漂流瓶功能
+const replyModal = document.getElementById('replyModal');
+const closeReplyModal = document.getElementById('closeReplyModal');
+const cancelReply = document.getElementById('cancelReply');
+const submitReply = document.getElementById('submitReply');
+const bottleContent = document.getElementById('bottleContent');
+const replyText = document.getElementById('replyText');
+const claimBtns = document.querySelectorAll('.claim-btn');
+
+claimBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const content = btn.closest('tr').querySelector('td:nth-child(2)').textContent;
+        bottleContent.textContent = `"${content}"`;
+        replyModal.classList.add('active');
+    });
+});
+
+if (closeReplyModal) {
+    closeReplyModal.addEventListener('click', () => {
+        replyModal.classList.remove('active');
+    });
+}
+
+if (cancelReply) {
+    cancelReply.addEventListener('click', () => {
+        replyModal.classList.remove('active');
+    });
+}
+
+if (replyModal) {
+    replyModal.addEventListener('click', (e) => {
+        if (e.target === replyModal) {
+            replyModal.classList.remove('active');
+        }
+    });
+}
+
+if (submitReply) {
+    submitReply.addEventListener('click', () => {
+        const content = replyText.value.trim();
+        if (!content) {
+            alert('请先写下回复内容');
+            return;
+        }
+        
+        // 这里可以对接后端 API
+        console.log('发送回信:', content);
+        
+        alert('回信已寄出，勋章进度+1！');
+        replyModal.classList.remove('active');
+        replyText.value = '';
+        
+        // 更新勋章显示
+        updateMedals();
+    });
+}
+
+function updateMedals() {
+    const medals = document.querySelectorAll('.medal');
+    medals.forEach((medal, index) => {
+        if (index < 2) {
+            medal.classList.remove('inactive');
+            medal.classList.add('active');
+        }
+    });
+    
+    const medalCount = document.querySelector('.medal-count');
+    if (medalCount) {
+        medalCount.textContent = '已点亮 2 枚数字勋章';
+    }
+}
+
+// 参与捐赠按钮
+const donateBtn = document.querySelector('.donate-btn');
+if (donateBtn) {
+    donateBtn.addEventListener('click', () => {
+        alert('感谢您的爱心！捐赠功能开发中...');
+    });
+}
+
+// 页面过渡效果
+const pageTransition = document.getElementById('pageTransition');
+const pageTransitionLinks = document.querySelectorAll('.page-transition');
+
+pageTransitionLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetUrl = link.getAttribute('href');
+        
+        // 激活过渡效果
+        if (pageTransition) {
+            pageTransition.classList.add('active');
+            
+            // 等待过渡完成后跳转
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, 600);
+        }
+    });
+});
+
+// 鼠标跟随光晕效果
+const cursorGlow = document.createElement('div');
+cursorGlow.className = 'cursor-glow';
+cursorGlow.style.cssText = `
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(45, 106, 79, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s ease;
+    mix-blend-mode: multiply;
+`;
+document.body.appendChild(cursorGlow);
+
+let mouseX = 0, mouseY = 0;
+let glowX = 0, glowY = 0;
+
+document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+});
+
+function animateCursorGlow() {
+    glowX += (mouseX - glowX) * 0.1;
+    glowY += (mouseY - glowY) * 0.1;
+    cursorGlow.style.left = glowX + 'px';
+    cursorGlow.style.top = glowY + 'px';
+    requestAnimationFrame(animateCursorGlow);
+}
+
+animateCursorGlow();
+
+// AI助手功能
+const aiAssistantBtn = document.getElementById('aiAssistantBtn');
+const aiAssistantWindow = document.getElementById('aiAssistantWindow');
+const aiAssistantClose = document.getElementById('aiAssistantClose');
+const aiAssistantInput = document.getElementById('aiAssistantInput');
+const aiAssistantSubmit = document.getElementById('aiAssistantSubmit');
+const aiAssistantContent = document.getElementById('aiAssistantContent');
+
+// 打开AI助手窗口
+if (aiAssistantBtn && aiAssistantWindow) {
+    aiAssistantBtn.addEventListener('click', () => {
+        aiAssistantWindow.classList.add('active');
+    });
+}
+
+// AI咨询按钮打开AI助手窗口
+const aiConsult = document.getElementById('aiConsult');
+if (aiConsult && aiAssistantWindow) {
+    aiConsult.addEventListener('click', () => {
+        aiAssistantWindow.classList.add('active');
+    });
+}
+
+// 关闭AI助手窗口
+if (aiAssistantClose && aiAssistantWindow) {
+    aiAssistantClose.addEventListener('click', () => {
+        aiAssistantWindow.classList.remove('active');
+    });
+}
+
+// 提交问题
+if (aiAssistantSubmit && aiAssistantInput && aiAssistantContent) {
+    aiAssistantSubmit.addEventListener('click', () => {
+        const question = aiAssistantInput.value.trim();
+        if (question) {
+            // 添加用户问题
+            const userMessage = document.createElement('div');
+            userMessage.className = 'ai-message';
+            userMessage.style.background = 'rgba(255, 165, 0, 0.1)';
+            userMessage.style.borderLeft = '3px solid var(--accent-orange)';
+            userMessage.style.marginLeft = '20px';
+            userMessage.innerHTML = `<strong>您：</strong>${question}`;
+            aiAssistantContent.appendChild(userMessage);
+            
+            // 清空输入框
+            aiAssistantInput.value = '';
+            
+            // 模拟AI回复
+            setTimeout(() => {
+                const aiMessage = document.createElement('div');
+                aiMessage.className = 'ai-message';
+                aiMessage.innerHTML = `<strong>AI助手：</strong>感谢您的提问！我正在为您处理这个问题，请稍等片刻...`;
+                aiAssistantContent.appendChild(aiMessage);
+                
+                // 滚动到底部
+                aiAssistantContent.scrollTop = aiAssistantContent.scrollHeight;
+            }, 1000);
+            
+            // 滚动到底部
+            aiAssistantContent.scrollTop = aiAssistantContent.scrollHeight;
+        }
+    });
+    
+    // 支持回车键提交
+    aiAssistantInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            aiAssistantSubmit.click();
+        }
+    });
+}
