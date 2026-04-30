@@ -1,665 +1,321 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>筑梦AI支教 - 系统后台</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        :root {
-            --primary-green: #2d6a4f;
-            --accent-orange: #ff9f1c;
-            --soft-green: #d8f3dc;
-            --text-main: #1b4332;
-            --glass: rgba(255, 255, 255, 0.85);
-            --bg-light: #f4f7f5;
-            --danger-red: #991b1b;
-            --card-shadow: 0 10px 30px rgba(45, 106, 79, 0.08);
+// 导航栏滚动变色 (Glass Nav)
+const nav = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+    } else {
+        nav.classList.remove('scrolled');
+    }
+});
 
-            --sunrise-gold: #fff7ed;
-            --sunrise-amber: #ffedd5;
-            --sunrise-text: #451a03;
+// 下拉菜单点击切换功能
+const dropdown = document.querySelector('.dropdown');
+const dropdownToggle = document.querySelector('.dropdown-toggle');
+
+if (dropdown && dropdownToggle) {
+    dropdownToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropdown.classList.toggle('active');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('active');
         }
+    });
+}
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; }
+// 身份切换菜单下拉菜单点击切换功能
+const dropdown = document.querySelector('.dropdown');
+const dropdownToggle = document.querySelector('.dropdown-toggle');
 
-        html {
-            scroll-behavior: smooth;
+if (dropdown && dropdownToggle) {
+    dropdownToggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropdown.classList.toggle('active');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target)) {
+            dropdown.classList.remove('active');
         }
+    });
+}
 
-        body {
-            background: var(--bg-light);
-            color: var(--text-main);
-            overflow-x: hidden;
-            line-height: 1.6;
-            cursor: default;
-        }
+// 身份切换菜单
+const menuDots = document.querySelector('.menu-dots');
+if (menuDots) {
+    menuDots.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdown.classList.remove('active');
+    });
+}
 
-        .bg-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        .firefly {
-            position: absolute; width: 4px; height: 4px; background: var(--accent-orange);
-            border-radius: 50%; filter: blur(2px); opacity: 0.3; animation: move 20s infinite linear;
-        }
-        @keyframes move {
-            0% { transform: translate(0, 0); opacity: 0; }
-            50% { opacity: 0.6; }
-            100% { transform: translate(100vw, 100vh); opacity: 0; }
-        }
+// 身份切换模态窗口功能
+const identityModal = document.getElementById('identityModal');
+const modalClose = document.getElementById('modalClose');
+const switchIdentityBtn = document.getElementById('switchIdentity');
 
-        nav {
-            display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 8%;
-            background: var(--glass); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 100;
-            border-bottom: 1px solid rgba(45, 106, 79, 0.05);
-        }
-        .brand { font-size: 1.5rem; font-weight: 800; color: var(--primary-green); letter-spacing: 1px; }
-        .nav-links { display: flex; align-items: center; }
-        .nav-links a { text-decoration: none; color: var(--text-main); margin-left: 2rem; font-weight: 500; transition: 0.3s; }
-        .nav-links a:hover { color: var(--accent-orange); }
+// 打开模态窗口
+if (switchIdentityBtn && identityModal) {
+    switchIdentityBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        identityModal.classList.add('active');
+    });
+}
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 8%;
-        }
+// 关闭模态窗口
+if (modalClose && identityModal) {
+    modalClose.addEventListener('click', () => {
+        identityModal.classList.remove('active');
+    });
+}
 
-        .admin-header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 40px 0;
-            background: linear-gradient(135deg, var(--soft-green) 0%, #fff 100%);
-            border-radius: 20px;
-            position: relative;
-            overflow: hidden;
+// 点击模态窗口外部关闭
+if (identityModal) {
+    identityModal.addEventListener('click', (e) => {
+        if (e.target === identityModal) {
+            identityModal.classList.remove('active');
         }
+    });
+}
 
-        .admin-header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(255, 159, 28, 0.1) 0%, transparent 70%);
-            border-radius: 50%;
+// 身份按钮点击事件
+const identityButtons = document.querySelectorAll('.identity-btn');
+identityButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const identity = btn.dataset.identity;
+        console.log('切换身份为:', identity);
+        identityModal.classList.remove('active');
+        
+        // 根据身份跳转到相应页面
+        switch(identity) {
+            case 'student':
+                window.location.href = 'learning.html';
+                break;
+            case 'teacher':
+                window.location.href = 'teacher.html';
+                break;
+            case 'volunteer':
+                window.location.href = 'volunteer.html';
+                break;
+            case 'admin':
+                window.location.href = 'admin.html';
+                break;
         }
+    });
+});
 
-        .admin-header h1 {
-            font-size: 2.5rem;
-            color: var(--primary-green);
-            margin-bottom: 10px;
-            position: relative;
-            z-index: 1;
-        }
+// 审核按钮刷新数据按钮
+const refreshBtn = document.getElementById('refreshData');
+if (refreshBtn) {
+    refreshBtn.addEventListener('click', () => {
+        loadApplications();
+        alert('数据已刷新！');
+    });
+}
 
-        .admin-header p {
-            color: #666;
-            font-size: 1.1rem;
-            position: relative;
-            z-index: 1;
-        }
+// 加载志愿者申请数据
+function loadApplications() {
+    const applications = JSON.parse(localStorage.getItem('volunteerApplications') || '[]');
+    console.log('加载志愿者申请数据:', applications);
+    
+    const tbody = document.querySelector('.app-table tbody');
+    if (!tbody) return;
+    
+    tbody.innerHTML = '';
+    
+    if (applications.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 20px;">暂无申请数据</td></tr>';
+        return;
+    }
+    
+    applications.forEach(app => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${escapeHtml(app.realName)}</td>
+            <td>${escapeHtml(app.university || '-')}</td>
+            <td>四川凉山美姑县小学</td>
+            <td><span class="match-badge">${Math.floor(Math.random() * 20 + 80)}%</span></td>
+            <td>
+                <button class="action-btn" data-id="${app.id}">准入</button>
+                <button class="action-btn danger" data-id="${app.id}">拒绝</button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+}
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
-        }
+// HTML转义函数（防止XSS攻击）
+function escapeHtml(text) {
+    if (!text) return '';
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
 
-        .stat-card {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: var(--card-shadow);
-            border: 1px solid rgba(45, 106, 79, 0.1);
-            text-align: center;
-            transition: all 0.3s ease;
-        }
+// 页面加载时加载数据
+window.addEventListener('load', () => {
+    loadApplications();
+});
 
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(45, 106, 79, 0.12);
-        }
-
-        .stat-card .label {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 10px;
-        }
-
-        .stat-card .value {
-            font-size: 2rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .stat-card .footer {
-            font-size: 0.8rem;
-            color: #999;
-        }
-
-        .admin-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 30px;
-        }
-
-        .card {
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: var(--card-shadow);
-            border: 1px solid rgba(45, 106, 79, 0.1);
-            margin-bottom: 30px;
-            transition: all 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(45, 106, 79, 0.12);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--soft-green);
-        }
-
-        .card-header h2 {
-            font-size: 1.5rem;
-            color: var(--primary-green);
-            margin: 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .card-header h2 svg {
-            width: 24px;
-            height: 24px;
-            fill: var(--primary-green);
-        }
-
-        .refresh-btn {
-            padding: 8px 16px;
-            background: linear-gradient(135deg, var(--accent-orange) 0%, #ff6b6b 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        .refresh-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 15px rgba(255, 159, 28, 0.3);
-        }
-
-        .app-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .app-table th,
-        .app-table td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid rgba(45, 106, 79, 0.1);
-        }
-
-        .app-table th {
-            background: var(--soft-green);
-            color: var(--primary-green);
-            font-weight: 600;
-            border-radius: 8px 8px 0 0;
-        }
-
-        .app-table tr:hover {
-            background: rgba(216, 243, 220, 0.3);
-        }
-
-        .match-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            background: var(--sunrise-amber);
-            color: var(--sunrise-text);
-        }
-
-        .action-btn {
-            padding: 6px 12px;
-            background: var(--primary-green);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            margin-right: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .action-btn:hover {
-            background: #1b4332;
-            transform: scale(1.05);
-        }
-
-        .action-btn.danger {
-            background: var(--danger-red);
-        }
-
-        .action-btn.danger:hover {
-            background: #7f1d1d;
-        }
-
-        .prediction-item {
-            margin: 20px 0;
-        }
-
-        .prediction-item label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #e5e7eb;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent-orange) 0%, #ff6b6b 100%);
-            border-radius: 4px;
-            transition: width 0.5s ease;
-        }
-
-        .alert-box {
-            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-            border-left: 4px solid var(--danger-red);
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-        }
-
-        .alert-box .icon {
-            width: 24px;
-            height: 24px;
-            min-width: 24px;
-            color: var(--danger-red);
-        }
-
-        .alert-box .content h4 {
-            color: var(--danger-red);
-            margin-bottom: 5px;
-            font-size: 1rem;
-        }
-
-        .alert-box .content p {
-            color: #7f1d1d;
-            font-size: 0.9rem;
-        }
-
-        .back-btn {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border: 2px solid rgba(45, 106, 79, 0.1);
-            border-radius: 25px;
-            color: var(--text-main);
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            margin-bottom: 20px;
-        }
-
-        .back-btn:hover {
-            background: var(--soft-green);
-            border-color: var(--accent-orange);
-            color: var(--accent-orange);
-            transform: translateX(-5px);
-        }
-
-        .back-btn svg {
-            width: 20px;
-            height: 20px;
-            fill: currentColor;
-            transition: transform 0.3s ease;
-        }
-
-        .back-btn:hover svg {
-            transform: translateX(-3px);
-        }
-
-        /* --- 元素浮现效果 --- */
-        .fade-in-up {
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeInUp 0.6s ease forwards;
-        }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
+// 审核按钮
+const approveBtns = document.querySelectorAll('.action-btn:not(.danger)');
+approveBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const row = btn.closest('tr');
+        const appId = btn.dataset.id;
+        const name = row.querySelector('td:first-child').textContent;
+        
+        if (confirm(`确认准许 ${name} 的申请？`)) {
+            // 更新localStorage中的数据
+            const applications = JSON.parse(localStorage.getItem('volunteerApplications') || '[]');
+            const appIndex = applications.findIndex(app => app.id == appId);
+            
+            if (appIndex !== -1) {
+                applications[appIndex].status = 'approved';
+                applications[appIndex].reviewTime = new Date().toISOString();
+                localStorage.setItem('volunteerApplications', JSON.stringify(applications));
+                console.log('已更新申请状态:', applications[appIndex]);
             }
+            
+            alert(`已准许 ${name} 的申请！`);
+            row.style.opacity = '0.5';
+            btn.disabled = true;
         }
+    });
+});
 
-        .fade-in-scale {
-            opacity: 0;
-            transform: scale(0.9);
-            animation: fadeInScale 0.5s ease forwards;
-        }
-
-        @keyframes fadeInScale {
-            to {
-                opacity: 1;
-                transform: scale(1);
+const rejectBtns = document.querySelectorAll('.action-btn.danger');
+rejectBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const row = btn.closest('tr');
+        const appId = btn.dataset.id;
+        const name = row.querySelector('td:first-child').textContent;
+        
+        if (confirm(`确认拒绝 ${name} 的申请？`)) {
+            // 更新localStorage中的数据
+            const applications = JSON.parse(localStorage.getItem('volunteerApplications') || '[]');
+            const appIndex = applications.findIndex(app => app.id == appId);
+            
+            if (appIndex !== -1) {
+                applications[appIndex].status = 'rejected';
+                applications[appIndex].reviewTime = new Date().toISOString();
+                localStorage.setItem('volunteerApplications', JSON.stringify(applications));
+                console.log('已更新申请状态:', applications[appIndex]);
             }
+            
+            alert(`已拒绝 ${name} 的申请！`);
+            row.style.opacity = '0.5';
+            btn.disabled = true;
         }
+    });
+});
 
-        .fade-in-left {
-            opacity: 0;
-            transform: translateX(-30px);
-            animation: fadeInLeft 0.5s ease forwards;
+// 鼠标跟随光晕效果
+const cursorGlow = document.createElement('div');
+cursorGlow.className = 'cursor-glow';
+cursorGlow.style.cssText = `
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(45, 106, 79, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s ease;
+    mix-blend-mode: multiply;
+`;
+document.body.appendChild(cursorGlow);
+
+let mouseX = 0, mouseY = 0;
+let glowX = 0, glowY = 0;
+
+document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+});
+
+function animateCursorGlow() {
+    glowX += (mouseX - glowX) * 0.1;
+    glowY += (mouseY - glowY) * 0.1;
+    cursorGlow.style.left = glowX + 'px';
+    cursorGlow.style.top = glowY + 'px';
+    requestAnimationFrame(animateCursorGlow);
+}
+
+animateCursorGlow();
+
+// AI助手功能
+const aiAssistantBtn = document.getElementById('aiAssistantBtn');
+const aiAssistantWindow = document.getElementById('aiAssistantWindow');
+const aiAssistantClose = document.getElementById('aiAssistantClose');
+const aiAssistantInput = document.getElementById('aiAssistantInput');
+const aiAssistantSubmit = document.getElementById('aiAssistantSubmit');
+const aiAssistantContent = document.getElementById('aiAssistantContent');
+
+// 打开AI助手窗口
+if (aiAssistantBtn && aiAssistantWindow) {
+    aiAssistantBtn.addEventListener('click', () => {
+        aiAssistantWindow.classList.add('active');
+    });
+}
+
+// AI咨询按钮打开AI助手窗口
+const aiConsult = document.getElementById('aiConsult');
+if (aiConsult && aiAssistantWindow) {
+    aiConsult.addEventListener('click', () => {
+        aiAssistantWindow.classList.add('active');
+    });
+}
+
+// 关闭AI助手窗口
+if (aiAssistantClose && aiAssistantWindow) {
+    aiAssistantClose.addEventListener('click', () => {
+        aiAssistantWindow.classList.remove('active');
+    });
+}
+
+// 提交问题
+if (aiAssistantSubmit && aiAssistantInput && aiAssistantContent) {
+    aiAssistantSubmit.addEventListener('click', () => {
+        const question = aiAssistantInput.value.trim();
+        if (question) {
+            // 添加用户问题
+            const userMessage = document.createElement('div');
+            userMessage.className = 'ai-message';
+            userMessage.style.background = 'rgba(255, 165, 0, 0.1)';
+            userMessage.style.borderLeft = '3px solid var(--accent-orange)';
+            userMessage.style.marginLeft = '20px';
+            userMessage.innerHTML = `<strong>您：</strong>${question}`;
+            aiAssistantContent.appendChild(userMessage);
+            
+            // 清空输入框
+            aiAssistantInput.value = '';
+            
+            // 模拟AI回复
+            setTimeout(() => {
+                const aiMessage = document.createElement('div');
+                aiMessage.className = 'ai-message';
+                aiMessage.innerHTML = `<strong>AI助手：</strong>感谢您的提问！我正在为您处理这个问题，请稍等片刻...`;
+                aiAssistantContent.appendChild(aiMessage);
+                
+                // 滚动到底部
+                aiAssistantContent.scrollTop = aiAssistantContent.scrollHeight;
+            }, 1000);
+            
+            // 滚动到底部
+            aiAssistantContent.scrollTop = aiAssistantContent.scrollHeight;
         }
-
-        @keyframes fadeInLeft {
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+    });
+    
+    // 支持回车键提交
+    aiAssistantInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            aiAssistantSubmit.click();
         }
-
-        .fade-in-right {
-            opacity: 0;
-            transform: translateX(30px);
-            animation: fadeInRight 0.5s ease forwards;
-        }
-
-        @keyframes fadeInRight {
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        /* 延迟类 */
-        .delay-1 { animation-delay: 0.1s; }
-        .delay-2 { animation-delay: 0.2s; }
-        .delay-3 { animation-delay: 0.3s; }
-        .delay-4 { animation-delay: 0.4s; }
-        .delay-5 { animation-delay: 0.5s; }
-        .delay-6 { animation-delay: 0.6s; }
-        .delay-7 { animation-delay: 0.7s; }
-        .delay-8 { animation-delay: 0.8s; }
-        .delay-9 { animation-delay: 0.9s; }
-        .delay-10 { animation-delay: 1.0s; }
-
-        @media (max-width: 992px) {
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .admin-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="bg-glow">
-        <div class="firefly" style="top: 15%; left: 8%;"></div>
-        <div class="firefly" style="top: 45%; left: 85%;"></div>
-        <div class="firefly" style="top: 75%; left: 12%;"></div>
-    </div>
-
-    <nav>
-        <div class="brand">筑梦AI支教</div>
-        <div class="nav-links">
-            <a href="index.html">首页</a>
-            <a href="index.html#jobs">寻找岗位</a>
-            <a href="index.html#tools">3D教具库</a>
-            <div class="dropdown">
-                <a href="javascript:void(0)" class="dropdown-toggle">更多 ▼</a>
-                <div class="dropdown-menu">
-                    <a href="#about">关于我们</a>
-                    <a href="javascript:void(0)" id="aiConsult">AI咨询</a>
-                    <a href="#admin">系统后台</a>
-                </div>
-            </div>
-            <div class="menu-dots">
-                <span></span>
-                <span></span>
-                <span></span>
-                <div class="identity-menu">
-                    <a href="javascript:void(0)" id="switchIdentity">切换身份</a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container">
-        <a href="index.html" class="back-btn fade-in-left">
-            <svg viewBox="0 0 24 24"><path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/></svg>
-            返回首页
-        </a>
-
-        <div class="admin-header fade-in-up delay-1">
-            <h1>欢迎回来，管理员！</h1>
-            <p>AI 智能调度中心已就位，实时监控平台运行状态</p>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card fade-in-scale delay-2">
-                <div class="label">全站注册志愿者</div>
-                <div class="value" style="color: #303133;">1,280</div>
-                <div class="footer">较昨日 +5</div>
-            </div>
-            <div class="stat-card fade-in-scale delay-2">
-                <div class="label">AI 平均匹配度</div>
-                <div class="value" style="color: #a91d22;">91.2%</div>
-                <div class="footer">算法模型 V3</div>
-            </div>
-            <div class="stat-card fade-in-scale delay-2">
-                <div class="label">待处理申请</div>
-                <div class="value" style="color: #e63946;">14</div>
-                <div class="footer">需尽快审批</div>
-            </div>
-            <div class="stat-card fade-in-scale delay-2">
-                <div class="label">教具共享总数</div>
-                <div class="value" style="color: #c92a2a;">456</div>
-                <div class="footer">下载量 2k+</div>
-            </div>
-        </div>
-
-        <div class="admin-grid">
-            <div class="left-column">
-                <div class="card fade-in-up delay-3">
-                    <div class="card-header">
-                        <h2>
-                            <svg viewBox="0 0 24 24"><path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.41,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.59,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"/></svg>
-                            所有申请人管理
-                        </h2>
-                        <button class="refresh-btn" id="refreshData">刷新数据</button>
-                    </div>
-                    <table class="app-table">
-                        <thead>
-                            <tr>
-                                <th>姓名</th>
-                                <th>来源高校</th>
-                                <th>目标支教点</th>
-                                <th>AI 匹配报告</th>
-                                <th>审核</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>张三</td>
-                                <td>清华大学</td>
-                                <td>四川凉山美姑县小学</td>
-                                <td><span class="match-badge">95%</span></td>
-                                <td>
-                                    <button class="action-btn">准入</button>
-                                    <button class="action-btn danger">拒绝</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>李四</td>
-                                <td>北京大学</td>
-                                <td>云南怒江中心小学</td>
-                                <td><span class="match-badge">92%</span></td>
-                                <td>
-                                    <button class="action-btn">准入</button>
-                                    <button class="action-btn danger">拒绝</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>王五</td>
-                                <td>复旦大学</td>
-                                <td>贵州大山镇希望小学</td>
-                                <td><span class="match-badge">88%</span></td>
-                                <td>
-                                    <button class="action-btn">准入</button>
-                                    <button class="action-btn danger">拒绝</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>赵六</td>
-                                <td>上海交通大学</td>
-                                <td>西藏拉萨中学</td>
-                                <td><span class="match-badge">90%</span></td>
-                                <td>
-                                    <button class="action-btn">准入</button>
-                                    <button class="action-btn danger">拒绝</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="right-column">
-                <div class="card fade-in-right delay-4">
-                    <div class="card-header">
-                        <h2>
-                            <svg viewBox="0 0 24 24"><path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.41,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.59,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"/></svg>
-                            AI 资源预警
-                        </h2>
-                    </div>
-                    <p style="font-size: 0.9rem; color: #a91d22; font-weight: bold; margin-bottom: 15px;">
-                        基于 DeepSeek 的需求预测：
-                    </p>
-                    <div class="prediction-item">
-                        <label>机械类教具需求</label>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 92%;"></div>
-                        </div>
-                    </div>
-                    <div class="prediction-item">
-                        <label>西部地区师资缺口</label>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 68%;"></div>
-                        </div>
-                    </div>
-                    <div class="alert-box">
-                        <div class="icon">
-                            <svg viewBox="0 0 24 24"><path d="M12,2L1,21H23M12,6L19.53,19H4.47M11,10V14H13V10M11,16V18H13V16"/></svg>
-                        </div>
-                        <div class="content">
-                            <h4>系统建议</h4>
-                            <p>本月应加大"斯特林发动机"模型的采购量。</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 身份切换模态窗口 -->
-    <div class="identity-modal" id="identityModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>切换模拟身份</h3>
-                <button class="modal-close" id="modalClose">✕</button>
-            </div>
-            <div class="modal-body">
-                <button class="identity-btn" data-identity="student">
-                    <div class="identity-icon">
-                        <svg viewBox="0 0 24 24"><path d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"/></svg>
-                    </div>
-                    <span>学生</span>
-                </button>
-                <button class="identity-btn" data-identity="teacher">
-                    <div class="identity-icon">
-                        <svg viewBox="0 0 24 24"><path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z"/></svg>
-                    </div>
-                    <span>老师</span>
-                </button>
-                <button class="identity-btn" data-identity="volunteer">
-                    <div class="identity-icon">
-                        <svg viewBox="0 0 24 24"><path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.41,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.59,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"/></svg>
-                    </div>
-                    <span>志愿者</span>
-                </button>
-                <button class="identity-btn" data-identity="admin">
-                    <div class="identity-icon">
-                        <svg viewBox="0 0 24 24"><path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,11.95L12,12.05L12,12.05L12,11.95M12,5.5L17.5,8.5L12,11.5L6.5,8.5L12,5.5M12,13.5L16.5,11V16.5L12,19L7.5,16.5V11L12,13.5Z"/></svg>
-                    </div>
-                    <span>管理员</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- AI助手 -->
-    <div class="ai-assistant-btn" id="aiAssistantBtn">
-        <svg viewBox="0 0 24 24">
-            <path d="M20,2H4A2,2 0 0,0 2,4V22L6,18H20A2,2 0 0,0 22,16V4A2,2 0 0,0 20,2M20,16H6L4,18V4H20V16Z" fill="white"/>
-            <circle cx="12" cy="10" r="1.5" fill="white"/>
-            <circle cx="8" cy="10" r="1.5" fill="white"/>
-            <circle cx="16" cy="10" r="1.5" fill="white"/>
-        </svg>
-    </div>
-
-    <div class="ai-assistant-window" id="aiAssistantWindow">
-        <div class="ai-assistant-header">
-            <h3>AI 支教智能助手</h3>
-            <button class="ai-assistant-close" id="aiAssistantClose">✕</button>
-        </div>
-        <div class="ai-assistant-content" id="aiAssistantContent">
-            <div class="ai-message">
-                <strong>您好！我是"筑梦"AI 助手。</strong><br><br>
-                我将用智慧与热情，助您点亮乡村教育的红烛。
-            </div>
-        </div>
-        <div class="ai-assistant-input-area">
-            <input type="text" class="ai-assistant-input" id="aiAssistantInput" placeholder="输入您的问题...">
-            <button class="ai-assistant-submit" id="aiAssistantSubmit">提问</button>
-        </div>
-    </div>
-
-    <script src="admin.js?v=2"></script>
-</body>
-</html>
+    });
+}
