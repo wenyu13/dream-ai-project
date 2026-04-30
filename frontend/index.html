@@ -568,8 +568,11 @@
 
     <!-- 引入model-viewer组件 -->
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    
+    <!-- 脚本加载顺序非常重要：API 必须在最前 -->
     <script src="api.js"></script>
     <script src="auth.js"></script>
+    <!-- 确保你的 script.js 放在最后 -->
     <script src="script.js?v=3"></script>
 </body>
 </html>
