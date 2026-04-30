@@ -314,8 +314,8 @@ class AuthManager {
 window.AuthManager = new AuthManager();
 
 // 添加CSS样式
-const authStyles = document.createElement('style');
-authStyles.textContent = `
+const style = document.createElement('style');
+style.textContent = `
 .auth-modal {
     position: fixed;
     top: 0;
@@ -631,6 +631,6 @@ authStyles.textContent = `
 }
 `;
 
-document.head.appendChild(authStyles);
+document.head.appendChild(style);
 
 console.log('✅ 用户认证模块已加载');
