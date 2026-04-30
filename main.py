@@ -8,7 +8,8 @@ from datetime import datetime
 
 from .config import settings
 from .database import connect_to_mongo, close_mongo_connection
-from .api import auth, applications, tasks, upload
+# 1. 在这里添加 ai 导入
+from .api import auth, applications, tasks, upload, ai 
 from .api.auth_simple import router as auth_simple_router
 from .api.auth_persistent import router as auth_persistent_router
 
@@ -24,6 +25,10 @@ app = FastAPI(
         {
             "name": "认证",
             "description": "用户认证、注册、登录、权限管理"
+        },
+        {
+            "name": "AI助手",
+            "description": "连接 DeepSeek 提供的智能支教支持"
         },
         {
             "name": "申请管理",
@@ -127,6 +132,9 @@ async def health_check():
 
 # 注册路由
 app.include_router(auth.router, prefix="/api")
+# 2. 在这里添加 AI 路由注册
+app.include_router(ai.router, prefix="/api/ai", tags=["AI助手"]) 
+
 app.include_router(auth_simple_router, prefix="/api")
 app.include_router(auth_persistent_router, prefix="/api")
 app.include_router(applications.router, prefix="/api")
