@@ -16,15 +16,13 @@
             --bg-light: #f4f7f5;
             --danger-red: #991b1b;
             --card-shadow: 0 10px 30px rgba(45, 106, 79, 0.08);
-            --sunrise-gold: #fff7ed;
-            --sunrise-amber: #ffedd5;
-            --sunrise-text: #451a03;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; }
         html { scroll-behavior: smooth; }
         body { background: var(--bg-light); color: var(--text-main); overflow-x: hidden; line-height: 1.6; }
 
+        /* 背景动态光晕 */
         .bg-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
         .firefly {
             position: absolute; width: 4px; height: 4px; background: var(--accent-orange);
@@ -36,6 +34,7 @@
             100% { transform: translate(100vw, 100vh); opacity: 0; }
         }
 
+        /* 导航栏 */
         nav {
             display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 8%;
             background: var(--glass); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 100;
@@ -43,45 +42,48 @@
         }
         .brand { font-size: 1.5rem; font-weight: 800; color: var(--primary-green); letter-spacing: 1px; }
         .nav-links a { text-decoration: none; color: var(--text-main); margin-left: 2rem; font-weight: 500; transition: 0.3s; }
-        .nav-links a:hover { color: var(--accent-orange); }
 
+        /* 视频/图片主视觉区 */
         .hero-section {
             min-height: 85vh; padding: 100px 8%; display: flex; align-items: center; justify-content: center;
             text-align: center; position: relative;
-            background: linear-gradient(180deg, var(--sunrise-gold) 0%, #ffffff 100%);
-            overflow: hidden;
+            background: linear-gradient(180deg, #fff7ed 0%, #ffffff 100%);
         }
-
-        .hero-main-title { font-size: 3.8rem; font-weight: 900; color: var(--sunrise-text); margin-bottom: 25px; line-height: 1.2; }
+        .hero-main-title { font-size: 3.8rem; font-weight: 900; color: #451a03; margin-bottom: 25px; line-height: 1.2; }
         .hero-main-title span { color: var(--primary-green); }
         .hero-subtitle { font-size: 1.5rem; font-weight: 500; color: #78350f; margin-bottom: 50px; opacity: 0.8; }
+        
         .hero-btn {
             display: inline-block; padding: 1.1rem 3.5rem; border-radius: 50px; background: var(--primary-green);
             color: white; text-decoration: none; font-weight: 700; font-size: 1.2rem; transition: 0.4s;
-            box-shadow: 0 15px 35px rgba(45, 106, 79, 0.2);
+            box-shadow: 0 15px 35px rgba(45, 106, 79, 0.2); cursor: pointer; border: none;
         }
+        .hero-btn:hover { background: var(--accent-orange); transform: scale(1.05); }
+
+        /* 容器与揭幕动画 */
+        .container { max-width: 1300px; margin: 0 auto; padding: 80px 5%; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s all ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
         .section-header { text-align: center; margin-bottom: 60px; }
-        .section-header h2 { font-size: 2.4rem; color: var(--primary-green); margin-bottom: 15px; font-weight: 800; }
-        .section-header .line { width: 60px; height: 4px; background: var(--accent-orange); margin: 0 auto; border-radius: 2px; }
+        .section-header h2 { font-size: 2.4rem; color: var(--primary-green); font-weight: 800; }
+        .section-header .line { width: 60px; height: 4px; background: var(--accent-orange); margin: 15px auto; border-radius: 2px; }
 
-        .container { max-width: 1300px; margin: 0 auto; padding: 100px 5%; }
+        /* 角色卡片 */
         .portal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
         .portal-card {
             background: white; border-radius: 2.5rem; padding: 4rem 2rem; text-align: center;
-            transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-            border: 1px solid rgba(45, 106, 79, 0.05); box-shadow: var(--card-shadow);
+            transition: 0.5s; border: 1px solid rgba(45, 106, 79, 0.05); box-shadow: var(--card-shadow);
         }
-        .portal-card:hover { transform: translateY(-15px); }
+        .portal-card:hover { transform: translateY(-15px); border-color: var(--accent-orange); }
 
-        /* 统一弹窗 */
+        /* 弹窗通用样式 */
         .identity-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(5px); }
         .identity-modal.active { display: flex; }
-        .modal-content { background: white; padding: 30px; border-radius: 25px; width: 90%; max-width: 450px; position: relative; }
-        
-        /* 揭幕动画类 */
-        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s all ease; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        .modal-content { background: white; padding: 35px; border-radius: 25px; width: 90%; max-width: 450px; }
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; }
 
         footer { text-align: center; padding: 5rem; background: var(--text-main); color: #88bd9e; }
     </style>
@@ -100,8 +102,8 @@
                 <button class="hero-btn" onclick="openModal('registerModal')" style="padding: 8px 20px; font-size: 0.9rem; background:none; border:2px solid var(--primary-green); color:var(--primary-green); margin-left:10px;">注册</button>
             </div>
             <div id="userNav" style="display:none; align-items:center; gap:15px; margin-left:20px;">
-                <a href="volunteer.html" style="font-weight:bold;">个人工作台</a>
-                <button onclick="localStorage.clear(); location.reload();" style="cursor:pointer; background:none; border:none; color:red;">退出</button>
+                <a href="volunteer.html" style="font-weight:bold; color:var(--primary-green);">个人工作台</a>
+                <button onclick="localStorage.clear(); location.reload();" style="cursor:pointer; border:none; background:none; color:red;">退出</button>
             </div>
         </div>
     </nav>
@@ -120,20 +122,20 @@
             <div class="portal-card reveal">
                 <i class="fas fa-heart fa-3x" style="color:var(--primary-green); margin-bottom:20px;"></i>
                 <h3>志愿者入口</h3>
-                <p>提供专业支教岗位匹配，记录您的公益里程。</p>
-                <a href="volunteer.html" class="hero-btn" style="padding: 10px 25px; margin-top:20px; font-size:1rem;">进入工作台</a>
+                <p>记录您的公益里程，让奉献更具价值。</p>
+                <a href="volunteer.html" class="hero-btn" style="padding: 10px 25px; margin-top:20px; font-size:1rem;">进入</a>
             </div>
             <div class="portal-card reveal">
                 <i class="fas fa-graduation-cap fa-3x" style="color:var(--primary-green); margin-bottom:20px;"></i>
                 <h3>学校 / 教师端</h3>
-                <p>发布教学需求，管理支教老师。</p>
-                <a href="teacher.html" class="hero-btn" style="padding: 10px 25px; margin-top:20px; font-size:1rem;">管理中心</a>
+                <p>发布教学需求，管理支教教师。</p>
+                <a href="teacher.html" class="hero-btn" style="padding: 10px 25px; margin-top:20px; font-size:1rem;">进入</a>
             </div>
             <div class="portal-card reveal">
                 <i class="fas fa-book-open fa-3x" style="color:var(--primary-green); margin-bottom:20px;"></i>
                 <h3>学生学习端</h3>
-                <p>开启云端沉浸式课堂，连接大山外的世界。</p>
-                <a href="learning.html" class="hero-btn" style="padding: 10px 25px; margin-top:20px; font-size:1rem;">开启学习</a>
+                <p>开启云端课堂，连接大山外的世界。</p>
+                <a href="learning.html" class="hero-btn" style="padding: 10px 25px; margin-top:20px; font-size:1rem;">进入</a>
             </div>
         </div>
     </section>
@@ -149,37 +151,21 @@
 
     <section id="tools" class="container" style="background: var(--soft-green); border-radius: 3rem;">
         <div class="section-header reveal"><h2>数字化教具库</h2><div class="line"></div></div>
-        <div class="tools-grid" style="display:grid; grid-template-columns: repeat(3,1fr); gap:30px;">
+        <div class="portal-grid">
             <div class="portal-card reveal"><h3>斯特林发动机</h3><button class="hero-btn tool-btn" style="margin-top:20px; padding:10px;">3D预览</button></div>
             <div class="portal-card reveal"><h3>平面四连杆机构</h3><button class="hero-btn tool-btn" style="margin-top:20px; padding:10px;">3D预览</button></div>
             <div class="portal-card reveal"><h3>AI 巡检机器人</h3><button class="hero-btn tool-btn" style="margin-top:20px; padding:10px;">3D预览</button></div>
         </div>
     </section>
 
-    <!-- 登录弹窗 -->
+    <!-- 弹窗部分 -->
     <div class="identity-modal" id="loginModal">
         <div class="modal-content">
             <h3>用户登录</h3><br>
-            <input type="email" id="loginEmail" placeholder="邮箱" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
-            <input type="password" id="loginPassword" placeholder="密码" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
+            <input type="email" id="loginEmail" placeholder="邮箱" class="form-group"><br>
+            <input type="password" id="loginPassword" placeholder="密码" class="form-group"><br>
             <button class="hero-btn" id="doLogin" style="width:100%;">登录</button>
             <button onclick="closeModal('loginModal')" style="width:100%; margin-top:10px; background:none; border:none; cursor:pointer;">取消</button>
-        </div>
-    </div>
-
-    <!-- 注册弹窗 -->
-    <div class="identity-modal" id="registerModal">
-        <div class="modal-content">
-            <h3>用户注册</h3><br>
-            <input type="text" id="regUsername" placeholder="用户名" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
-            <input type="email" id="regEmail" placeholder="邮箱" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
-            <input type="password" id="regPassword" placeholder="密码" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
-            <select id="regRole" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
-                <option value="volunteer">志愿者</option>
-                <option value="teacher">教师</option>
-            </select>
-            <button class="hero-btn" id="doRegister" style="width:100%;">注册</button>
-            <button onclick="closeModal('registerModal')" style="width:100%; margin-top:10px; background:none; border:none; cursor:pointer;">取消</button>
         </div>
     </div>
 
@@ -194,12 +180,10 @@
 
     <!-- AI助手按钮 -->
     <div id="aiAssistantBtn" onclick="openModal('aiAssistantWindow')" style="position:fixed; bottom:30px; right:30px; background:var(--primary-green); width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:999;"><i class="fas fa-comment-dots" style="color:white; font-size:1.5rem;"></i></div>
-    
-    <!-- AI助手窗口 -->
     <div class="identity-modal" id="aiAssistantWindow">
         <div class="modal-content" style="height:500px; display:flex; flex-direction:column; padding:0; overflow:hidden;">
             <div style="background:var(--primary-green); color:white; padding:20px; display:flex; justify-content:space-between;"><h3>AI助手</h3><button onclick="closeModal('aiAssistantWindow')" style="background:none; border:none; color:white; cursor:pointer;">✕</button></div>
-            <div id="aiAssistantContent" style="flex:1; padding:20px; overflow-y:auto; background:#f9f9f9;"><div>你好！我是微光AI。</div></div>
+            <div id="aiAssistantContent" style="flex:1; padding:20px; overflow-y:auto; background:#f9f9f9;"><div>你好！我是微光AI助理。</div></div>
             <div style="padding:15px; border-top:1px solid #eee; display:flex; gap:10px;"><input type="text" id="aiAssistantInput" style="flex:1; padding:10px; border:1px solid #ddd; border-radius:10px;" placeholder="问点什么..."><button id="aiAssistantSubmit" style="background:var(--primary-green); color:white; border:none; padding:10px; border-radius:10px; cursor:pointer;">发送</button></div>
         </div>
     </div>
@@ -207,8 +191,8 @@
     <footer><p>© 2026 微光循迹 · 用科技点亮大山的晨曦 </p></footer>
 
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    <script src="api.js?v=orig"></script>
-    <script src="auth.js?v=orig"></script>
-    <script src="script.js?v=orig"></script>
+    <script src="api.js?v=final"></script>
+    <script src="script.js?v=final"></script>
+    <script src="auth.js?v=final"></script>
 </body>
 </html>
