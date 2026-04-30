@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>微光循迹 - 智慧支教生态系统</title>
+    <title>筑梦AI支教 - 智慧支教生态系统</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -16,113 +16,560 @@
             --bg-light: #f4f7f5;
             --danger-red: #991b1b;
             --card-shadow: 0 10px 30px rgba(45, 106, 79, 0.08);
+
             --sunrise-gold: #fff7ed;
             --sunrise-amber: #ffedd5;
             --sunrise-text: #451a03;
         }
+
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; }
-        html { scroll-behavior: smooth; }
-        body { background: var(--bg-light); color: var(--text-main); overflow-x: hidden; line-height: 1.6; }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg-light);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+            cursor: default;
+        }
+
         .bg-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        .firefly { position: absolute; width: 4px; height: 4px; background: var(--accent-orange); border-radius: 50%; filter: blur(2px); opacity: 0.3; animation: move 20s infinite linear; }
-        @keyframes move { 0% { transform: translate(0, 0); opacity: 0; } 50% { opacity: 0.6; } 100% { transform: translate(100vw, 100vh); opacity: 0; } }
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 8%; background: var(--glass); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(45, 106, 79, 0.05); }
+        .firefly {
+            position: absolute; width: 4px; height: 4px; background: var(--accent-orange);
+            border-radius: 50%; filter: blur(2px); opacity: 0.3; animation: move 20s infinite linear;
+        }
+        @keyframes move {
+            0% { transform: translate(0, 0); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translate(100vw, 100vh); opacity: 0; }
+        }
+
+        nav {
+            display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 8%;
+            background: var(--glass); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 100;
+            border-bottom: 1px solid rgba(45, 106, 79, 0.05);
+        }
         .brand { font-size: 1.5rem; font-weight: 800; color: var(--primary-green); letter-spacing: 1px; }
         .nav-links a { text-decoration: none; color: var(--text-main); margin-left: 2rem; font-weight: 500; transition: 0.3s; }
         .nav-links a:hover { color: var(--accent-orange); }
-        .hero-section { min-height: 85vh; padding: 100px 8%; display: flex; align-items: center; justify-content: center; text-align: center; position: relative; background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none"><path fill="%23ffedd5" fill-opacity="0.4" d="M0,224L60,202.7C120,181,240,139,360,138.7C480,139,600,181,720,208C840,235,960,245,1080,224C1200,203,1320,149,1380,122.7L1440,96L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>'), linear-gradient(180deg, var(--sunrise-gold) 0%, #ffffff 100%); background-position: bottom; background-repeat: no-repeat; background-size: 100% 400px, 100% 100%; overflow: hidden; }
-        .hero-main-title { font-size: 3.8rem; font-weight: 900; color: var(--sunrise-text); margin-bottom: 25px; line-height: 1.2; }
-        .hero-main-title span { color: var(--primary-green); }
-        .hero-subtitle { font-size: 1.5rem; font-weight: 500; color: #78350f; margin-bottom: 50px; opacity: 0.8; }
-        .hero-btn { display: inline-block; padding: 1.1rem 3.5rem; border-radius: 50px; background: var(--primary-green); color: white; text-decoration: none; font-weight: 700; transition: 0.4s; box-shadow: 0 15px 35px rgba(45, 106, 79, 0.2); }
+
+        .hero-section {
+            min-height: 85vh;
+            padding: 100px 8%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            background: 
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none"><path fill="%23ffedd5" fill-opacity="0.4" d="M0,224L60,202.7C120,181,240,139,360,138.7C480,139,600,181,720,208C840,235,960,245,1080,224C1200,203,1320,149,1380,122.7L1440,96L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>'),
+                linear-gradient(180deg, var(--sunrise-gold) 0%, #ffffff 100%);
+            background-position: bottom;
+            background-repeat: no-repeat;
+            background-size: 100% 400px, 100% 100%;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            right: -5%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 159, 28, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+        }
+
+        .hero-main-title {
+            font-size: 3.8rem;
+            font-weight: 900;
+            color: var(--sunrise-text);
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
+
+        .hero-main-title span {
+            color: var(--primary-green);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #78350f;
+            margin-bottom: 50px;
+            opacity: 0.8;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            padding: 1.1rem 3.5rem;
+            border-radius: 50px;
+            background: var(--primary-green);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 35px rgba(45, 106, 79, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 45px rgba(45, 106, 79, 0.3);
+            background: var(--accent-orange);
+        }
+
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 2.4rem; color: var(--primary-green); margin-bottom: 15px; font-weight: 800; }
+        .section-header .line { width: 60px; height: 4px; background: var(--accent-orange); margin: 0 auto; border-radius: 2px; }
+        .section-header p { color: #666; margin-top: 20px; font-size: 1.1rem; }
+
         .container { max-width: 1300px; margin: 0 auto; padding: 100px 5%; }
+
         .portal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
-        .portal-card { background: white; border-radius: 2.5rem; padding: 4rem 2rem; text-align: center; transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); border: 1px solid rgba(45, 106, 79, 0.05); box-shadow: var(--card-shadow); }
-        .portal-card:hover { transform: translateY(-15px) scale(1.02); }
+        .portal-card {
+            background: white; border-radius: 2.5rem; padding: 4rem 2rem; text-align: center;
+            transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: 1px solid rgba(45, 106, 79, 0.05); box-shadow: var(--card-shadow);
+        }
+        .portal-card:hover { transform: translateY(-15px) scale(1.02); box-shadow: 0 30px 60px rgba(45, 106, 79, 0.15); border-color: var(--accent-orange); }
+        .icon-box {
+            width: 90px; height: 90px; background: var(--soft-green); border-radius: 2rem;
+            display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; transition: 0.5s;
+        }
+        .portal-card:hover .icon-box { background: var(--primary-green); transform: rotate(-5deg); }
+        .icon-box svg { width: 45px; height: 45px; fill: var(--primary-green); transition: 0.5s; }
+        .portal-card:hover svg { fill: white; }
+        .portal-btn { 
+            display: inline-block; margin-top: 2rem; padding: 0.8rem 2.5rem; border-radius: 50px; 
+            background: var(--primary-green); color: white; text-decoration: none; font-weight: 600; transition: 0.3s;
+        }
+        .portal-card:hover .portal-btn { background: var(--accent-orange); box-shadow: 0 10px 20px rgba(255, 159, 28, 0.3); }
+
         .jobs-section { background: white; border-radius: 4rem 4rem 0 0; }
         .jobs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
-        .job-card { background: var(--bg-light); border-radius: 20px; padding: 35px; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid var(--danger-red); transition: 0.4s; }
+        .job-card {
+            background: var(--bg-light); border-radius: 20px; padding: 35px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-left: 6px solid var(--danger-red); transition: 0.4s;
+        }
+        .job-card:hover { background: white; transform: scale(1.02) translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        .job-info h4 { font-size: 1.4rem; margin-bottom: 12px; color: var(--text-main); }
+        .job-tag { 
+            display: inline-block; padding: 4px 15px; border-radius: 6px; background: #fff1f2; 
+            color: var(--danger-red); font-size: 0.85rem; font-weight: bold; margin-top: 10px;
+        }
+        .apply-btn {
+            padding: 12px 28px; background: var(--danger-red); color: white;
+            border-radius: 10px; text-decoration: none; font-weight: bold; transition: 0.3s;
+        }
+        .apply-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+
         .tools-section { background: linear-gradient(180deg, #fff 0%, var(--soft-green) 100%); }
         .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 35px; }
-        .tool-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); border-radius: 30px; padding: 30px; text-align: center; border: 1px solid white; transition: 0.4s; }
-
-        /* 3D 查看器原始样式 */
-        .model-viewer-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); z-index: 20000; justify-content: center; align-items: center; }
-        .model-viewer-modal.active { display: flex; }
-        .model-viewer-content { background: var(--glass); backdrop-filter: blur(20px); border-radius: 20px; width: 95%; max-width: 1200px; display: flex; flex-direction: column; overflow: hidden; }
-        .model-viewer-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 30px; background: linear-gradient(135deg, var(--soft-green) 0%, #fff 100%); }
-        .model-viewer-body { display: flex; flex-direction: column; flex: 1; }
-        model-viewer { width: 100%; height: 60vh; display: block; } /* 确保高度 */
-        .model-viewer-info { background: var(--sunrise-gold); padding: 20px; border-top: 2px solid var(--soft-green); }
+        .tool-card {
+            background: rgba(255,255,255,0.7); backdrop-filter: blur(10px);
+            border-radius: 30px; padding: 30px; text-align: center;
+            border: 1px solid white; transition: 0.4s;
+        }
+        .tool-card:hover { transform: translateY(-10px) scale(1.03); background: white; border-color: var(--accent-orange); }
+        .tool-preview {
+            width: 100%; height: 200px; border-radius: 20px; margin-bottom: 25px;
+            display: flex; align-items: center; justify-content: center;
+            background: radial-gradient(circle at center, #fff 0%, #ffe4e4 100%);
+            position: relative; overflow: hidden;
+        }
+        .tool-preview::before {
+            content: ""; position: absolute; width: 200%; height: 200%;
+            background-image: linear-gradient(rgba(153, 27, 27, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(153, 27, 27, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .tool-preview svg { width: 60px; height: 60px; fill: var(--danger-red); z-index: 1; transition: 0.5s; }
+        .tool-card:hover .tool-preview svg { transform: scale(1.25) rotate(10deg); }
+        .tool-card h3 { font-size: 1.3rem; margin-bottom: 20px; }
+        .tool-btn { 
+            padding: 10px 25px; border: 2px solid var(--danger-red); color: var(--danger-red);
+            border-radius: 8px; text-decoration: none; font-weight: bold; transition: 0.3s;
+        }
+        .tool-btn:hover { background: var(--danger-red); color: white; }
 
         footer { text-align: center; padding: 5rem; background: var(--text-main); color: #88bd9e; font-size: 0.9rem; }
-        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s all ease; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 992px) { 
+            .portal-grid, .jobs-grid, .tools-grid { grid-template-columns: 1fr; } 
+            .hero-main-title { font-size: 2.8rem; }
+        }
     </style>
 </head>
 <body>
-    <div class="bg-glow"><div class="firefly" style="top: 15%; left: 8%;"></div></div>
+
+    <div class="bg-glow">
+        <div class="firefly" style="top: 15%; left: 8%;"></div>
+        <div class="firefly" style="top: 45%; left: 85%;"></div>
+        <div class="firefly" style="top: 75%; left: 12%;"></div>
+    </div>
+
     <nav>
-        <div class="brand">微光循迹</div>
+        <div class="brand">筑梦AI支教</div>
         <div class="nav-links">
-            <a href="#">首页</a><a href="#jobs">寻找岗位</a><a href="#tools">3D教具库</a>
-            <button onclick="openModal('loginModal')" style="cursor:pointer; background:none; border:2px solid var(--primary-green); padding:5px 15px; border-radius:8px; margin-left:2rem;">登录</button>
+            <a href="#">首页</a>
+            <a href="#jobs">寻找岗位</a>
+            <a href="#tools">3D教具库</a>
+            <div class="dropdown">
+                <a href="javascript:void(0)" class="dropdown-toggle">更多 ▼</a>
+                <div class="dropdown-menu">
+                    <a href="#about">关于我们</a>
+                    <a href="javascript:void(0)" id="aiConsult">AI咨询</a>
+                    <a href="admin.html">系统后台</a>
+                </div>
+            </div>
+            
+            <!-- 访客导航 -->
+            <div class="guest-nav" id="guestNav">
+                <button class="login-btn" id="loginBtn">登录</button>
+                <button class="register-btn" id="registerBtn">注册</button>
+            </div>
+            
+            <!-- 用户导航 -->
+            <div class="user-nav" id="userNav" style="display: none;">
+                <div class="user-info">
+                    <div class="user-avatar"></div>
+                    <div class="user-details">
+                        <div class="user-name"></div>
+                        <div class="user-role"></div>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn">退出</button>
+            </div>
+            
+            <div class="menu-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+                <div class="identity-menu">
+                    <a href="javascript:void(0)" id="switchIdentity">切换身份</a>
+                </div>
+            </div>
         </div>
     </nav>
 
     <section class="hero-section">
         <div class="hero-content">
             <h1 class="hero-main-title">用<span>科技</span>点亮<span>大山</span>的晨曦</h1>
-            <p class="hero-subtitle">微光循迹：赋能乡村振兴的数字化志愿服务交互平台</p>
-            <a href="#portals" class="hero-btn">开启支教之旅</a>
+            <p class="hero-subtitle">筑梦AI：跨越数字鸿沟，让每一个梦想在知识中绽放</p>
+            <a href="#portals" class="hero-btn magnetic-btn">开启支教之旅</a>
+        </div>
+        <div class="wave-container">
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
         </div>
     </section>
 
-    <!-- 这里是你的 portals, stats, jobs 区域 (保持原样) -->
     <section id="portals" class="container">
-        <div class="section-header reveal"><h2>谁在参与筑梦？</h2><div class="line"></div></div>
+        <div class="section-header reveal">
+            <h2>谁在参与筑梦？</h2>
+            <div class="line"></div>
+            <p>连接城乡教育，让每一个梦想都能在科技的羽翼下起飞</p>
+        </div>
         <div class="portal-grid">
-            <div class="portal-card reveal"><h3>志愿者入口</h3><a href="volunteer.html" class="hero-btn" style="padding:10px 20px; margin-top:20px;">进入</a></div>
-            <div class="portal-card reveal"><h3>学校 / 教师端</h3><a href="teacher.html" class="hero-btn" style="padding: 10px 25px; margin-top:20px;">进入</a></div>
-            <div class="portal-card reveal"><h3>学生学习端</h3><a href="learning.html" class="hero-btn" style="padding: 10px 25px; margin-top:20px;">进入</a></div>
+            <div class="portal-card reveal">
+                <div class="icon-box" style="margin: 0 auto 2rem;"><svg viewBox="0 0 24 24"><path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.41,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.59,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"/></svg></div>
+                <h3>志愿者入口</h3>
+                <p>提供专业支教岗位匹配，记录您的公益里程，让奉献更具价值。</p>
+                <a href="volunteer.html" class="portal-btn magnetic-btn page-transition">进入工作台</a>
+            </div>
+            <div class="portal-card reveal">
+                <div class="icon-box" style="margin: 0 auto 2rem;"><svg viewBox="0 0 24 24"><path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z"/></svg></div>
+                <h3>学校 / 教师端</h3>
+                <p>发布教学需求，管理支教老师，获取AI助教与数字化实验资源。</p>
+                <a href="teacher.html" class="portal-btn magnetic-btn page-transition">管理中心</a>
+            </div>
+            <div class="portal-card reveal">
+                <div class="icon-box" style="margin: 0 auto 2rem;"><svg viewBox="0 0 24 24"><path d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"/></svg></div>
+                <h3>学生学习端</h3>
+                <p>开启云端沉浸式课堂，参与互动实验，连接大山外的广阔世界。</p>
+                <a href="learning.html" class="portal-btn magnetic-btn">开启学习</a>
+            </div>
         </div>
     </section>
 
-    <section id="tools" class="tools-section container">
-        <div class="section-header reveal"><h2>数字化教具库</h2><div class="line"></div></div>
-        <div class="tools-grid">
-            <div class="tool-card reveal"><h3>斯特林发动机</h3><button class="hero-btn tool-btn">3D 互动预览</button></div>
-            <div class="tool-card reveal"><h3>平面四连杆机构</h3><button class="hero-btn tool-btn">3D 互动预览</button></div>
-            <div class="tool-card reveal"><h3>AI 巡检机器人</h3><button class="hero-btn tool-btn">3D 互动预览</button></div>
+    <section id="stats" class="container" style="background: linear-gradient(135deg, var(--soft-green) 0%, #fff 100%); border-radius: 3rem; padding: 80px 5%;">
+        <div class="section-header reveal">
+            <h2>筑梦成就</h2>
+            <div class="line"></div>
+            <p>用数据见证每一次改变</p>
+        </div>
+        <div class="portal-grid">
+            <div class="counter-wrapper reveal">
+                <div class="counter" data-target="1520">0</div>
+                <div class="counter-label">志愿者参与</div>
+            </div>
+            <div class="counter-wrapper reveal">
+                <div class="counter" data-target="86">0</div>
+                <div class="counter-label">合作学校</div>
+            </div>
+            <div class="counter-wrapper reveal">
+                <div class="counter" data-target="12500">0</div>
+                <div class="counter-label">受益学生</div>
+            </div>
         </div>
     </section>
 
+    <section id="jobs" class="jobs-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>最新支教岗位</h2>
+                <div class="line"></div>
+                <p>跨越山海，只为那一双双渴望知识的眼睛</p>
+            </div>
+            <div class="jobs-grid">
+                <div class="job-card reveal">
+                    <div class="job-info">
+                        <h4>贵州大山镇希望小学</h4>
+                        <div style="color: #888; font-size: 0.9rem;">📍 贵州省黔东南州 · 2024秋季</div>
+                        <div class="job-tag">英语教学</div>
+                    </div>
+                    <a href="javascript:void(0)" class="apply-btn magnetic-btn job-apply-btn">立即申请</a>
+                </div>
+                <div class="job-card reveal">
+                    <div class="job-info">
+                        <h4>凉山州美姑县小学</h4>
+                        <div style="color: #888; font-size: 0.9rem;">📍 四川省凉山州 · 全年岗位</div>
+                        <div class="job-tag">艺术支教</div>
+                    </div>
+                    <a href="javascript:void(0)" class="apply-btn magnetic-btn job-apply-btn">立即申请</a>
+                </div>
+                <div class="job-card reveal">
+                    <div class="job-info">
+                        <h4>怒江州中心小学</h4>
+                        <div style="color: #888; font-size: 0.9rem;">📍 云南省怒江州 · 1学期</div>
+                        <div class="job-tag">数学科普</div>
+                    </div>
+                    <a href="javascript:void(0)" class="apply-btn magnetic-btn job-apply-btn">立即申请</a>
+                </div>
+                <div class="job-card reveal">
+                    <div class="job-info">
+                        <h4>陇南市乡村教学点</h4>
+                        <div style="color: #888; font-size: 0.9rem;">📍 甘肃省陇南市 · 3个月</div>
+                        <div class="job-tag">手工机械</div>
+                    </div>
+                    <a href="javascript:void(0)" class="apply-btn magnetic-btn job-apply-btn">立即申请</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="tools" class="tools-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>数字化教具共享中心</h2>
+                <div class="line"></div>
+                <p>将实验室搬进云端，让前沿科技触手可及</p>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card reveal">
+                    <div class="tool-preview">
+                        <svg viewBox="0 0 24 24"><path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/></svg>
+                    </div>
+                    <h3>斯特林发动机</h3>
+                    <a href="#" class="tool-btn magnetic-btn">3D 互动预览</a>
+                </div>
+                <div class="tool-card reveal">
+                    <div class="tool-preview" style="background: radial-gradient(circle at center, #fff 0%, #e0f2fe 100%);">
+                        <svg viewBox="0 0 24 24" style="fill: #0284c7;"><path d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19C20.92,17.39 19.61,16.08 18,16.08Z"/></svg>
+                    </div>
+                    <h3>平面四连杆机构</h3>
+                    <a href="#" class="tool-btn magnetic-btn" style="border-color: #0284c7; color: #0284c7;">3D 互动预览</a>
+                </div>
+                <div class="tool-card reveal">
+                    <div class="tool-preview" style="background: radial-gradient(circle at center, #fff 0%, #f0fdf4 100%);">
+                        <svg viewBox="0 0 24 24" style="fill: #16a34a;"><path d="M21,16.5C21,16.88 20.79,17.21 20.47,17.38L12.57,21.82C12.41,21.94 12.21,22 12,22C11.79,22 11.59,21.94 11.43,21.82L3.53,17.38C3.21,17.21 3,16.88 3,16.5V7.5C3,7.12 3.21,6.79 3.53,6.62L11.43,2.18C11.59,2.06 11.79,2 12,2C12.21,2 12.41,2.06 12.57,2.18L20.47,6.62C20.79,6.79 21,7.12 21,7.5V16.5M12,4.15L5,8.09V15.91L12,19.85L19,15.91V8.09L12,4.15Z"/></svg>
+                    </div>
+                    <h3>AI 巡检机器人</h3>
+                    <a href="#" class="tool-btn magnetic-btn" style="border-color: #16a34a; color: #16a34a;">3D 互动预览</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 筑梦AI支教 · 用科技缩短城乡教育距离 · 浙ICP备xxxxxxxx号</p>
+    </footer>
+
+    <!-- 身份切换模态窗口 -->
+    <div class="identity-modal" id="identityModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>切换模拟身份</h3>
+                <button class="modal-close" id="modalClose">✕</button>
+            </div>
+            <div class="modal-body">
+                <button class="identity-btn" data-identity="student">
+                    <div class="identity-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"/></svg>
+                    </div>
+                    <span>学生</span>
+                </button>
+                <button class="identity-btn" data-identity="teacher">
+                    <div class="identity-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z"/></svg>
+                    </div>
+                    <span>老师</span>
+                </button>
+                <button class="identity-btn" data-identity="volunteer">
+                    <div class="identity-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.41,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.59,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"/></svg>
+                    </div>
+                    <span>志愿者</span>
+                </button>
+                <button class="identity-btn" data-identity="admin">
+                    <div class="identity-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,11.95L12,12.05L12,12.05L12,11.95M12,5.5L17.5,8.5L12,11.5L6.5,8.5L12,5.5M12,13.5L16.5,11V16.5L12,19L7.5,16.5V11L12,13.5Z"/></svg>
+                    </div>
+                    <span>管理员</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 志愿者申请模态窗口 -->
+    <div class="apply-modal" id="applyModal">
+        <div class="apply-modal-content">
+            <div class="apply-modal-header">
+                <h3>志愿者岗位正式申请</h3>
+                <button class="apply-modal-close" id="applyModalClose">✕</button>
+            </div>
+            <div class="apply-modal-body">
+                <div class="form-group">
+                    <label for="realName">真实姓名<span class="required">*</span></label>
+                    <input type="text" id="realName" name="realName" placeholder="请输入您的姓名，以便学校与您联系">
+                </div>
+                <div class="form-group">
+                    <label for="phone">联系电话<span class="required">*</span></label>
+                    <input type="tel" id="phone" name="phone" placeholder="请输入您的手机号码">
+                </div>
+                <div class="form-group">
+                    <label for="university">就读高校</label>
+                    <input type="text" id="university" name="university" placeholder="例如：某某工业大学">
+                </div>
+                <div class="form-group">
+                    <label for="major">专业背景</label>
+                    <input type="text" id="major" name="major" placeholder="例如：机械工程/人工智能">
+                </div>
+                <div class="form-group">
+                    <label for="bio">个人简介</label>
+                    <textarea id="bio" name="bio" rows="4" placeholder="请简单介绍您的支教愿望或特长..."></textarea>
+                </div>
+            </div>
+            <div class="apply-modal-footer">
+                <button class="btn-cancel" id="applyCancel">取消</button>
+                <button class="btn-submit" id="applySubmit">提交申请</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI助手 -->
+    <div class="ai-assistant-btn" id="aiAssistantBtn">
+        <svg viewBox="0 0 24 24">
+            <path d="M20,2H4A2,2 0 0,0 2,4V22L6,18H20A2,2 0 0,0 22,16V4A2,2 0 0,0 20,2M20,16H6L4,18V4H20V16Z" fill="white"/>
+            <circle cx="12" cy="10" r="1.5" fill="white"/>
+            <circle cx="8" cy="10" r="1.5" fill="white"/>
+            <circle cx="16" cy="10" r="1.5" fill="white"/>
+        </svg>
+    </div>
+
+    <div class="ai-assistant-window" id="aiAssistantWindow">
+        <div class="ai-assistant-header">
+            <h3>AI 支教智能助手</h3>
+            <button class="ai-assistant-close" id="aiAssistantClose">✕</button>
+        </div>
+        <div class="ai-assistant-content" id="aiAssistantContent">
+            <div class="ai-message">
+                <strong>您好！我是"筑梦"AI 助手。</strong><br><br>
+                我将用智慧与热情，助您点亮乡村教育的红烛。
+            </div>
+        </div>
+        <div class="ai-assistant-input-area">
+            <input type="text" class="ai-assistant-input" id="aiAssistantInput" placeholder="输入您的问题...">
+            <button class="ai-assistant-submit" id="aiAssistantSubmit">提问</button>
+        </div>
+    </div>
+
+    <!-- 3D模型查看器模态窗口 -->
     <div class="model-viewer-modal" id="modelViewerModal">
         <div class="model-viewer-content">
-            <div class="model-viewer-header"><h3>3D 模型查看器</h3><button onclick="closeModal('modelViewerModal')" style="background:none; border:none; font-size:2rem; cursor:pointer;">✕</button></div>
+            <div class="model-viewer-header">
+                <h3 id="modelTitle">3D 模型查看器</h3>
+                <button class="model-viewer-close" id="modelViewerClose">✕</button>
+            </div>
             <div class="model-viewer-body">
-                <model-viewer id="modelViewer" src="" auto-rotate camera-controls camera-orbit="45deg 75deg auto" min-camera-orbit="auto auto 0.05m" max-camera-orbit="auto auto 50m" field-of-view="auto" exposure="1.2"></model-viewer>
+                <model-viewer 
+                    id="modelViewer"
+                    src=""
+                    alt="3D模型"
+                    auto-rotate
+                    auto-rotate-speed="1rpm"
+                    camera-controls
+                    touch-action="pan-y"
+                    interaction-prompt="none"
+                    shadow-intensity="1"
+                    shadow-softness="0.5"
+                    camera-orbit="45deg 75deg 2.5m"
+                    min-camera-orbit="auto auto 1.5m"
+                    max-camera-orbit="auto auto 4m"
+                    exposure="1"
+                    min-field-of-view="10deg"
+                    max-field-of-view="45deg"
+                    field-of-view="25deg"
+                    loading="eager"
+                    reveal="auto"
+                    disable-zoom="false"
+                    disable-pan="false"
+                    disable-tap="false"
+                    ar="false"
+                    ar-modes="webxr scene-viewer quick-look"
+                    ar-scale="auto"
+                    ios-src=""
+                ></model-viewer>
                 <div class="model-viewer-info">
-                    <p>模型名称：<span id="modelName">-</span></p>
-                    <p>操作提示：鼠标拖拽旋转 | 滚轮缩放 | 右键平移</p>
+                    <div class="info-item">
+                        <span class="info-label">模型名称：</span>
+                        <span class="info-value" id="modelName">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">操作提示：</span>
+                        <span class="info-value">鼠标拖拽旋转 | 滚轮缩放 | 右键平移</span>
+                    </div>
+                    <div class="debug-info" id="debugInfo" style="display: none;">
+                        <div class="info-item">
+                            <span class="info-label">调试信息：</span>
+                            <span class="info-value" id="debugMessage">-</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="ai-assistant-btn" id="aiAssistantBtn" style="position:fixed; bottom:30px; right:30px; background:var(--primary-green); width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:999;"><i class="fas fa-comment-dots" style="color:white; font-size:1.5rem;"></i></div>
-    <div class="model-viewer-modal" id="aiAssistantWindow">
-        <div class="model-viewer-content" style="max-width:400px; height:500px;">
-            <div class="model-viewer-header"><h3>AI 助手</h3><button onclick="closeModal('aiAssistantWindow')" style="background:none; border:none; cursor:pointer;">✕</button></div>
-            <div id="aiAssistantContent" style="flex:1; padding:20px; overflow-y:auto; background:#f9f9f9;"><div>你好！我是微光AI。</div></div>
-            <div style="padding:15px; border-top:1px solid #eee; display:flex; gap:10px;"><input type="text" id="aiAssistantInput" style="flex:1; padding:10px; border-radius:10px; border:1px solid #ddd;" placeholder="问点什么..."><button id="aiAssistantSubmit" style="background:var(--primary-green); color:white; border:none; padding:10px; border-radius:10px; cursor:pointer;">发送</button></div>
-        </div>
-    </div>
-
-    <footer><p>© 2026 微光循迹 · 用科技点亮大山的晨曦 </p></footer>
-
+    <!-- 引入model-viewer组件 -->
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    <script src="api.js?v=final"></script>
-    <script src="script.js?v=final"></script>
+    <script src="api.js"></script>
+    <script src="auth.js"></script>
+    <script src="script.js?v=3"></script>
 </body>
 </html>
