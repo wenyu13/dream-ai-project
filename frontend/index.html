@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>筑梦AI支教 - 智慧支教生态系统</title>
+    <title>微光循迹 - 智慧支教生态系统</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -71,24 +71,6 @@
             background-repeat: no-repeat;
             background-size: 100% 400px, 100% 100%;
             overflow: hidden;
-        }
-
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: -10%;
-            right: -5%;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(255, 159, 28, 0.1) 0%, transparent 70%);
-            border-radius: 50%;
-            z-index: 0;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 900px;
         }
 
         .hero-main-title {
@@ -224,7 +206,7 @@
     </div>
 
     <nav>
-        <div class="brand">筑梦AI支教</div>
+        <div class="brand">微光循迹</div>
         <div class="nav-links">
             <a href="#">首页</a>
             <a href="#jobs">寻找岗位</a>
@@ -238,13 +220,11 @@
                 </div>
             </div>
             
-            <!-- 访客导航 -->
             <div class="guest-nav" id="guestNav">
                 <button class="login-btn" id="loginBtn">登录</button>
                 <button class="register-btn" id="registerBtn">注册</button>
             </div>
             
-            <!-- 用户导航 -->
             <div class="user-nav" id="userNav" style="display: none;">
                 <div class="user-info">
                     <div class="user-avatar"></div>
@@ -270,7 +250,7 @@
     <section class="hero-section">
         <div class="hero-content">
             <h1 class="hero-main-title">用<span>科技</span>点亮<span>大山</span>的晨曦</h1>
-            <p class="hero-subtitle">筑梦AI：跨越数字鸿沟，让每一个梦想在知识中绽放</p>
+            <p class="hero-subtitle">微光循迹：赋能乡村振兴的数字化志愿服务交互平台</p>
             <a href="#portals" class="hero-btn magnetic-btn">开启支教之旅</a>
         </div>
         <div class="wave-container">
@@ -310,7 +290,7 @@
 
     <section id="stats" class="container" style="background: linear-gradient(135deg, var(--soft-green) 0%, #fff 100%); border-radius: 3rem; padding: 80px 5%;">
         <div class="section-header reveal">
-            <h2>筑梦成就</h2>
+            <h2>微光成就</h2>
             <div class="line"></div>
             <p>用数据见证每一次改变</p>
         </div>
@@ -408,7 +388,7 @@
     </section>
 
     <footer>
-        <p>© 2026 筑梦AI支教 · 用科技缩短城乡教育距离 · 浙ICP备xxxxxxxx号</p>
+        <p>© 2026 微光循迹 · 用科技点亮大山的晨曦 </p>
     </footer>
 
     <!-- 身份切换模态窗口 -->
@@ -500,7 +480,7 @@
         </div>
         <div class="ai-assistant-content" id="aiAssistantContent">
             <div class="ai-message">
-                <strong>您好！我是"筑梦"AI 助手。</strong><br><br>
+                <strong>您好！我是"微光"AI 助手。</strong><br><br>
                 我将用智慧与热情，助您点亮乡村教育的红烛。
             </div>
         </div>
@@ -523,28 +503,16 @@
                     src=""
                     alt="3D模型"
                     auto-rotate
-                    auto-rotate-speed="1rpm"
                     camera-controls
-                    touch-action="pan-y"
-                    interaction-prompt="none"
+                    camera-orbit="45deg 75deg 150%"
+                    min-camera-orbit="auto auto 5%"
+                    max-camera-orbit="auto auto 500%"
+                    field-of-view="45deg"
+                    exposure="1.2"
                     shadow-intensity="1"
-                    shadow-softness="0.5"
-                    camera-orbit="45deg 75deg 2.5m"
-                    min-camera-orbit="auto auto 1.5m"
-                    max-camera-orbit="auto auto 4m"
-                    exposure="1"
-                    min-field-of-view="10deg"
-                    max-field-of-view="45deg"
-                    field-of-view="25deg"
                     loading="eager"
                     reveal="auto"
-                    disable-zoom="false"
-                    disable-pan="false"
-                    disable-tap="false"
-                    ar="false"
-                    ar-modes="webxr scene-viewer quick-look"
-                    ar-scale="auto"
-                    ios-src=""
+                    style="width: 100%; height: 100%;"
                 ></model-viewer>
                 <div class="model-viewer-info">
                     <div class="info-item">
@@ -555,12 +523,6 @@
                         <span class="info-label">操作提示：</span>
                         <span class="info-value">鼠标拖拽旋转 | 滚轮缩放 | 右键平移</span>
                     </div>
-                    <div class="debug-info" id="debugInfo" style="display: none;">
-                        <div class="info-item">
-                            <span class="info-label">调试信息：</span>
-                            <span class="info-value" id="debugMessage">-</span>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -568,8 +530,8 @@
 
     <!-- 引入model-viewer组件 -->
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    <script src="api.js?v=5"></script>
-    <script src="auth.js"></script>
-    <script src="script.js?v=101"></script>
+    <script src="api.js?v=orig"></script>
+    <script src="auth.js?v=orig"></script>
+    <script src="script.js?v=orig"></script>
 </body>
 </html>
