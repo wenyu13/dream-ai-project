@@ -270,7 +270,7 @@
     <section class="hero-section">
         <div class="hero-content">
             <h1 class="hero-main-title">用<span>科技</span>点亮<span>大山</span>的晨曦</h1>
-            <p class="hero-subtitle">筑梦AI：跨越数字鸿沟，让每一个梦想在知识中绽放</p>
+            <p class="hero-subtitle">微光循迹：赋能乡村振兴的数字化志愿服务交互平台</p>
             <a href="#portals" class="hero-btn magnetic-btn">开启支教之旅</a>
         </div>
         <div class="wave-container">
@@ -416,7 +416,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3>切换模拟身份</h3>
-                <button class="modal-close" id="modalClose">✕</button>
+                <button class="modal-close" id="modalClose" onclick="closeModal('identityModal')">✕</button>
             </div>
             <div class="modal-body">
                 <button class="identity-btn" data-identity="student">
@@ -452,7 +452,7 @@
         <div class="apply-modal-content">
             <div class="apply-modal-header">
                 <h3>志愿者岗位正式申请</h3>
-                <button class="apply-modal-close" id="applyModalClose">✕</button>
+                <button class="apply-modal-close" id="applyModalClose" onclick="closeModal('applyModal')">✕</button>
             </div>
             <div class="apply-modal-body">
                 <div class="form-group">
@@ -477,14 +477,14 @@
                 </div>
             </div>
             <div class="apply-modal-footer">
-                <button class="btn-cancel" id="applyCancel">取消</button>
+                <button class="btn-cancel" id="applyCancel" onclick="closeModal('applyModal')">取消</button>
                 <button class="btn-submit" id="applySubmit">提交申请</button>
             </div>
         </div>
     </div>
 
     <!-- AI助手 -->
-    <div class="ai-assistant-btn" id="aiAssistantBtn">
+    <div class="ai-assistant-btn" id="aiAssistantBtn" onclick="openModal('aiAssistantWindow')">
         <svg viewBox="0 0 24 24">
             <path d="M20,2H4A2,2 0 0,0 2,4V22L6,18H20A2,2 0 0,0 22,16V4A2,2 0 0,0 20,2M20,16H6L4,18V4H20V16Z" fill="white"/>
             <circle cx="12" cy="10" r="1.5" fill="white"/>
@@ -493,10 +493,10 @@
         </svg>
     </div>
 
-    <div class="ai-assistant-window" id="aiAssistantWindow">
+    <div class="ai-assistant-window" id="aiAssistantWindow" style="display: none;">
         <div class="ai-assistant-header">
             <h3>AI 支教智能助手</h3>
-            <button class="ai-assistant-close" id="aiAssistantClose">✕</button>
+            <button class="ai-assistant-close" id="aiAssistantClose" onclick="closeModal('aiAssistantWindow')">✕</button>
         </div>
         <div class="ai-assistant-content" id="aiAssistantContent">
             <div class="ai-message">
@@ -515,7 +515,7 @@
         <div class="model-viewer-content">
             <div class="model-viewer-header">
                 <h3 id="modelTitle">3D 模型查看器</h3>
-                <button class="model-viewer-close" id="modelViewerClose">✕</button>
+                <button class="model-viewer-close" id="modelViewerClose" onclick="closeModal('modelViewerModal')">✕</button>
             </div>
             <div class="model-viewer-body">
                 <model-viewer 
@@ -523,23 +523,16 @@
                     src=""
                     alt="3D模型"
                     auto-rotate
-                    auto-rotate-speed="1rpm"
                     camera-controls
-                    touch-action="pan-y"
-                    interaction-prompt="none"
-                    shadow-intensity="1"
-                    shadow-softness="0.5"
-                    camera-orbit="45deg 75deg auto"
-                    min-camera-orbit="auto auto 0.05m"
-                    max-camera-orbit="auto auto 50m"
-                    min-field-of-view="1deg"
-                    max-field-of-view="180deg"
-                    field-of-view="auto"
-                    interaction-prompt="auto"
+                    camera-orbit="45deg 75deg 150%"
+                    min-camera-orbit="auto auto 5%"
+                    max-camera-orbit="auto auto 500%"
+                    field-of-view="45deg"
                     exposure="1.2"
                     shadow-intensity="1"
                     loading="eager"
                     reveal="auto"
+                    style="width: 100%; height: 60vh;"
                 ></model-viewer>
                 <div class="model-viewer-info">
                     <div class="info-item">
@@ -555,9 +548,56 @@
         </div>
     </div>
 
-    <!-- 引入model-viewer组件 -->
+    <!-- 登录弹窗 -->
+    <div class="identity-modal" id="loginModal">
+        <div class="modal-content">
+            <h3 style="margin-bottom:20px; color:var(--primary-green);">用户登录</h3>
+            <div class="form-group">
+                <label>邮箱</label>
+                <input type="email" id="loginEmail" placeholder="请输入邮箱">
+            </div>
+            <div class="form-group">
+                <label>密码</label>
+                <input type="password" id="loginPassword" placeholder="请输入密码">
+            </div>
+            <button class="hero-btn" id="doLogin" style="width:100%; margin-top:10px; border:none;">登录</button>
+            <button class="btn-cancel" onclick="closeModal('loginModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer; color:#666;">取消</button>
+        </div>
+    </div>
+
+    <!-- 注册弹窗 -->
+    <div class="identity-modal" id="registerModal">
+        <div class="modal-content">
+            <h3 style="margin-bottom:20px; color:var(--primary-green);">用户注册</h3>
+            <div class="form-group">
+                <label>用户名</label>
+                <input type="text" id="regUsername" placeholder="请输入用户名">
+            </div>
+            <div class="form-group">
+                <label>邮箱</label>
+                <input type="email" id="regEmail" placeholder="请输入邮箱">
+            </div>
+            <div class="form-group">
+                <label>密码</label>
+                <input type="password" id="regPassword" placeholder="请输入密码(至少8位)">
+            </div>
+            <div class="form-group">
+                <label>身份</label>
+                <select id="regRole" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:10px;">
+                    <option value="volunteer">志愿者</option>
+                    <option value="teacher">教师</option>
+                    <option value="student">学生</option>
+                </select>
+            </div>
+            <button class="hero-btn" id="doRegister" style="width:100%; margin-top:10px; border:none;">提交注册</button>
+            <button class="btn-cancel" onclick="closeModal('registerModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer; color:#666;">取消</button>
+        </div>
+    </div>
+
+    <!-- 引入脚本 -->
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <script src="api.js?v=orig"></script>
     <script src="auth.js?v=orig"></script>
-    <script src="script.js?v=999"></script>
+    <script src="script.js?v=1.5"></script>
 </body>
+</html>
