@@ -230,7 +230,9 @@ if (applySubmit) {
     });
 }
 
-// ==================== 3D模型查看器 (核心修复部分) ====================
+// ... 前面部分保持不变 ...
+
+// ==================== 3D模型查看器核心逻辑 ====================
 function initModelViewer() {
     const modal = document.getElementById('modelViewerModal');
     const closeBtn = document.getElementById('modelViewerClose');
@@ -239,56 +241,49 @@ function initModelViewer() {
     
     if (!modal || !modelViewer) return;
 
-    function openModelViewer(modelPath, modelName) {
-        modelViewer.src = modelPath;
-        modelTitle.textContent = modelName;
-        modal.classList.add('active');
-        
-        // 增加模型加载状态监听
-        modelViewer.addEventListener('load', () => Toast.success(`模型"${modelName}"加载成功`), { once: true });
-        modelViewer.addEventListener('error', (e) => {
-            console.error("加载失败路径:", modelPath, e);
-            Toast.error("模型加载失败，请检查文件路径");
-        }, { once: true });
-    }
-
     document.querySelectorAll('.tool-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
             const card = btn.closest('.tool-card');
             const modelName = card.querySelector('h3').textContent.trim();
             
-            // 🚀 这里已修改为对应 GitHub 的真实文件名
+            console.log('点击3D预览按钮:', modelName);
+            
+            // 🚀 这里必须和你 GitHub 文件夹里的文件名一模一样
             let modelPath;
             switch(modelName) {
                 case '斯特林发动机':
-                    modelPath = './models/stirling.glb';
+                    modelPath = './models/stirling.glb'; // 👈 确认是 stirling.glb
                     break;
                 case '平面四连杆机构':
-                    modelPath = './models/linkage.glb';
+                    modelPath = './models/linkage.glb';  // 👈 确认是 linkage.glb
                     break;
                 case 'AI 巡检机器人':
-                    modelPath = './models/robot.glb';
+                    modelPath = './models/robot.glb';    // 👈 确认是 robot.glb
                     break;
                 default:
-                    Toast.warning('未找到对应模型');
+                    Toast.warning('未找到对应模型文件');
                     return;
             }
-            openModelViewer(modelPath, modelName);
+            
+            console.log('正在加载路径:', modelPath);
+            modelViewer.src = modelPath;
+            modelTitle.textContent = modelName;
+            modal.classList.add('active');
         });
     });
 
     if (closeBtn) {
         closeBtn.addEventListener('click', () => {
             modal.classList.remove('active');
-            modelViewer.src = '';
+            modelViewer.src = ''; 
         });
     }
 }
 
-// ==================== 全局启动 ====================
+// 确保在页面加载时启动
 window.addEventListener('load', () => {
-    document.body.classList.add('loaded');
-    reveal();
     initModelViewer();
+    // 如果有 reveal 动画逻辑也在这里调用
+    if (typeof reveal === 'function') reveal();
 });
