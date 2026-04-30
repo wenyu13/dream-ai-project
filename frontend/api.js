@@ -38,3 +38,4 @@ window.DreamAI = {
         }
     }
 };
+console.log("✅ api.js 已加载成功");
