@@ -125,8 +125,6 @@
             box-shadow: 0 15px 35px rgba(45, 106, 79, 0.2);
             position: relative;
             overflow: hidden;
-            border: none;
-            cursor: pointer;
         }
 
         .hero-btn:hover {
@@ -201,7 +199,6 @@
         .tool-btn { 
             padding: 10px 25px; border: 2px solid var(--danger-red); color: var(--danger-red);
             border-radius: 8px; text-decoration: none; font-weight: bold; transition: 0.3s;
-            cursor: pointer;
         }
         .tool-btn:hover { background: var(--danger-red); color: white; }
 
@@ -212,28 +209,21 @@
             .hero-main-title { font-size: 2.8rem; }
         }
 
-        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s all ease; }
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
         /* 弹窗通用样式 */
         .identity-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(5px); }
         .identity-modal.active { display: flex; }
         .modal-content { background: white; padding: 35px; border-radius: 25px; width: 90%; max-width: 450px; position: relative; }
-        .form-group { margin-bottom: 15px; text-align: left; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .form-group input, .form-group select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; }
 
-        /* 3D 弹窗高度修正 */
+        /* 3D 查看器弹窗高度修正 */
         .model-viewer-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); z-index: 20000; justify-content: center; align-items: center; }
         .model-viewer-modal.active { display: flex; }
         .model-viewer-content { background: var(--glass); backdrop-filter: blur(20px); border-radius: 20px; width: 95%; max-width: 1200px; display: flex; flex-direction: column; overflow: hidden; }
         .model-viewer-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 30px; background: linear-gradient(135deg, var(--soft-green) 0%, #fff 100%); }
         model-viewer { width: 100%; height: 60vh; display: block; }
         .model-viewer-info { background: var(--sunrise-gold); padding: 20px; border-top: 2px solid var(--soft-green); }
-
-        /* AI 窗口样式修正 */
-        .ai-assistant-window { position: fixed; top: 0; right: -400px; width: 400px; height: 100vh; background: var(--glass); backdrop-filter: blur(20px); box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1); z-index: 1001; transition: 0.4s; display: flex; flex-direction: column; }
-        .ai-assistant-window.active { right: 0; }
     </style>
 </head>
 <body>
@@ -260,13 +250,13 @@
             </div>
             
             <div class="guest-nav" id="guestNav">
-                <button class="hero-btn" onclick="openModal('loginModal')" style="padding: 7px 20px; font-size: 0.9rem;">登录</button>
-                <button class="hero-btn" onclick="openModal('registerModal')" style="padding: 7px 20px; font-size: 0.9rem; background:none; border:2px solid var(--primary-green); color:var(--primary-green); margin-left:10px;">注册</button>
+                <button class="login-btn" onclick="openModal('loginModal')" style="cursor:pointer; background:none; border:2px solid var(--primary-green); padding:5px 15px; border-radius:8px;">登录</button>
+                <button class="register-btn" onclick="openModal('registerModal')" style="cursor:pointer; background:var(--primary-green); color:white; border:none; padding:7px 15px; border-radius:8px; margin-left:5px;">注册</button>
             </div>
             
-            <div class="user-nav" id="userNav" style="display: none; align-items:center; gap:15px; margin-left:20px;">
-                <a href="volunteer.html" style="font-weight:bold; color:var(--primary-green); text-decoration:none;">个人工作台</a>
-                <button onclick="localStorage.clear(); location.reload();" style="cursor:pointer; border:none; background:none; color:red;">退出</button>
+            <div id="userNav" style="display: none; align-items:center; gap:10px; margin-left:20px;">
+                <span class="user-name" style="font-weight:bold;"></span>
+                <button onclick="localStorage.clear(); location.reload();" style="cursor:pointer; border:1px solid #ccc; background:none; padding:3px 8px; border-radius:5px;">退出</button>
             </div>
         </div>
     </nav>
@@ -295,26 +285,26 @@
                 <div class="icon-box" style="margin: 0 auto 2rem;"><svg viewBox="0 0 24 24" width="45" fill="var(--primary-green)"><path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.41,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.59,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"/></svg></div>
                 <h3>志愿者入口</h3>
                 <p>提供专业支教岗位匹配，记录您的公益里程，让奉献更具价值。</p>
-                <a href="volunteer.html" class="hero-btn" style="padding:10px 25px; margin-top:20px; font-size:1rem; text-decoration:none;">进入</a>
+                <a href="volunteer.html" class="portal-btn page-transition">进入工作台</a>
             </div>
             <div class="portal-card reveal">
                 <div class="icon-box" style="margin: 0 auto 2rem;"><svg viewBox="0 0 24 24" width="45" fill="var(--primary-green)"><path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z"/></svg></div>
                 <h3>教师管理端</h3>
                 <p>发布教学需求，管理支教老师，获取数字化实验资源。</p>
-                <a href="teacher.html" class="hero-btn" style="padding:10px 25px; margin-top:20px; font-size:1rem; text-decoration:none;">进入</a>
+                <a href="teacher.html" class="portal-btn page-transition">管理中心</a>
             </div>
             <div class="portal-card reveal">
                 <div class="icon-box" style="margin: 0 auto 2rem;"><svg viewBox="0 0 24 24" width="45" fill="var(--primary-green)"><path d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"/></svg></div>
                 <h3>学生学习端</h3>
                 <p>开启云端沉浸式课堂，参与互动实验，连接大山外的广阔世界。</p>
-                <a href="learning.html" class="hero-btn" style="padding:10px 25px; margin-top:20px; font-size:1rem; text-decoration:none;">进入</a>
+                <a href="learning.html" class="portal-btn">开启学习</a>
             </div>
         </div>
     </section>
 
     <section id="stats" class="container" style="background: linear-gradient(135deg, var(--soft-green) 0%, #fff 100%); border-radius: 3rem;">
         <div class="section-header reveal">
-            <h2>微光成就</h2>
+            <h2>成就数据</h2>
             <div class="line"></div>
             <p>用数据见证每一次改变</p>
         </div>
@@ -325,97 +315,52 @@
         </div>
     </section>
 
-    <section id="jobs" class="jobs-section">
-        <div class="container">
-            <div class="section-header reveal">
-                <h2>最新支教岗位</h2>
-                <div class="line"></div>
-            </div>
-            <div class="jobs-grid">
-                <div class="job-card reveal">
-                    <div class="job-info">
-                        <h4>贵州大山镇希望小学</h4>
-                        <p>📍 贵州 · 英语教学</p>
-                    </div>
-                    <button class="hero-btn" onclick="openModal('applyModal')" style="padding:10px 20px;">立即申请</button>
-                </div>
-                <div class="job-card reveal">
-                    <div class="job-info">
-                        <h4>凉山州美姑县小学</h4>
-                        <p>📍 四川 · 艺术支教</p>
-                    </div>
-                    <button class="hero-btn" onclick="openModal('applyModal')" style="padding:10px 20px;">立即申请</button>
-                </div>
-            </div>
+    <section id="tools" class="container" style="background: var(--soft-green); border-radius: 3rem;">
+        <div class="section-header reveal">
+            <h2>数字化教具库</h2>
+            <div class="line"></div>
+        </div>
+        <div class="portal-grid" style="grid-template-columns: repeat(3, 1fr); gap: 20px;">
+            <div class="portal-card reveal"><h3>斯特林发动机</h3><button class="portal-btn tool-btn" style="margin-top:20px; border:none; cursor:pointer;">3D 互动预览</button></div>
+            <div class="portal-card reveal"><h3>平面四连杆机构</h3><button class="portal-btn tool-btn" style="margin-top:20px; border:none; cursor:pointer;">3D 互动预览</button></div>
+            <div class="portal-card reveal"><h3>AI 巡检机器人</h3><button class="portal-btn tool-btn" style="margin-top:20px; border:none; cursor:pointer;">3D 互动预览</button></div>
         </div>
     </section>
 
-    <section id="tools" class="tools-section">
-        <div class="container">
-            <div class="section-header reveal">
-                <h2>数字化教具共享中心</h2>
-                <div class="line"></div>
-            </div>
-            <div class="tools-grid">
-                <div class="tool-card reveal"><h3>斯特林发动机</h3><button class="hero-btn tool-btn" style="margin-top:20px;">3D 互动预览</button></div>
-                <div class="tool-card reveal"><h3>平面四连杆机构</h3><button class="hero-btn tool-btn" style="margin-top:20px;">3D 互动预览</button></div>
-                <div class="tool-card reveal"><h3>AI 巡检机器人</h3><button class="hero-btn tool-btn" style="margin-top:20px;">3D 互动预览</button></div>
-            </div>
-        </div>
-    </section>
+    <footer><p>© 2026 微光循迹 · 用科技点亮大山的晨曦 </p></footer>
 
     <!-- 弹窗合集 -->
     <div class="identity-modal" id="loginModal">
-        <div class="modal-content">
-            <h3>用户登录</h3><br>
-            <input type="email" id="loginEmail" placeholder="邮箱" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
-            <input type="password" id="loginPassword" placeholder="密码" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
-            <button class="hero-btn" id="doLogin" style="width:100%;">登录</button>
-            <button onclick="closeModal('loginModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer;">取消</button>
-        </div>
+        <div class="modal-content"><h3>用户登录</h3><br><input type="email" id="loginEmail" placeholder="邮箱" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;"><input type="password" id="loginPassword" placeholder="密码" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;"><button id="doLogin" class="portal-btn" style="width:100%; border:none; cursor:pointer;">登录</button><button onclick="closeModal('loginModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer;">取消</button></div>
     </div>
-
+    
     <div class="identity-modal" id="registerModal">
-        <div class="modal-content">
-            <h3>用户注册</h3><br>
-            <input type="text" id="regUsername" placeholder="用户名" style="width:100%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
-            <input type="email" id="regEmail" placeholder="邮箱" style="width:100%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
-            <input type="password" id="regPassword" placeholder="密码" style="width:100%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
-            <select id="regRole" style="width:100%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
-                <option value="volunteer">志愿者</option>
-                <option value="teacher">教师</option>
-            </select>
-            <button class="hero-btn" id="doRegister" style="width:100%;">注册</button>
-            <button onclick="closeModal('registerModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer;">取消</button>
-        </div>
+        <div class="modal-content"><h3>用户注册</h3><br><input type="text" id="regUsername" placeholder="用户名" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;"><input type="email" id="regEmail" placeholder="邮箱" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;"><input type="password" id="regPassword" placeholder="密码" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;"><button id="doRegister" class="portal-btn" style="width:100%; border:none; cursor:pointer;">注册</button><button onclick="closeModal('registerModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer;">取消</button></div>
     </div>
 
-    <!-- 3D 弹窗修复 -->
     <div class="model-viewer-modal" id="modelViewerModal">
         <div class="model-viewer-content">
             <div class="model-viewer-header"><h3>3D 模型查看器</h3><button onclick="closeModal('modelViewerModal')" style="background:none; border:none; font-size:2rem; cursor:pointer;">✕</button></div>
             <div class="model-viewer-body">
                 <model-viewer id="modelViewer" src="" auto-rotate camera-controls camera-orbit="45deg 75deg 150%" min-camera-orbit="auto auto 0.05m" max-camera-orbit="auto auto 50m" field-of-view="auto" exposure="1.2"></model-viewer>
-                <div class="model-viewer-info"><p>模型名称：<span id="modelName">-</span></p><p>提示：鼠标拖拽旋转 | 滚轮缩放</p></div>
+                <div class="model-viewer-info"><p>模型名称：<span id="modelName">-</span></p><p>操作提示：鼠标拖拽旋转 | 滚轮缩放 | 右键平移</p></div>
             </div>
         </div>
     </div>
 
-    <!-- AI 助手按钮与窗口 -->
-    <div class="ai-assistant-btn" id="aiAssistantBtn" onclick="openModal('aiAssistantWindow')">
-        <svg viewBox="0 0 24 24"><path d="M20,2H4A2,2 0 0,0 2,4V22L6,18H20A2,2 0 0,0 22,16V4A2,2 0 0,0 20,2M20,16H6L4,18V4H20V16Z" fill="white"/></svg>
+    <!-- AI 助手按钮 -->
+    <div id="aiAssistantBtn" onclick="openModal('aiAssistantWindow')" style="position:fixed; bottom:30px; right:30px; background:var(--primary-green); width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:999;"><i class="fas fa-comment-dots" style="color:white; font-size:1.5rem;"></i></div>
+    <div class="model-viewer-modal" id="aiAssistantWindow">
+        <div class="model-viewer-content" style="max-width:400px; height:500px;">
+            <div class="model-viewer-header"><h3>AI 助手</h3><button onclick="closeModal('aiAssistantWindow')" style="background:none; border:none; cursor:pointer; font-size:1.5rem;">✕</button></div>
+            <div id="aiAssistantContent" style="flex:1; padding:20px; overflow-y:auto; background:#f9f9f9; text-align:left;"><div>你好！我是微光AI。</div></div>
+            <div style="padding:15px; border-top:1px solid #eee; display:flex; gap:10px;"><input type="text" id="aiAssistantInput" style="flex:1; padding:10px; border-radius:10px; border:1px solid #ddd;" placeholder="问点什么..."><button id="aiAssistantSubmit" style="background:var(--primary-green); color:white; border:none; padding:10px; border-radius:10px; cursor:pointer;">发送</button></div>
+        </div>
     </div>
-    <div class="ai-assistant-window" id="aiAssistantWindow">
-        <div class="ai-assistant-header"><h3>AI 助手</h3><button onclick="closeModal('aiAssistantWindow')" style="background:none; border:none; cursor:pointer; font-size:1.2rem;">✕</button></div>
-        <div id="aiAssistantContent" style="flex:1; padding:20px; overflow-y:auto; background:#f9f9f9; text-align:left;"><div>你好！我是微光AI。</div></div>
-        <div style="padding:15px; border-top:1px solid #eee; display:flex; gap:10px;"><input type="text" id="aiAssistantInput" style="flex:1; padding:10px; border-radius:10px; border:1px solid #ddd;" placeholder="问点什么..."><button id="aiAssistantSubmit" style="background:var(--primary-green); color:white; border:none; padding:10px; border-radius:10px; cursor:pointer;">发送</button></div>
-    </div>
-
-    <footer><p>© 2026 微光循迹 · 用科技点亮大山的晨曦 </p></footer>
 
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    <script src="api.js?v=final"></script>
-    <script src="auth.js?v=final"></script>
-    <script src="script.js?v=2026.1"></script>
+    <script src="api.js?v=orig"></script>
+    <script src="auth.js?v=orig"></script>
+    <script src="script.js?v=final2026"></script>
 </body>
 </html>
