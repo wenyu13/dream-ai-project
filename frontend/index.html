@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>微光循迹 - 智慧支教生态系统</title>
+    <title>筑梦AI支教 - 智慧支教生态系统</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -23,49 +23,29 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; }
-
         html { scroll-behavior: smooth; }
+        body { background: var(--bg-light); color: var(--text-main); overflow-x: hidden; line-height: 1.6; }
 
-        body {
-            background: var(--bg-light);
-            color: var(--text-main);
-            overflow-x: hidden;
-            line-height: 1.6;
-            cursor: default;
-        }
+        /* 强行保底：如果JS报错，5秒后自动显示内容防止白屏 */
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s all ease; }
+        .reveal.active { opacity: 1 !important; transform: translateY(0) !important; }
 
         .bg-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        .firefly {
-            position: absolute; width: 4px; height: 4px; background: var(--accent-orange);
-            border-radius: 50%; filter: blur(2px); opacity: 0.3; animation: move 20s infinite linear;
-        }
-        @keyframes move {
-            0% { transform: translate(0, 0); opacity: 0; }
-            50% { opacity: 0.6; }
-            100% { transform: translate(100vw, 100vh); opacity: 0; }
-        }
+        .firefly { position: absolute; width: 4px; height: 4px; background: var(--accent-orange); border-radius: 50%; filter: blur(2px); opacity: 0.3; animation: move 20s infinite linear; }
+        @keyframes move { 0% { transform: translate(0, 0); opacity: 0; } 50% { opacity: 0.6; } 100% { transform: translate(100vw, 100vh); opacity: 0; } }
 
-        nav {
-            display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 8%;
-            background: var(--glass); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 100;
-            border-bottom: 1px solid rgba(45, 106, 79, 0.05);
-        }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 8%; background: var(--glass); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(45, 106, 79, 0.05); }
         .brand { font-size: 1.5rem; font-weight: 800; color: var(--primary-green); letter-spacing: 1px; }
         .nav-links a { text-decoration: none; color: var(--text-main); margin-left: 2rem; font-weight: 500; transition: 0.3s; }
         .nav-links a:hover { color: var(--accent-orange); }
 
-        .hero-section {
-            min-height: 85vh; padding: 100px 8%; display: flex; align-items: center; justify-content: center; text-align: center; position: relative;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none"><path fill="%23ffedd5" fill-opacity="0.4" d="M0,224L60,202.7C120,181,240,139,360,138.7C480,139,600,181,720,208C840,235,960,245,1080,224C1200,203,1320,149,1380,122.7L1440,96L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>'), linear-gradient(180deg, var(--sunrise-gold) 0%, #ffffff 100%);
-            background-position: bottom; background-repeat: no-repeat; background-size: 100% 400px, 100% 100%; overflow: hidden;
-        }
-
+        .hero-section { min-height: 85vh; padding: 100px 8%; display: flex; align-items: center; justify-content: center; text-align: center; position: relative; background: linear-gradient(180deg, var(--sunrise-gold) 0%, #ffffff 100%); overflow: hidden; }
         .hero-main-title { font-size: 3.8rem; font-weight: 900; color: var(--sunrise-text); margin-bottom: 25px; line-height: 1.2; }
         .hero-main-title span { color: var(--primary-green); }
         .hero-subtitle { font-size: 1.5rem; font-weight: 500; color: #78350f; margin-bottom: 50px; opacity: 0.8; }
         .hero-btn { display: inline-block; padding: 1.1rem 3.5rem; border-radius: 50px; background: var(--primary-green); color: white; text-decoration: none; font-weight: 700; transition: 0.4s; box-shadow: 0 15px 35px rgba(45, 106, 79, 0.2); border: none; cursor: pointer; }
 
-        .container { max-width: 1300px; margin: 0 auto; padding: 100px 5%; }
+        .container { max-width: 1300px; margin: 0 auto; padding: 80px 5%; }
         .section-header { text-align: center; margin-bottom: 60px; }
         .section-header h2 { font-size: 2.4rem; color: var(--primary-green); margin-bottom: 15px; font-weight: 800; }
         .section-header .line { width: 60px; height: 4px; background: var(--accent-orange); margin: 0 auto; border-radius: 2px; }
@@ -77,58 +57,32 @@
         .jobs-section { background: white; border-radius: 4rem 4rem 0 0; }
         .jobs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
         .job-card { background: var(--bg-light); border-radius: 20px; padding: 35px; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid var(--danger-red); transition: 0.4s; }
-        .job-card:hover { background: white; transform: scale(1.02) translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
-        .job-info h4 { font-size: 1.4rem; margin-bottom: 12px; color: var(--text-main); }
+        .job-card:hover { background: white; transform: scale(1.02); }
         .job-tag { display: inline-block; padding: 4px 15px; border-radius: 6px; background: #fff1f2; color: var(--danger-red); font-size: 0.85rem; font-weight: bold; margin-top: 10px; }
 
-        .tools-section { background: linear-gradient(180deg, #fff 0%, var(--soft-green) 100%); }
-        .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 35px; }
-        .tool-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); border-radius: 30px; padding: 30px; text-align: center; border: 1px solid white; transition: 0.4s; }
-
-        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s all ease; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-
-        /* 弹窗框架还原 */
-        .identity-modal, .model-viewer-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(5px); }
+        .identity-modal, .model-viewer-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(5px); }
         .identity-modal.active, .model-viewer-modal.active { display: flex; }
-        .modal-content { background: white; padding: 40px; border-radius: 30px; width: 90%; max-width: 500px; position: relative; }
-        .form-group { margin-bottom: 20px; text-align: left; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-main); }
-        .form-group input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 12px; }
-
-        /* 3D 修复 */
-        model-viewer { width: 100%; height: 500px; display: block; border-radius: 20px; }
-
-        footer { text-align: center; padding: 5rem; background: var(--text-main); color: #88bd9e; font-size: 0.9rem; }
+        .modal-content { background: white; padding: 35px; border-radius: 25px; width: 90%; max-width: 450px; position: relative; }
         
-        /* 内部逻辑脚本 */
-        <script>
-            window.openModal = function(id) {
-                const modal = document.getElementById(id);
-                if (modal) modal.classList.add('active');
-            };
-            window.closeModal = function(id) {
-                const modal = document.getElementById(id);
-                if (modal) modal.classList.remove('active');
-            };
-        </script>
-    </head>
+        model-viewer { width: 100%; height: 500px; display: block; border-radius: 20px; }
+        footer { text-align: center; padding: 5rem; background: var(--text-main); color: #88bd9e; font-size: 0.9rem; }
+    </style>
+</head>
 <body>
 
-    <div class="bg-glow"><div class="firefly" style="top: 15%; left: 8%;"></div></div>
+    <div class="bg-glow">
+        <div class="firefly" style="top: 15%; left: 8%;"></div>
+        <div class="firefly" style="top: 45%; left: 85%;"></div>
+        <div class="firefly" style="top: 75%; left: 12%;"></div>
+    </div>
 
     <nav>
-        <div class="brand">微光循迹</div>
+        <div class="brand">筑梦AI支教</div>
         <div class="nav-links">
-            <a href="#">首页</a><a href="#jobs">寻找岗位</a><a href="#tools">3D教具库</a>
-            <div id="guestNav" style="display:inline-block;">
-                <button class="hero-btn" onclick="openModal('loginModal')" style="padding: 7px 20px; font-size: 0.9rem; margin-left: 1rem;">登录</button>
-                <button class="hero-btn" onclick="openModal('registerModal')" style="padding: 7px 20px; font-size: 0.9rem; background:none; border:2px solid var(--primary-green); color:var(--primary-green); margin-left:5px;">注册</button>
-            </div>
-            <div id="userNav" style="display:none; align-items:center; gap:15px; margin-left:20px;">
-                <a href="volunteer.html" style="font-weight:bold; color:var(--primary-green);">工作台</a>
-                <button onclick="localStorage.clear(); location.reload();" style="border:none; background:none; color:red; cursor:pointer;">退出</button>
-            </div>
+            <a href="#">首页</a>
+            <a href="#jobs">寻找岗位</a>
+            <a href="#tools">3D教具库</a>
+            <button class="hero-btn" onclick="openModal('loginModal')" style="padding: 7px 20px; font-size: 0.9rem; margin-left: 1rem;">登录</button>
         </div>
     </nav>
 
@@ -138,20 +92,25 @@
             <p class="hero-subtitle">微光循迹：赋能乡村振兴的数字化志愿服务交互平台</p>
             <a href="#portals" class="hero-btn">开启支教之旅</a>
         </div>
-        <div class="wave-container"></div>
+        <div class="wave-container">
+            <div style="position: absolute; bottom: 0; width: 100%; height: 100px; background: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 1440 320&quot;><path fill=&quot;%23d8f3dc&quot; fill-opacity=&quot;0.5&quot; d=&quot;M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,149.3C672,149,768,203,864,202.7C960,203,1056,149,1152,122.7C1248,96,1344,96,1392,96L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z&quot;></path></svg>');"></div>
+        </div>
     </section>
 
     <section id="portals" class="container">
-        <div class="section-header reveal"><h2>谁在参与微光？</h2><div class="line"></div></div>
+        <div class="section-header reveal">
+            <h2>谁在参与筑梦？</h2>
+            <div class="line"></div>
+        </div>
         <div class="portal-grid">
-            <div class="portal-card reveal"><div class="icon-box" style="margin: 0 auto 2rem;"><svg viewBox="0 0 24 24" width="45" fill="var(--primary-green)"><path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.41,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.59,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"/></svg></div><h3>志愿者入口</h3><a href="volunteer.html" class="hero-btn" style="padding:10px 25px; margin-top:20px; font-size:1rem;">进入</a></div>
-            <div class="portal-card reveal"><div class="icon-box" style="margin: 0 auto 2rem;"><svg viewBox="0 0 24 24" width="45" fill="var(--primary-green)"><path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z"/></svg></div><h3>教师管理端</h3><a href="teacher.html" class="hero-btn" style="padding:10px 25px; margin-top:20px; font-size:1rem;">进入</a></div>
-            <div class="portal-card reveal"><div class="icon-box" style="margin: 0 auto 2rem;"><svg viewBox="0 0 24 24" width="45" fill="var(--primary-green)"><path d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"/></svg></div><h3>学生学习端</h3><a href="learning.html" class="hero-btn" style="padding:10px 25px; margin-top:20px; font-size:1rem;">进入</a></div>
+            <div class="portal-card reveal"><h3>志愿者入口</h3><a href="volunteer.html" class="hero-btn" style="padding:10px 25px; margin-top:20px; font-size:1rem;">进入工作台</a></div>
+            <div class="portal-card reveal"><h3>教师管理端</h3><a href="teacher.html" class="hero-btn" style="padding: 10px 25px; margin-top:20px; font-size:1rem;">管理中心</a></div>
+            <div class="portal-card reveal"><h3>学生学习端</h3><a href="learning.html" class="hero-btn" style="padding: 10px 25px; margin-top:20px; font-size:1rem;">开启学习</a></div>
         </div>
     </section>
 
     <section id="stats" class="container" style="background: linear-gradient(135deg, var(--soft-green) 0%, #fff 100%); border-radius: 3rem;">
-        <div class="section-header reveal"><h2>微光成就</h2><div class="line"></div></div>
+        <div class="section-header reveal"><h2>筑梦成就</h2><div class="line"></div></div>
         <div class="portal-grid">
             <div style="text-align:center;"><div class="counter" style="font-size:3rem; font-weight:bold; color:var(--primary-green);" data-target="1520">0</div><p>志愿者参与</p></div>
             <div style="text-align:center;"><div class="counter" style="font-size:3rem; font-weight:bold; color:var(--primary-green);" data-target="86">0</div><p>合作学校</p></div>
@@ -163,57 +122,50 @@
         <div class="container">
             <div class="section-header reveal"><h2>最新支教岗位</h2><div class="line"></div></div>
             <div class="jobs-grid">
-                <div class="job-card reveal"><div class="job-info"><h4>贵州大山镇希望小学</h4><p>📍 贵州 · 英语教学</p><div class="job-tag">英语教学</div></div><button class="apply-btn" style="background:var(--danger-red); color:white;" onclick="openModal('applyModal')">立即申请</button></div>
-                <div class="job-card reveal"><div class="job-info"><h4>凉山州美姑县小学</h4><p>📍 四川 · 艺术支教</p><div class="job-tag">艺术支教</div></div><button class="apply-btn" style="background:var(--danger-red); color:white;" onclick="openModal('applyModal')">立即申请</button></div>
-                <!-- 还原被删掉的岗位 -->
-                <div class="job-card reveal"><div class="job-info"><h4>怒江州中心小学</h4><p>📍 云南 · 数学科普</p><div class="job-tag">数学科普</div></div><button class="apply-btn" style="background:var(--danger-red); color:white;" onclick="openModal('applyModal')">立即申请</button></div>
-                <div class="job-card reveal"><div class="job-info"><h4>陇南市乡村教学点</h4><p>📍 甘肃 · 手工机械</p><div class="job-tag">手工机械</div></div><button class="apply-btn" style="background:var(--danger-red); color:white;" onclick="openModal('applyModal')">立即申请</button></div>
+                <div class="job-card reveal"><div class="job-info"><h4>贵州大山镇希望小学</h4><p>📍 贵州 · 2024秋季</p><div class="job-tag">英语教学</div></div><button class="hero-btn" style="background:var(--danger-red);" onclick="openModal('applyModal')">立即申请</button></div>
+                <div class="job-card reveal"><div class="job-info"><h4>凉山州美姑县小学</h4><p>📍 四川 · 全年岗位</p><div class="job-tag">艺术支教</div></div><button class="hero-btn" style="background:var(--danger-red);" onclick="openModal('applyModal')">立即申请</button></div>
+                <div class="job-card reveal"><div class="job-info"><h4>怒江州中心小学</h4><p>📍 云南 · 1学期</p><div class="job-tag">数学科普</div></div><button class="hero-btn" style="background:var(--danger-red);" onclick="openModal('applyModal')">立即申请</button></div>
+                <div class="job-card reveal"><div class="job-info"><h4>陇南市乡村教学点</h4><p>📍 甘肃 · 3个月</p><div class="job-tag">手工机械</div></div><button class="hero-btn" style="background:var(--danger-red);" onclick="openModal('applyModal')">立即申请</button></div>
             </div>
         </div>
     </section>
 
-    <section id="tools" class="tools-section container">
-        <div class="section-header reveal"><h2>数字化教具库</h2><div class="line"></div></div>
-        <div class="tools-grid">
-            <div class="tool-card reveal"><h3>斯特林发动机</h3><button class="hero-btn" onclick="open3D('斯特林发动机')">3D 互动预览</button></div>
-            <div class="tool-card reveal"><h3>平面四连杆机构</h3><button class="hero-btn" onclick="open3D('平面四连杆机构')">3D 互动预览</button></div>
-            <div class="tool-card reveal"><h3>AI 巡检机器人</h3><button class="hero-btn" onclick="open3D('AI 巡检机器人')">3D 互动预览</button></div>
+    <section id="tools" class="container" style="background: var(--soft-green); border-radius: 3rem;">
+        <div class="section-header reveal"><h2>数字化教具共享中心</h2><div class="line"></div></div>
+        <div class="portal-grid">
+            <div class="portal-card reveal"><h3>斯特林发动机</h3><button class="hero-btn" onclick="open3D('斯特林发动机')">3D 互动预览</button></div>
+            <div class="portal-card reveal"><h3>平面四连杆机构</h3><button class="hero-btn" onclick="open3D('平面四连杆机构')">3D 互动预览</button></div>
+            <div class="portal-card reveal"><h3>AI 巡检机器人</h3><button class="hero-btn" onclick="open3D('AI 巡检机器人')">3D 互动预览</button></div>
         </div>
     </section>
 
-    <!-- 登录注册弹窗还原：红色按钮框架 -->
+    <!-- 还原原始红色按钮框架的弹窗 -->
     <div class="identity-modal" id="loginModal">
         <div class="modal-content">
-            <h3 style="margin-bottom:20px;">用户登录</h3>
-            <div class="form-group"><label>邮箱</label><input type="email" id="loginEmail" placeholder="请输入邮箱"></div>
-            <div class="form-group"><label>密码</label><input type="password" id="loginPassword" placeholder="请输入密码"></div>
-            <button class="hero-btn" id="doLogin" style="width:100%; background:var(--danger-red); margin-top:10px;">登录</button>
-            <button onclick="closeModal('loginModal')" style="width:100%; margin-top:15px; border:none; background:none; cursor:pointer; color:#666;">取消</button>
+            <h3 style="margin-bottom:20px; color:var(--primary-green);">用户登录</h3>
+            <input type="email" id="loginEmail" placeholder="邮箱" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
+            <input type="password" id="loginPassword" placeholder="密码" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
+            <button class="hero-btn" style="width:100%; background:var(--danger-red);">登录</button>
+            <button onclick="closeModal('loginModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer; color:#666;">取消</button>
         </div>
     </div>
 
     <div class="identity-modal" id="registerModal">
         <div class="modal-content">
-            <h3 style="margin-bottom:20px;">用户注册</h3>
-            <div class="form-group"><label>用户名</label><input type="text" id="regUsername" placeholder="请输入用户名"></div>
-            <div class="form-group"><label>邮箱</label><input type="email" id="regEmail" placeholder="请输入邮箱"></div>
-            <div class="form-group"><label>密码</label><input type="password" id="regPassword" placeholder="请输入密码(至少8位)"></div>
-            <div class="form-group">
-                <label>身份</label>
-                <select id="regRole" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:10px;"><option value="volunteer">志愿者</option><option value="teacher">教师</option></select>
-            </div>
-            <button class="hero-btn" id="doRegister" style="width:100%; background:var(--danger-red); margin-top:10px;">提交注册</button>
-            <button onclick="closeModal('registerModal')" style="width:100%; margin-top:15px; border:none; background:none; cursor:pointer; color:#666;">取消</button>
+            <h3 style="margin-bottom:20px; color:var(--primary-green);">用户注册</h3>
+            <input type="text" placeholder="用户名" style="width:100%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
+            <input type="email" placeholder="邮箱" style="width:100%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
+            <input type="password" placeholder="密码" style="width:100%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
+            <button class="hero-btn" style="width:100%; background:var(--danger-red);">提交注册</button>
+            <button onclick="closeModal('registerModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer; color:#666;">取消</button>
         </div>
     </div>
 
     <div class="model-viewer-modal" id="modelViewerModal">
         <div class="model-viewer-content">
-            <div class="model-viewer-header"><h3>3D 模型查看器</h3><button onclick="closeModal('modelViewerModal')" style="background:none; border:none; font-size:2rem; cursor:pointer;">✕</button></div>
-            <div class="model-viewer-body">
-                <model-viewer id="modelViewer" src="" auto-rotate camera-controls camera-orbit="45deg 75deg 150%" min-camera-orbit="auto auto 0.05m" max-camera-orbit="auto auto 50m" field-of-view="auto" exposure="1.2"></model-viewer>
-                <div class="model-viewer-info" style="padding:20px; background:var(--sunrise-gold);">模型名称：<span id="modelName">-</span></div>
-            </div>
+            <div class="model-viewer-header"><h3>3D 预览</h3><button onclick="closeModal('modelViewerModal')" style="background:none; border:none; font-size:2rem; cursor:pointer;">✕</button></div>
+            <model-viewer id="modelViewer" src="" auto-rotate camera-controls camera-orbit="45deg 75deg 150%" min-camera-orbit="auto auto 0.05m" max-camera-orbit="auto auto 50m" field-of-view="auto" exposure="1.2"></model-viewer>
+            <div style="padding:15px; text-align:center; background:#f9f9f9;">模型名称：<span id="modelName">-</span></div>
         </div>
     </div>
 
@@ -222,15 +174,22 @@
         <div class="model-viewer-content" style="max-width:400px; height:500px;">
             <div class="model-viewer-header"><h3>AI 助手</h3><button onclick="closeModal('aiAssistantWindow')" style="background:none; border:none; color:white; cursor:pointer;">✕</button></div>
             <div id="aiAssistantContent" style="flex:1; padding:20px; overflow-y:auto; background:#f9f9f9; text-align:left;"><div>你好！我是微光AI。</div></div>
-            <div style="padding:15px; border-top:1px solid #eee; display:flex; gap:10px;"><input type="text" id="aiAssistantInput" style="flex:1; padding:10px; border:1px solid #ddd; border-radius:10px;" placeholder="问点什么..."><button id="aiAssistantSubmit" style="background:var(--primary-green); color:white; border:none; padding:10px; border-radius:10px; cursor:pointer;">发送</button></div>
+            <div style="padding:15px; border-top:1px solid #eee; display:flex; gap:10px;"><input type="text" id="aiAssistantInput" style="flex:1; padding:10px; border-radius:10px; border:1px solid #ddd;" placeholder="问点什么..."><button id="aiAssistantSubmit" style="background:var(--primary-green); color:white; border:none; padding:10px; border-radius:10px; cursor:pointer;">发送</button></div>
         </div>
     </div>
 
     <footer><p>© 2026 微光循迹 · 用科技点亮大山的晨曦 </p></footer>
 
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    <script src="api.js?v=999"></script>
-    <script src="auth.js?v=999"></script>
-    <script src="script.js?v=20260501"></script>
+    <script src="api.js?v=orig"></script>
+    <script src="auth.js?v=orig"></script>
+    <script src="script.js?v=final_fix_2026"></script>
+    <!-- 保底脚本：如果上方 JS 报错，强制显示页面内容 -->
+    <script>
+        setTimeout(() => {
+            document.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
+            console.log("已强行显示页面内容");
+        }, 3000);
+    </script>
 </body>
 </html>
