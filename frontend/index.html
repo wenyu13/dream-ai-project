@@ -1,195 +1,118 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>筑梦AI支教 - 智慧支教生态系统</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary-green: #2d6a4f;
-            --accent-orange: #ff9f1c;
-            --soft-green: #d8f3dc;
-            --text-main: #1b4332;
-            --glass: rgba(255, 255, 255, 0.85);
-            --bg-light: #f4f7f5;
-            --danger-red: #991b1b;
-            --card-shadow: 0 10px 30px rgba(45, 106, 79, 0.08);
+/**
+ * 微光循迹 - 全局交互补丁 (完美还原版)
+ */
 
-            --sunrise-gold: #fff7ed;
-            --sunrise-amber: #ffedd5;
-            --sunrise-text: #451a03;
+// 1. 全局弹窗控制 (确保 HTML onclick 必能关掉)
+window.openModal = function(id) {
+    const el = document.getElementById(id);
+    if (el) {
+        el.classList.add('active');
+        if (id === 'aiAssistantWindow') el.style.right = '0';
+        document.body.style.overflow = 'hidden';
+    }
+};
+
+window.closeModal = function(id) {
+    const el = document.getElementById(id);
+    if (el) {
+        el.classList.remove('active');
+        if (id === 'aiAssistantWindow') el.style.right = '-400px';
+        document.body.style.overflow = 'auto';
+        const viewer = document.getElementById('modelViewer');
+        if (id === 'modelViewerModal' && viewer) viewer.src = '';
+    }
+};
+
+// 2. 🚀 3D 加载逻辑
+window.open3D = function(modelName) {
+    const viewer = document.getElementById('modelViewer');
+    const nameDisplay = document.getElementById('modelName');
+    if (nameDisplay) nameDisplay.innerText = modelName;
+    
+    let path = '';
+    if(modelName.includes('斯特林')) path = './models/stirling.glb';
+    else if(modelName.includes('连杆')) path = './models/linkage.glb';
+    else if(modelName.includes('机器人')) path = './models/robot.glb';
+
+    if (viewer && path) {
+        viewer.src = path;
+        window.openModal('modelViewerModal');
+    }
+};
+
+// 3. 数字跳动动画引擎
+function startCounter(el) {
+    if (el.dataset.done) return;
+    const target = +el.dataset.target;
+    let count = 0;
+    const duration = 2000; 
+    const step = target / (duration / 20);
+
+    const update = () => {
+        count += step;
+        if (count < target) {
+            el.innerText = Math.ceil(count).toLocaleString();
+            setTimeout(update, 20);
+        } else {
+            el.innerText = target.toLocaleString();
+            el.dataset.done = "true";
         }
+    };
+    update();
+}
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; }
-        html { scroll-behavior: smooth; }
-        body { background: var(--bg-light); color: var(--text-main); overflow-x: hidden; line-height: 1.6; }
+// 4. 滚动观察器 (用于 100% 触发 Reveal 和 数字跳动)
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+            const counters = entry.target.querySelectorAll('.counter');
+            counters.forEach(c => startCounter(c));
+            if (entry.target.classList.contains('counter')) startCounter(entry.target);
+        }
+    });
+}, { threshold: 0.1 });
 
-        /* 强行保底：如果JS报错，5秒后自动显示内容防止白屏 */
-        .reveal { opacity: 0; transform: translateY(30px); transition: 1s all ease; }
-        .reveal.active { opacity: 1 !important; transform: translateY(0) !important; }
+// 5. 初始化与事件绑定
+window.addEventListener('load', () => {
+    // 监听所有需要浮现和跳动的元素
+    document.querySelectorAll('.reveal, .counter').forEach(el => observer.observe(el));
 
-        .bg-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        .firefly { position: absolute; width: 4px; height: 4px; background: var(--accent-orange); border-radius: 50%; filter: blur(2px); opacity: 0.3; animation: move 20s infinite linear; }
-        @keyframes move { 0% { transform: translate(0, 0); opacity: 0; } 50% { opacity: 0.6; } 100% { transform: translate(100vw, 100vh); opacity: 0; } }
+    // 鼠标跟随光晕还原
+    const glow = document.createElement('div');
+    glow.style.cssText = "position:fixed; width:400px; height:400px; background:radial-gradient(circle, rgba(45,106,79,0.05) 0%, transparent 70%); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition: opacity 0.3s;";
+    document.body.appendChild(glow);
+    document.addEventListener('mousemove', (e) => {
+        glow.style.left = e.clientX + 'px';
+        glow.style.top = e.clientY + 'px';
+    });
 
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 8%; background: var(--glass); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(45, 106, 79, 0.05); }
-        .brand { font-size: 1.5rem; font-weight: 800; color: var(--primary-green); letter-spacing: 1px; }
-        .nav-links a { text-decoration: none; color: var(--text-main); margin-left: 2rem; font-weight: 500; transition: 0.3s; }
-        .nav-links a:hover { color: var(--accent-orange); }
+    // AI 聊天逻辑 (联网版)
+    const aiSubmit = document.getElementById('aiAssistantSubmit');
+    if (aiSubmit) {
+        aiSubmit.onclick = async () => {
+            const input = document.getElementById('aiAssistantInput');
+            const content = document.getElementById('aiAssistantContent');
+            const msg = input.value.trim();
+            if (!msg) return;
 
-        .hero-section { min-height: 85vh; padding: 100px 8%; display: flex; align-items: center; justify-content: center; text-align: center; position: relative; background: linear-gradient(180deg, var(--sunrise-gold) 0%, #ffffff 100%); overflow: hidden; }
-        .hero-main-title { font-size: 3.8rem; font-weight: 900; color: var(--sunrise-text); margin-bottom: 25px; line-height: 1.2; }
-        .hero-main-title span { color: var(--primary-green); }
-        .hero-subtitle { font-size: 1.5rem; font-weight: 500; color: #78350f; margin-bottom: 50px; opacity: 0.8; }
-        .hero-btn { display: inline-block; padding: 1.1rem 3.5rem; border-radius: 50px; background: var(--primary-green); color: white; text-decoration: none; font-weight: 700; transition: 0.4s; box-shadow: 0 15px 35px rgba(45, 106, 79, 0.2); border: none; cursor: pointer; }
+            const userDiv = document.createElement('div');
+            userDiv.style.cssText = "margin: 10px 0; text-align: right; color: var(--primary-green);";
+            userDiv.innerHTML = `<strong>您：</strong>${msg}`;
+            content.appendChild(userDiv);
+            input.value = '';
 
-        .container { max-width: 1300px; margin: 0 auto; padding: 80px 5%; }
-        .section-header { text-align: center; margin-bottom: 60px; }
-        .section-header h2 { font-size: 2.4rem; color: var(--primary-green); margin-bottom: 15px; font-weight: 800; }
-        .section-header .line { width: 60px; height: 4px; background: var(--accent-orange); margin: 0 auto; border-radius: 2px; }
+            const loading = document.createElement('div');
+            loading.innerText = "微光AI正在思考...";
+            content.appendChild(loading);
 
-        .portal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
-        .portal-card { background: white; border-radius: 2.5rem; padding: 4rem 2rem; text-align: center; transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); border: 1px solid rgba(45, 106, 79, 0.05); box-shadow: var(--card-shadow); }
-        .portal-card:hover { transform: translateY(-15px) scale(1.02); }
-
-        .jobs-section { background: white; border-radius: 4rem 4rem 0 0; }
-        .jobs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
-        .job-card { background: var(--bg-light); border-radius: 20px; padding: 35px; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid var(--danger-red); transition: 0.4s; }
-        .job-card:hover { background: white; transform: scale(1.02); }
-        .job-tag { display: inline-block; padding: 4px 15px; border-radius: 6px; background: #fff1f2; color: var(--danger-red); font-size: 0.85rem; font-weight: bold; margin-top: 10px; }
-
-        .identity-modal, .model-viewer-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(5px); }
-        .identity-modal.active, .model-viewer-modal.active { display: flex; }
-        .modal-content { background: white; padding: 35px; border-radius: 25px; width: 90%; max-width: 450px; position: relative; }
-        
-        model-viewer { width: 100%; height: 500px; display: block; border-radius: 20px; }
-        footer { text-align: center; padding: 5rem; background: var(--text-main); color: #88bd9e; font-size: 0.9rem; }
-    </style>
-</head>
-<body>
-
-    <div class="bg-glow">
-        <div class="firefly" style="top: 15%; left: 8%;"></div>
-        <div class="firefly" style="top: 45%; left: 85%;"></div>
-        <div class="firefly" style="top: 75%; left: 12%;"></div>
-    </div>
-
-    <nav>
-        <div class="brand">筑梦AI支教</div>
-        <div class="nav-links">
-            <a href="#">首页</a>
-            <a href="#jobs">寻找岗位</a>
-            <a href="#tools">3D教具库</a>
-            <button class="hero-btn" onclick="openModal('loginModal')" style="padding: 7px 20px; font-size: 0.9rem; margin-left: 1rem;">登录</button>
-        </div>
-    </nav>
-
-    <section class="hero-section">
-        <div class="hero-content">
-            <h1 class="hero-main-title">用<span>科技</span>点亮<span>大山</span>的晨曦</h1>
-            <p class="hero-subtitle">微光循迹：赋能乡村振兴的数字化志愿服务交互平台</p>
-            <a href="#portals" class="hero-btn">开启支教之旅</a>
-        </div>
-        <div class="wave-container">
-            <div style="position: absolute; bottom: 0; width: 100%; height: 100px; background: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 1440 320&quot;><path fill=&quot;%23d8f3dc&quot; fill-opacity=&quot;0.5&quot; d=&quot;M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,149.3C672,149,768,203,864,202.7C960,203,1056,149,1152,122.7C1248,96,1344,96,1392,96L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z&quot;></path></svg>');"></div>
-        </div>
-    </section>
-
-    <section id="portals" class="container">
-        <div class="section-header reveal">
-            <h2>谁在参与筑梦？</h2>
-            <div class="line"></div>
-        </div>
-        <div class="portal-grid">
-            <div class="portal-card reveal"><h3>志愿者入口</h3><a href="volunteer.html" class="hero-btn" style="padding:10px 25px; margin-top:20px; font-size:1rem;">进入工作台</a></div>
-            <div class="portal-card reveal"><h3>教师管理端</h3><a href="teacher.html" class="hero-btn" style="padding: 10px 25px; margin-top:20px; font-size:1rem;">管理中心</a></div>
-            <div class="portal-card reveal"><h3>学生学习端</h3><a href="learning.html" class="hero-btn" style="padding: 10px 25px; margin-top:20px; font-size:1rem;">开启学习</a></div>
-        </div>
-    </section>
-
-    <section id="stats" class="container" style="background: linear-gradient(135deg, var(--soft-green) 0%, #fff 100%); border-radius: 3rem;">
-        <div class="section-header reveal"><h2>筑梦成就</h2><div class="line"></div></div>
-        <div class="portal-grid">
-            <div style="text-align:center;"><div class="counter" style="font-size:3rem; font-weight:bold; color:var(--primary-green);" data-target="1520">0</div><p>志愿者参与</p></div>
-            <div style="text-align:center;"><div class="counter" style="font-size:3rem; font-weight:bold; color:var(--primary-green);" data-target="86">0</div><p>合作学校</p></div>
-            <div style="text-align:center;"><div class="counter" style="font-size:3rem; font-weight:bold; color:var(--primary-green);" data-target="12500">0</div><p>受益学生</p></div>
-        </div>
-    </section>
-
-    <section id="jobs" class="jobs-section">
-        <div class="container">
-            <div class="section-header reveal"><h2>最新支教岗位</h2><div class="line"></div></div>
-            <div class="jobs-grid">
-                <div class="job-card reveal"><div class="job-info"><h4>贵州大山镇希望小学</h4><p>📍 贵州 · 2024秋季</p><div class="job-tag">英语教学</div></div><button class="hero-btn" style="background:var(--danger-red);" onclick="openModal('applyModal')">立即申请</button></div>
-                <div class="job-card reveal"><div class="job-info"><h4>凉山州美姑县小学</h4><p>📍 四川 · 全年岗位</p><div class="job-tag">艺术支教</div></div><button class="hero-btn" style="background:var(--danger-red);" onclick="openModal('applyModal')">立即申请</button></div>
-                <div class="job-card reveal"><div class="job-info"><h4>怒江州中心小学</h4><p>📍 云南 · 1学期</p><div class="job-tag">数学科普</div></div><button class="hero-btn" style="background:var(--danger-red);" onclick="openModal('applyModal')">立即申请</button></div>
-                <div class="job-card reveal"><div class="job-info"><h4>陇南市乡村教学点</h4><p>📍 甘肃 · 3个月</p><div class="job-tag">手工机械</div></div><button class="hero-btn" style="background:var(--danger-red);" onclick="openModal('applyModal')">立即申请</button></div>
-            </div>
-        </div>
-    </section>
-
-    <section id="tools" class="container" style="background: var(--soft-green); border-radius: 3rem;">
-        <div class="section-header reveal"><h2>数字化教具共享中心</h2><div class="line"></div></div>
-        <div class="portal-grid">
-            <div class="portal-card reveal"><h3>斯特林发动机</h3><button class="hero-btn" onclick="open3D('斯特林发动机')">3D 互动预览</button></div>
-            <div class="portal-card reveal"><h3>平面四连杆机构</h3><button class="hero-btn" onclick="open3D('平面四连杆机构')">3D 互动预览</button></div>
-            <div class="portal-card reveal"><h3>AI 巡检机器人</h3><button class="hero-btn" onclick="open3D('AI 巡检机器人')">3D 互动预览</button></div>
-        </div>
-    </section>
-
-    <!-- 还原原始红色按钮框架的弹窗 -->
-    <div class="identity-modal" id="loginModal">
-        <div class="modal-content">
-            <h3 style="margin-bottom:20px; color:var(--primary-green);">用户登录</h3>
-            <input type="email" id="loginEmail" placeholder="邮箱" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
-            <input type="password" id="loginPassword" placeholder="密码" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
-            <button class="hero-btn" style="width:100%; background:var(--danger-red);">登录</button>
-            <button onclick="closeModal('loginModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer; color:#666;">取消</button>
-        </div>
-    </div>
-
-    <div class="identity-modal" id="registerModal">
-        <div class="modal-content">
-            <h3 style="margin-bottom:20px; color:var(--primary-green);">用户注册</h3>
-            <input type="text" placeholder="用户名" style="width:100%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
-            <input type="email" placeholder="邮箱" style="width:100%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
-            <input type="password" placeholder="密码" style="width:100%; padding:12px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
-            <button class="hero-btn" style="width:100%; background:var(--danger-red);">提交注册</button>
-            <button onclick="closeModal('registerModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer; color:#666;">取消</button>
-        </div>
-    </div>
-
-    <div class="model-viewer-modal" id="modelViewerModal">
-        <div class="model-viewer-content">
-            <div class="model-viewer-header"><h3>3D 预览</h3><button onclick="closeModal('modelViewerModal')" style="background:none; border:none; font-size:2rem; cursor:pointer;">✕</button></div>
-            <model-viewer id="modelViewer" src="" auto-rotate camera-controls camera-orbit="45deg 75deg 150%" min-camera-orbit="auto auto 0.05m" max-camera-orbit="auto auto 50m" field-of-view="auto" exposure="1.2"></model-viewer>
-            <div style="padding:15px; text-align:center; background:#f9f9f9;">模型名称：<span id="modelName">-</span></div>
-        </div>
-    </div>
-
-    <div id="aiAssistantBtn" onclick="openModal('aiAssistantWindow')" style="position:fixed; bottom:30px; right:30px; background:var(--primary-green); width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:999;"><i class="fas fa-comment-dots" style="color:white; font-size:1.5rem;"></i></div>
-    <div class="model-viewer-modal" id="aiAssistantWindow">
-        <div class="model-viewer-content" style="max-width:400px; height:500px;">
-            <div class="model-viewer-header"><h3>AI 助手</h3><button onclick="closeModal('aiAssistantWindow')" style="background:none; border:none; color:white; cursor:pointer;">✕</button></div>
-            <div id="aiAssistantContent" style="flex:1; padding:20px; overflow-y:auto; background:#f9f9f9; text-align:left;"><div>你好！我是微光AI。</div></div>
-            <div style="padding:15px; border-top:1px solid #eee; display:flex; gap:10px;"><input type="text" id="aiAssistantInput" style="flex:1; padding:10px; border-radius:10px; border:1px solid #ddd;" placeholder="问点什么..."><button id="aiAssistantSubmit" style="background:var(--primary-green); color:white; border:none; padding:10px; border-radius:10px; cursor:pointer;">发送</button></div>
-        </div>
-    </div>
-
-    <footer><p>© 2026 微光循迹 · 用科技点亮大山的晨曦 </p></footer>
-
-    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    <script src="api.js?v=orig"></script>
-    <script src="auth.js?v=orig"></script>
-    <script src="script.js?v=final_fix_2026"></script>
-    <!-- 保底脚本：如果上方 JS 报错，强制显示页面内容 -->
-    <script>
-        setTimeout(() => {
-            document.querySelectorAll('.reveal').forEach(el => el.classList.add('active'));
-            console.log("已强行显示页面内容");
-        }, 3000);
-    </script>
-</body>
-</html>
+            try {
+                const res = await window.DreamAI.AI.chat(msg);
+                loading.innerHTML = `<strong>微光AI：</strong>${res.reply}`;
+            } catch (e) {
+                loading.innerText = "连接失败，请检查网络。";
+            }
+            content.scrollTop = content.scrollHeight;
+        };
+    }
+});
