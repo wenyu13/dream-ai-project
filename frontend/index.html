@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>微光循迹 - 智慧支教生态系统</title>
+    <title>筑梦AI支教 - 智慧支教生态系统</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -125,8 +125,6 @@
             box-shadow: 0 15px 35px rgba(45, 106, 79, 0.2);
             position: relative;
             overflow: hidden;
-            border: none;
-            cursor: pointer;
         }
 
         .hero-btn:hover {
@@ -195,13 +193,17 @@
             background: radial-gradient(circle at center, #fff 0%, #ffe4e4 100%);
             position: relative; overflow: hidden;
         }
+        .tool-preview::before {
+            content: ""; position: absolute; width: 200%; height: 200%;
+            background-image: linear-gradient(rgba(153, 27, 27, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(153, 27, 27, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
         .tool-preview svg { width: 60px; height: 60px; fill: var(--danger-red); z-index: 1; transition: 0.5s; }
         .tool-card:hover .tool-preview svg { transform: scale(1.25) rotate(10deg); }
         .tool-card h3 { font-size: 1.3rem; margin-bottom: 20px; }
         .tool-btn { 
             padding: 10px 25px; border: 2px solid var(--danger-red); color: var(--danger-red);
             border-radius: 8px; text-decoration: none; font-weight: bold; transition: 0.3s;
-            cursor: pointer;
         }
         .tool-btn:hover { background: var(--danger-red); color: white; }
 
@@ -211,22 +213,6 @@
             .portal-grid, .jobs-grid, .tools-grid { grid-template-columns: 1fr; } 
             .hero-main-title { font-size: 2.8rem; }
         }
-
-        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s all ease; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-
-        /* 弹窗通用样式 */
-        .identity-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(5px); }
-        .identity-modal.active { display: flex; }
-        .modal-content { background: white; padding: 35px; border-radius: 25px; width: 90%; max-width: 450px; position: relative; }
-
-        /* 3D 弹窗样式还原 */
-        .model-viewer-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px); z-index: 20000; justify-content: center; align-items: center; }
-        .model-viewer-modal.active { display: flex; }
-        .model-viewer-content { background: var(--glass); backdrop-filter: blur(20px); border-radius: 20px; width: 95%; max-width: 1200px; display: flex; flex-direction: column; overflow: hidden; }
-        .model-viewer-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 30px; background: linear-gradient(135deg, var(--soft-green) 0%, #fff 100%); }
-        model-viewer { width: 100%; height: 60vh; display: block; }
-        .model-viewer-info { background: var(--sunrise-gold); padding: 20px; border-top: 2px solid var(--soft-green); }
     </style>
 </head>
 <body>
@@ -238,7 +224,7 @@
     </div>
 
     <nav>
-        <div class="brand">微光循迹</div>
+        <div class="brand">筑梦AI支教</div>
         <div class="nav-links">
             <a href="#">首页</a>
             <a href="#jobs">寻找岗位</a>
@@ -247,19 +233,36 @@
                 <a href="javascript:void(0)" class="dropdown-toggle">更多 ▼</a>
                 <div class="dropdown-menu">
                     <a href="#about">关于我们</a>
-                    <a href="javascript:void(0)" onclick="openModal('aiAssistantWindow')">AI咨询</a>
+                    <a href="javascript:void(0)" id="aiConsult">AI咨询</a>
                     <a href="admin.html">系统后台</a>
                 </div>
             </div>
             
+            <!-- 访客导航 -->
             <div class="guest-nav" id="guestNav">
-                <button class="login-btn" id="loginBtn" onclick="openModal('loginModal')" style="cursor:pointer; background:none; border:2px solid var(--primary-green); padding:5px 15px; border-radius:8px;">登录</button>
-                <button class="register-btn" id="registerBtn" onclick="openModal('registerModal')" style="cursor:pointer; background:var(--primary-green); color:white; border:none; padding:7px 15px; border-radius:8px; margin-left:5px;">注册</button>
+                <button class="login-btn" id="loginBtn">登录</button>
+                <button class="register-btn" id="registerBtn">注册</button>
             </div>
             
-            <div id="userNav" style="display: none; align-items:center; gap:10px; margin-left:20px;">
-                <span class="user-name" style="font-weight:bold; color:var(--primary-green);"></span>
-                <button onclick="localStorage.clear(); location.reload();" style="cursor:pointer; border:1px solid #ccc; background:none; padding:3px 8px; border-radius:5px;">退出</button>
+            <!-- 用户导航 -->
+            <div class="user-nav" id="userNav" style="display: none;">
+                <div class="user-info">
+                    <div class="user-avatar"></div>
+                    <div class="user-details">
+                        <div class="user-name"></div>
+                        <div class="user-role"></div>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn">退出</button>
+            </div>
+            
+            <div class="menu-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+                <div class="identity-menu">
+                    <a href="javascript:void(0)" id="switchIdentity">切换身份</a>
+                </div>
             </div>
         </div>
     </nav>
@@ -267,7 +270,7 @@
     <section class="hero-section">
         <div class="hero-content">
             <h1 class="hero-main-title">用<span>科技</span>点亮<span>大山</span>的晨曦</h1>
-            <p class="hero-subtitle">微光循迹：赋能乡村振兴的数字化志愿服务交互平台</p>
+            <p class="hero-subtitle">筑梦AI：跨越数字鸿沟，让每一个梦想在知识中绽放</p>
             <a href="#portals" class="hero-btn magnetic-btn">开启支教之旅</a>
         </div>
         <div class="wave-container">
@@ -279,7 +282,7 @@
 
     <section id="portals" class="container">
         <div class="section-header reveal">
-            <h2>谁在参与微光？</h2>
+            <h2>谁在参与筑梦？</h2>
             <div class="line"></div>
             <p>连接城乡教育，让每一个梦想都能在科技的羽翼下起飞</p>
         </div>
@@ -292,7 +295,7 @@
             </div>
             <div class="portal-card reveal">
                 <div class="icon-box" style="margin: 0 auto 2rem;"><svg viewBox="0 0 24 24"><path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z"/></svg></div>
-                <h3>教师管理端</h3>
+                <h3>学校 / 教师端</h3>
                 <p>发布教学需求，管理支教老师，获取AI助教与数字化实验资源。</p>
                 <a href="teacher.html" class="portal-btn magnetic-btn page-transition">管理中心</a>
             </div>
@@ -307,7 +310,7 @@
 
     <section id="stats" class="container" style="background: linear-gradient(135deg, var(--soft-green) 0%, #fff 100%); border-radius: 3rem; padding: 80px 5%;">
         <div class="section-header reveal">
-            <h2>微光成就</h2>
+            <h2>筑梦成就</h2>
             <div class="line"></div>
             <p>用数据见证每一次改变</p>
         </div>
@@ -332,21 +335,40 @@
             <div class="section-header reveal">
                 <h2>最新支教岗位</h2>
                 <div class="line"></div>
+                <p>跨越山海，只为那一双双渴望知识的眼睛</p>
             </div>
             <div class="jobs-grid">
                 <div class="job-card reveal">
                     <div class="job-info">
                         <h4>贵州大山镇希望小学</h4>
-                        <p>📍 贵州 · 英语教学</p>
+                        <div style="color: #888; font-size: 0.9rem;">📍 贵州省黔东南州 · 2024秋季</div>
+                        <div class="job-tag">英语教学</div>
                     </div>
-                    <a href="javascript:void(0)" class="apply-btn magnetic-btn" onclick="openModal('applyModal')">立即申请</a>
+                    <a href="javascript:void(0)" class="apply-btn magnetic-btn job-apply-btn">立即申请</a>
                 </div>
                 <div class="job-card reveal">
                     <div class="job-info">
                         <h4>凉山州美姑县小学</h4>
-                        <p>📍 四川 · 艺术支教</p>
+                        <div style="color: #888; font-size: 0.9rem;">📍 四川省凉山州 · 全年岗位</div>
+                        <div class="job-tag">艺术支教</div>
                     </div>
-                    <a href="javascript:void(0)" class="apply-btn magnetic-btn" onclick="openModal('applyModal')">立即申请</a>
+                    <a href="javascript:void(0)" class="apply-btn magnetic-btn job-apply-btn">立即申请</a>
+                </div>
+                <div class="job-card reveal">
+                    <div class="job-info">
+                        <h4>怒江州中心小学</h4>
+                        <div style="color: #888; font-size: 0.9rem;">📍 云南省怒江州 · 1学期</div>
+                        <div class="job-tag">数学科普</div>
+                    </div>
+                    <a href="javascript:void(0)" class="apply-btn magnetic-btn job-apply-btn">立即申请</a>
+                </div>
+                <div class="job-card reveal">
+                    <div class="job-info">
+                        <h4>陇南市乡村教学点</h4>
+                        <div style="color: #888; font-size: 0.9rem;">📍 甘肃省陇南市 · 3个月</div>
+                        <div class="job-tag">手工机械</div>
+                    </div>
+                    <a href="javascript:void(0)" class="apply-btn magnetic-btn job-apply-btn">立即申请</a>
                 </div>
             </div>
         </div>
@@ -357,6 +379,7 @@
             <div class="section-header reveal">
                 <h2>数字化教具共享中心</h2>
                 <div class="line"></div>
+                <p>将实验室搬进云端，让前沿科技触手可及</p>
             </div>
             <div class="tools-grid">
                 <div class="tool-card reveal">
@@ -385,77 +408,168 @@
     </section>
 
     <footer>
-        <p>© 2026 微光循迹 · 用科技点亮大山的晨曦 </p>
+        <p>© 2026 筑梦AI支教 · 用科技缩短城乡教育距离 · 浙ICP备xxxxxxxx号</p>
     </footer>
 
-    <!-- 弹窗合集 -->
-    <div class="identity-modal" id="loginModal">
+    <!-- 身份切换模态窗口 -->
+    <div class="identity-modal" id="identityModal">
         <div class="modal-content">
-            <h3 style="margin-bottom:20px; color:var(--primary-green);">用户登录</h3>
-            <div class="form-group"><label>邮箱</label><input type="email" id="loginEmail" placeholder="请输入邮箱"></div>
-            <div class="form-group"><label>密码</label><input type="password" id="loginPassword" placeholder="请输入密码"></div>
-            <button class="hero-btn" id="doLogin" style="width:100%; margin-top:10px; border:none;">登录</button>
-            <button onclick="closeModal('loginModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer; color:#666;">取消</button>
-        </div>
-    </div>
-
-    <div class="identity-modal" id="registerModal">
-        <div class="modal-content">
-            <h3 style="margin-bottom:20px; color:var(--primary-green);">用户注册</h3>
-            <div class="form-group"><label>用户名</label><input type="text" id="regUsername" placeholder="请输入用户名"></div>
-            <div class="form-group"><label>邮箱</label><input type="email" id="regEmail" placeholder="请输入邮箱"></div>
-            <div class="form-group"><label>密码</label><input type="password" id="regPassword" placeholder="至少8位"></div>
-            <div class="form-group">
-                <label>身份</label>
-                <select id="regRole" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:10px;">
-                    <option value="volunteer">志愿者</option><option value="teacher">教师</option>
-                </select>
+            <div class="modal-header">
+                <h3>切换模拟身份</h3>
+                <button class="modal-close" id="modalClose">✕</button>
             </div>
-            <button class="hero-btn" id="doRegister" style="width:100%; margin-top:10px; border:none;">注册</button>
-            <button onclick="closeModal('registerModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer; color:#666;">取消</button>
+            <div class="modal-body">
+                <button class="identity-btn" data-identity="student">
+                    <div class="identity-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"/></svg>
+                    </div>
+                    <span>学生</span>
+                </button>
+                <button class="identity-btn" data-identity="teacher">
+                    <div class="identity-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z"/></svg>
+                    </div>
+                    <span>老师</span>
+                </button>
+                <button class="identity-btn" data-identity="volunteer">
+                    <div class="identity-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.41,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.59,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"/></svg>
+                    </div>
+                    <span>志愿者</span>
+                </button>
+                <button class="identity-btn" data-identity="admin">
+                    <div class="identity-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,11.95L12,12.05L12,12.05L12,11.95M12,5.5L17.5,8.5L12,11.5L6.5,8.5L12,5.5M12,13.5L16.5,11V16.5L12,19L7.5,16.5V11L12,13.5Z"/></svg>
+                    </div>
+                    <span>管理员</span>
+                </button>
+            </div>
         </div>
     </div>
 
+    <!-- 志愿者申请模态窗口 -->
     <div class="apply-modal" id="applyModal">
         <div class="apply-modal-content">
-            <div class="apply-modal-header"><h3>志愿者申请</h3><button onclick="closeModal('applyModal')" style="border:none; background:none; font-size:1.5rem; cursor:pointer;">✕</button></div>
+            <div class="apply-modal-header">
+                <h3>志愿者岗位正式申请</h3>
+                <button class="apply-modal-close" id="applyModalClose">✕</button>
+            </div>
             <div class="apply-modal-body">
-                <div class="form-group"><label>真实姓名</label><input type="text" placeholder="请输入姓名"></div>
-                <div class="form-group"><label>联系电话</label><input type="tel" placeholder="请输入手机号"></div>
-                <div class="form-group"><label>个人简介</label><textarea rows="4" placeholder="请简单介绍您自己"></textarea></div>
+                <div class="form-group">
+                    <label for="realName">真实姓名<span class="required">*</span></label>
+                    <input type="text" id="realName" name="realName" placeholder="请输入您的姓名，以便学校与您联系">
+                </div>
+                <div class="form-group">
+                    <label for="phone">联系电话<span class="required">*</span></label>
+                    <input type="tel" id="phone" name="phone" placeholder="请输入您的手机号码">
+                </div>
+                <div class="form-group">
+                    <label for="university">就读高校</label>
+                    <input type="text" id="university" name="university" placeholder="例如：某某工业大学">
+                </div>
+                <div class="form-group">
+                    <label for="major">专业背景</label>
+                    <input type="text" id="major" name="major" placeholder="例如：机械工程/人工智能">
+                </div>
+                <div class="form-group">
+                    <label for="bio">个人简介</label>
+                    <textarea id="bio" name="bio" rows="4" placeholder="请简单介绍您的支教愿望或特长..."></textarea>
+                </div>
             </div>
             <div class="apply-modal-footer">
-                <button class="btn-cancel" onclick="closeModal('applyModal')">取消</button>
-                <button class="btn-submit" onclick="alert('申请已提交！'); closeModal('applyModal')">提交</button>
+                <button class="btn-cancel" id="applyCancel">取消</button>
+                <button class="btn-submit" id="applySubmit">提交申请</button>
             </div>
         </div>
     </div>
 
+    <!-- AI助手 -->
+    <div class="ai-assistant-btn" id="aiAssistantBtn">
+        <svg viewBox="0 0 24 24">
+            <path d="M20,2H4A2,2 0 0,0 2,4V22L6,18H20A2,2 0 0,0 22,16V4A2,2 0 0,0 20,2M20,16H6L4,18V4H20V16Z" fill="white"/>
+            <circle cx="12" cy="10" r="1.5" fill="white"/>
+            <circle cx="8" cy="10" r="1.5" fill="white"/>
+            <circle cx="16" cy="10" r="1.5" fill="white"/>
+        </svg>
+    </div>
+
+    <div class="ai-assistant-window" id="aiAssistantWindow">
+        <div class="ai-assistant-header">
+            <h3>AI 支教智能助手</h3>
+            <button class="ai-assistant-close" id="aiAssistantClose">✕</button>
+        </div>
+        <div class="ai-assistant-content" id="aiAssistantContent">
+            <div class="ai-message">
+                <strong>您好！我是"筑梦"AI 助手。</strong><br><br>
+                我将用智慧与热情，助您点亮乡村教育的红烛。
+            </div>
+        </div>
+        <div class="ai-assistant-input-area">
+            <input type="text" class="ai-assistant-input" id="aiAssistantInput" placeholder="输入您的问题...">
+            <button class="ai-assistant-submit" id="aiAssistantSubmit">提问</button>
+        </div>
+    </div>
+
+    <!-- 3D模型查看器模态窗口 -->
     <div class="model-viewer-modal" id="modelViewerModal">
         <div class="model-viewer-content">
-            <div class="model-viewer-header"><h3>3D 模型查看器</h3><button onclick="closeModal('modelViewerModal')" style="background:none; border:none; font-size:2rem; cursor:pointer;">✕</button></div>
+            <div class="model-viewer-header">
+                <h3 id="modelTitle">3D 模型查看器</h3>
+                <button class="model-viewer-close" id="modelViewerClose">✕</button>
+            </div>
             <div class="model-viewer-body">
-                <model-viewer id="modelViewer" src="" auto-rotate camera-controls camera-orbit="45deg 75deg auto" min-camera-orbit="auto auto 0.05m" max-camera-orbit="auto auto 50m" field-of-view="auto" exposure="1.2"></model-viewer>
+                <model-viewer 
+                    id="modelViewer"
+                    src=""
+                    alt="3D模型"
+                    auto-rotate
+                    auto-rotate-speed="1rpm"
+                    camera-controls
+                    touch-action="pan-y"
+                    interaction-prompt="none"
+                    shadow-intensity="1"
+                    shadow-softness="0.5"
+                    camera-orbit="45deg 75deg 2.5m"
+                    min-camera-orbit="auto auto 1.5m"
+                    max-camera-orbit="auto auto 4m"
+                    exposure="1"
+                    min-field-of-view="10deg"
+                    max-field-of-view="45deg"
+                    field-of-view="25deg"
+                    loading="eager"
+                    reveal="auto"
+                    disable-zoom="false"
+                    disable-pan="false"
+                    disable-tap="false"
+                    ar="false"
+                    ar-modes="webxr scene-viewer quick-look"
+                    ar-scale="auto"
+                    ios-src=""
+                ></model-viewer>
                 <div class="model-viewer-info">
-                    <p>模型名称：<span id="modelName">-</span></p>
-                    <p>操作提示：鼠标拖拽旋转 | 滚轮缩放</p>
+                    <div class="info-item">
+                        <span class="info-label">模型名称：</span>
+                        <span class="info-value" id="modelName">-</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">操作提示：</span>
+                        <span class="info-value">鼠标拖拽旋转 | 滚轮缩放 | 右键平移</span>
+                    </div>
+                    <div class="debug-info" id="debugInfo" style="display: none;">
+                        <div class="info-item">
+                            <span class="info-label">调试信息：</span>
+                            <span class="info-value" id="debugMessage">-</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- AI 助手 -->
-    <div class="ai-assistant-btn" id="aiAssistantBtn" onclick="openModal('aiAssistantWindow')"><i class="fas fa-comment-dots" style="color:white; font-size:1.5rem;"></i></div>
-    <div class="ai-assistant-window" id="aiAssistantWindow" style="display:none;">
-        <div class="ai-assistant-header"><h3>AI 助手</h3><button onclick="closeModal('aiAssistantWindow')" style="border:none; background:none; color:var(--primary-green); font-size:1.2rem; cursor:pointer;">✕</button></div>
-        <div id="aiAssistantContent" class="ai-assistant-content"><div class="ai-message">你好！我是微光AI。</div></div>
-        <div class="ai-assistant-input-area"><input type="text" id="aiAssistantInput" class="ai-assistant-input" placeholder="输入您的问题..."><button id="aiAssistantSubmit" class="ai-assistant-submit">提问</button></div>
-    </div>
-
-    <!-- 脚本引用 -->
+    <!-- 引入model-viewer组件 -->
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    <script src="api.js?v=999"></script>
-    <script src="auth.js?v=999"></script>
-    <script src="script.js?v=final2026"></script>
+    <script src="api.js"></script>
+    <script src="auth.js"></script>
+    <script src="script.js?v=3"></script>
 </body>
 </html>
