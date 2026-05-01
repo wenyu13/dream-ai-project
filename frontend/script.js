@@ -1,104 +1,294 @@
-/**
- * 微光循迹 - 全局交互引擎 (最稳健指令版)
- */
-
-// 1. 全局弹窗控制 (确保 HTML 里的 onclick 必能关掉)
-window.openModal = function(id) {
-    const el = document.getElementById(id);
-    if (el) el.classList.add('active');
-};
-window.closeModal = function(id) {
-    const el = document.getElementById(id);
-    if (el) {
-        el.classList.remove('active');
-        const viewer = document.getElementById('modelViewer');
-        if (id === 'modelViewerModal' && viewer) viewer.src = ''; // 关闭时清空，防止下次加载冲突
-    }
-};
-
-// 2. 🚀 3D 加载核心指令 (直接由 HTML 触发，不依赖监听器)
-window.loadAndShow3D = function(modelName) {
-    const modelViewer = document.getElementById('modelViewer');
-    const modelNameDisplay = document.getElementById('modelName');
-    
-    if (modelNameDisplay) modelNameDisplay.innerText = modelName;
-
-    let path = '';
-    // 路径匹配 logic - 使用你上传的全小写文件名
-    if(modelName.includes('斯特林')) path = './models/stirling.glb';
-    else if(modelName.includes('连杆')) path = './models/linkage.glb';
-    else if(modelName.includes('机器人')) path = './models/robot.glb';
-
-    if (modelViewer && path) {
-        modelViewer.src = path;
-        window.openModal('modelViewerModal');
-    }
-};
-
-// 3. 数字跳动动画逻辑
-function startCounter(el) {
-    if (el.dataset.done) return;
-    const target = +el.dataset.target;
-    let count = 0;
-    const update = () => {
-        count += target / 40;
-        if (count < target) {
-            el.innerText = Math.ceil(count).toLocaleString();
-            setTimeout(update, 20);
-        } else {
-            el.innerText = target.toLocaleString();
-            el.dataset.done = "true";
+// ==================== Toast通知工具 ====================
+const Toast = {
+    show(message, type = 'info', duration = 3000) {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        
+        let icon = '';
+        switch(type) {
+            case 'success': icon = '✓'; break;
+            case 'error': icon = '✕'; break;
+            case 'warning': icon = '⚠'; break;
+            default: icon = 'ℹ';
         }
-    };
-    update();
+        
+        toast.innerHTML = `
+            <span class="toast-icon">${icon}</span>
+            <span class="toast-message">${message}</span>
+        `;
+        
+        document.body.appendChild(toast);
+        requestAnimationFrame(() => {
+            toast.classList.add('show');
+        });
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                if (toast.parentNode) document.body.removeChild(toast);
+            }, 400);
+        }, duration);
+    },
+    success(message, duration) { this.show(message, 'success', duration); },
+    error(message, duration) { this.show(message, 'error', duration); },
+    warning(message, duration) { this.show(message, 'warning', duration); },
+    info(message, duration) { this.show(message, 'info', duration); }
+};
+
+// ==================== 导航栏逻辑 ====================
+const nav = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+    } else {
+        nav.classList.remove('scrolled');
+    }
+});
+
+// ==================== 滚动揭幕逻辑 ====================
+function reveal() {
+    const reveals = document.querySelectorAll(".reveal");
+    reveals.forEach((element) => {
+        const windowHeight = window.innerHeight;
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 150;
+
+        if (elementTop < windowHeight - elementVisible) {
+            element.classList.add("active");
+        }
+    });
+}
+window.addEventListener("scroll", reveal);
+
+// ==================== AI助手功能 (联网版) ====================
+const aiAssistantBtn = document.getElementById('aiAssistantBtn');
+const aiAssistantWindow = document.getElementById('aiAssistantWindow');
+const aiAssistantClose = document.getElementById('aiAssistantClose');
+const aiAssistantInput = document.getElementById('aiAssistantInput');
+const aiAssistantSubmit = document.getElementById('aiAssistantSubmit');
+const aiAssistantContent = document.getElementById('aiAssistantContent');
+
+if (aiAssistantBtn && aiAssistantWindow) {
+    aiAssistantBtn.addEventListener('click', () => aiAssistantWindow.classList.add('active'));
 }
 
-// 4. 滚动观察器 (用于揭幕和数字)
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('active');
-            const counters = entry.target.querySelectorAll('.counter');
-            counters.forEach(c => startCounter(c));
+const aiConsult = document.getElementById('aiConsult');
+if (aiConsult && aiAssistantWindow) {
+    aiConsult.addEventListener('click', () => aiAssistantWindow.classList.add('active'));
+}
+
+if (aiAssistantClose && aiAssistantWindow) {
+    aiAssistantClose.addEventListener('click', () => aiAssistantWindow.classList.remove('active'));
+}
+
+if (aiAssistantSubmit && aiAssistantInput && aiAssistantContent) {
+    aiAssistantSubmit.addEventListener('click', async () => {
+        const question = aiAssistantInput.value.trim();
+        if (question) {
+            const userMessage = document.createElement('div');
+            userMessage.className = 'ai-message';
+            userMessage.style.background = 'rgba(255, 165, 0, 0.1)';
+            userMessage.style.borderLeft = '3px solid var(--accent-orange)';
+            userMessage.style.marginLeft = '20px';
+            userMessage.innerHTML = `<strong>您：</strong>${question}`;
+            aiAssistantContent.appendChild(userMessage);
+            
+            aiAssistantInput.value = '';
+            const loadingMessage = document.createElement('div');
+            loadingMessage.className = 'ai-message loading';
+            loadingMessage.innerHTML = '<strong>AI助手：</strong><span class="loading-dots">正在思考中</span>';
+            aiAssistantContent.appendChild(loadingMessage);
+            aiAssistantContent.scrollTop = aiAssistantContent.scrollHeight;
+            
+            try {
+                const data = await window.DreamAI.AI.chat(question);
+                loadingMessage.remove();
+                const aiMessage = document.createElement('div');
+                aiMessage.className = 'ai-message';
+                aiMessage.innerHTML = `<strong>AI助手：</strong>${data.reply}`;
+                aiAssistantContent.appendChild(aiMessage);
+            } catch (error) {
+                console.error("AI对话失败:", error);
+                loadingMessage.remove();
+                const aiMessage = document.createElement('div');
+                aiMessage.className = 'ai-message';
+                aiMessage.style.color = 'var(--danger-red)';
+                aiMessage.innerHTML = `<strong>AI助手：</strong>抱歉，大脑连接失败了，请稍后再试。`;
+                aiAssistantContent.appendChild(aiMessage);
+            }
+            aiAssistantContent.scrollTop = aiAssistantContent.scrollHeight;
         }
     });
-}, { threshold: 0.1 });
 
-// 5. 初始化
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    aiAssistantInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') aiAssistantSubmit.click();
+    });
+}
 
-    // AI 助手逻辑 (联网版)
-    const aiSubmit = document.getElementById('aiAssistantSubmit');
-    if (aiSubmit) {
-        aiSubmit.onclick = async () => {
-            const input = document.getElementById('aiAssistantInput');
-            const content = document.getElementById('aiAssistantContent');
-            const msg = input.value.trim();
-            if (!msg) return;
+// ==================== 鼠标跟随光晕效果 ====================
+const cursorGlow = document.createElement('div');
+cursorGlow.className = 'cursor-glow';
+document.body.appendChild(cursorGlow);
 
-            content.innerHTML += `<div style="margin:10px 0; text-align:right;"><strong>您：</strong>${msg}</div>`;
-            input.value = '';
-            const loading = document.createElement('div');
-            loading.innerText = "微光AI正在思考...";
-            content.appendChild(loading);
+let mouseX = 0, mouseY = 0, glowX = 0, glowY = 0;
+document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX; mouseY = e.clientY;
+});
 
-            try {
-                const res = await window.DreamAI.AI.chat(msg);
-                loading.innerHTML = `<strong>微光AI：</strong>${res.reply}`;
-            } catch (e) {
-                loading.innerText = "连接失败，请重试。";
-            }
-            content.scrollTop = content.scrollHeight;
-        };
+function animateCursorGlow() {
+    glowX += (mouseX - glowX) * 0.1;
+    glowY += (mouseY - glowY) * 0.1;
+    cursorGlow.style.left = glowX + 'px';
+    cursorGlow.style.top = glowY + 'px';
+    requestAnimationFrame(animateCursorGlow);
+}
+animateCursorGlow();
+
+// ==================== 数字计数动画 ====================
+function animateCounter(element, target, duration = 2000) {
+    let start = 0;
+    const increment = target / (duration / 16);
+    function updateCounter() {
+        start += increment;
+        if (start < target) {
+            element.textContent = Math.floor(start).toLocaleString();
+            requestAnimationFrame(updateCounter);
+        } else {
+            element.textContent = target.toLocaleString();
+        }
+    }
+    updateCounter();
+}
+
+const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const counter = entry.target;
+            const target = parseInt(counter.dataset.target);
+            animateCounter(counter, target);
+            counterObserver.unobserve(counter);
+        }
+    });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.counter').forEach(counter => counterObserver.observe(counter));
+
+// ==================== 身份切换逻辑 ====================
+const identityModal = document.getElementById('identityModal');
+const modalClose = document.getElementById('modalClose');
+const switchIdentityLink = document.querySelector('.identity-menu a');
+const switchIdentityBtn = document.getElementById('switchIdentity');
+
+if ((switchIdentityLink || switchIdentityBtn) && identityModal) {
+    const trigger = switchIdentityLink || switchIdentityBtn;
+    trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        identityModal.classList.add('active');
+    });
+}
+
+if (modalClose && identityModal) {
+    modalClose.addEventListener('click', () => identityModal.classList.remove('active'));
+}
+
+document.querySelectorAll('.identity-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const identity = btn.dataset.identity;
+        identityModal.classList.remove('active');
+        window.location.href = identity === 'student' ? 'learning.html' : `${identity}.html`;
+    });
+});
+
+// ==================== 志愿者申请逻辑 ====================
+const applyModal = document.getElementById('applyModal');
+const applySubmit = document.getElementById('applySubmit');
+
+if (document.getElementById('applyBtn') && applyModal) {
+    document.getElementById('applyBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        applyModal.classList.add('active');
+    });
+}
+
+document.querySelectorAll('.job-apply-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (applyModal) applyModal.classList.add('active');
+    });
+});
+
+if (applySubmit) {
+    applySubmit.addEventListener('click', () => {
+        const realName = document.getElementById('realName').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        if (!realName || !/^1[3-9]\d{9}$/.test(phone)) {
+            Toast.error("请填入正确的姓名和手机号");
+            return;
+        }
+        Toast.success("申请已提交！");
+        setTimeout(() => applyModal.classList.remove('active'), 2000);
+    });
+}
+
+// ==================== 3D模型查看器 (核心修复部分) ====================
+function initModelViewer() {
+    const modal = document.getElementById('modelViewerModal');
+    const closeBtn = document.getElementById('modelViewerClose');
+    const modelViewer = document.getElementById('modelViewer');
+    const modelTitle = document.getElementById('modelName');
+    
+    if (!modal || !modelViewer) return;
+
+    function openModelViewer(modelPath, modelName) {
+        modelViewer.src = modelPath;
+        modelTitle.textContent = modelName;
+        modal.classList.add('active');
+        
+        // 增加模型加载状态监听
+        modelViewer.addEventListener('load', () => Toast.success(`模型"${modelName}"加载成功`), { once: true });
+        modelViewer.addEventListener('error', (e) => {
+            console.error("加载失败路径:", modelPath, e);
+            Toast.error("模型加载失败，请检查文件路径");
+        }, { once: true });
     }
 
-    // 鼠标光晕
-    const glow = document.createElement('div');
-    glow.style.cssText = "position:fixed; width:300px; height:300px; background:radial-gradient(circle, rgba(45,106,79,0.06) 0%, transparent 70%); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition: opacity 0.3s;";
-    document.body.appendChild(glow);
-    document.addEventListener('mousemove', (e) => {
-        glow.style.left = e.clientX + 'px';
-        glow.style.top = e.clientY + 'px';
+    document.querySelectorAll('.tool-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const card = btn.closest('.tool-card');
+            const modelName = card.querySelector('h3').textContent.trim();
+            
+            // 🚀 这里已修改为对应 GitHub 的真实文件名
+            let modelPath;
+            switch(modelName) {
+                case '斯特林发动机':
+                    modelPath = './models/stirling.glb';
+                    break;
+                case '平面四连杆机构':
+                    modelPath = './models/linkage.glb';
+                    break;
+                case 'AI 巡检机器人':
+                    modelPath = './models/robot.glb';
+                    break;
+                default:
+                    Toast.warning('未找到对应模型');
+                    return;
+            }
+            openModelViewer(modelPath, modelName);
+        });
     });
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('active');
+            modelViewer.src = '';
+        });
+    }
+}
+
+// ==================== 全局启动 ====================
+window.addEventListener('load', () => {
+    document.body.classList.add('loaded');
+    reveal();
+    initModelViewer();
 });
