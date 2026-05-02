@@ -1,8 +1,8 @@
 /**
- * 微光循迹 - 全局交互补丁 (完美还原版)
+ * 微光循迹 - 全局交互补丁 (极致兼容还原版)
  */
 
-// 1. 全局弹窗控制 (确保 HTML onclick 必能关掉)
+// 1. 全局弹窗控制 (确保 HTML onclick 必能点动)
 window.openModal = function(id) {
     const el = document.getElementById(id);
     if (el) {
@@ -23,16 +23,16 @@ window.closeModal = function(id) {
     }
 };
 
-// 2. 🚀 3D 加载逻辑
-window.open3D = function(modelName) {
+// 2. 🚀 3D 预览核心指令
+window.open3D = function(name) {
     const viewer = document.getElementById('modelViewer');
-    const nameDisplay = document.getElementById('modelName');
-    if (nameDisplay) nameDisplay.innerText = modelName;
+    const nameEl = document.getElementById('modelName');
+    if (nameEl) nameEl.innerText = name;
     
     let path = '';
-    if(modelName.includes('斯特林')) path = './models/stirling.glb';
-    else if(modelName.includes('连杆')) path = './models/linkage.glb';
-    else if(modelName.includes('机器人')) path = './models/robot.glb';
+    if(name.includes('斯特林')) path = './models/stirling.glb';
+    else if(name.includes('连杆')) path = './models/linkage.glb';
+    else if(name.includes('机器人')) path = './models/robot.glb';
 
     if (viewer && path) {
         viewer.src = path;
@@ -40,14 +40,12 @@ window.open3D = function(modelName) {
     }
 };
 
-// 3. 数字跳动动画引擎
+// 3. 数字跳動逻辑
 function startCounter(el) {
     if (el.dataset.done) return;
     const target = +el.dataset.target;
     let count = 0;
-    const duration = 2000; 
-    const step = target / (duration / 20);
-
+    const step = target / 40;
     const update = () => {
         count += step;
         if (count < target) {
@@ -61,33 +59,31 @@ function startCounter(el) {
     update();
 }
 
-// 4. 滚动观察器 (用于 100% 触发 Reveal 和 数字跳动)
+// 4. 滚动观察器 (Reveal & Counter)
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('active');
             const counters = entry.target.querySelectorAll('.counter');
             counters.forEach(c => startCounter(c));
-            if (entry.target.classList.contains('counter')) startCounter(entry.target);
         }
     });
 }, { threshold: 0.1 });
 
-// 5. 初始化与事件绑定
+// 5. 初始化
 window.addEventListener('load', () => {
-    // 监听所有需要浮现和跳动的元素
-    document.querySelectorAll('.reveal, .counter').forEach(el => observer.observe(el));
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // 鼠标跟随光晕还原
+    // 鼠标光晕特效还原
     const glow = document.createElement('div');
-    glow.style.cssText = "position:fixed; width:400px; height:400px; background:radial-gradient(circle, rgba(45,106,79,0.05) 0%, transparent 70%); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition: opacity 0.3s;";
+    glow.style.cssText = "position:fixed; width:300px; height:300px; background:radial-gradient(circle, rgba(45,106,79,0.06) 0%, transparent 70%); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition: opacity 0.3s;";
     document.body.appendChild(glow);
     document.addEventListener('mousemove', (e) => {
         glow.style.left = e.clientX + 'px';
         glow.style.top = e.clientY + 'px';
     });
 
-    // AI 聊天逻辑 (联网版)
+    // AI 对话逻辑
     const aiSubmit = document.getElementById('aiAssistantSubmit');
     if (aiSubmit) {
         aiSubmit.onclick = async () => {
@@ -96,12 +92,8 @@ window.addEventListener('load', () => {
             const msg = input.value.trim();
             if (!msg) return;
 
-            const userDiv = document.createElement('div');
-            userDiv.style.cssText = "margin: 10px 0; text-align: right; color: var(--primary-green);";
-            userDiv.innerHTML = `<strong>您：</strong>${msg}`;
-            content.appendChild(userDiv);
+            content.innerHTML += `<div style="margin:10px 0; text-align:right;"><strong>您：</strong>${msg}</div>`;
             input.value = '';
-
             const loading = document.createElement('div');
             loading.innerText = "微光AI正在思考...";
             content.appendChild(loading);
@@ -109,9 +101,7 @@ window.addEventListener('load', () => {
             try {
                 const res = await window.DreamAI.AI.chat(msg);
                 loading.innerHTML = `<strong>微光AI：</strong>${res.reply}`;
-            } catch (e) {
-                loading.innerText = "连接失败，请检查网络。";
-            }
+            } catch (e) { loading.innerText = "连接失败。"; }
             content.scrollTop = content.scrollHeight;
         };
     }
