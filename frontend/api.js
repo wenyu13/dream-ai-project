@@ -1,48 +1,67 @@
-/**
- * 筑梦AI支教项目 - 前端API工具 (完整合并版)
- */
 const API_BASE = 'https://cghsdcnklsd-dream-ai-api.hf.space/api';
 
 window.DreamAI = {
-    // === AI 助手模块 ===
+    // 1. AI 聊天接口
     AI: {
         async chat(message) {
-            try {
-                const response = await fetch(`${API_BASE}/ai/chat`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify({ message: message })
-                });
-                if (!response.ok) throw new Error('网络响应不正常');
-                return await response.json();
-            } catch (error) {
-                console.error('AI API 调用失败:', error);
-                throw error;
-            }
-        }
-    },
-
-    // === 原有的用户认证模块 (保留你队友的代码逻辑) ===
-    Auth: {
-        async login(email, password) {
-            const response = await fetch(`${API_BASE}/auth/login`, {
+            const res = await fetch(`${API_BASE}/ai/chat`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ message })
             });
-            return await response.json();
-        },
+            return await res.json();
+        }
+    },
+    // 2. 用户认证接口
+    Auth: {
         async register(userData) {
-            const response = await fetch(`${API_BASE}/auth/register`, {
+            const res = await fetch(`${API_BASE}/auth/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userData)
             });
-            return await response.json();
+            if (!res.ok) { const err = await res.json(); throw new Error(err.detail || '注册失败'); }
+            return await res.json();
+        },
+        async login(email, password) {
+            const res = await fetch(`${API_BASE}/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            if (!res.ok) throw new Error('账号或密码错误');
+            return await res.json();
+        },
+        async getCurrentUser() {
+            const token = localStorage.getItem('access_token');
+            const res = await fetch(`${API_BASE}/auth/me`, {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            return await res.json();
+        }
+    },
+    // 3. 申请管理接口
+    Applications: {
+        async create(data) {
+            const token = localStorage.getItem('access_token');
+            const res = await fetch(`${API_BASE}/applications/`, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(data)
+            });
+            return await res.json();
+        },
+        async getAll() {
+            const token = localStorage.getItem('access_token');
+            const res = await fetch(`${API_BASE}/applications/`, {
+                method: 'GET',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            return await res.json();
         }
     }
 };
-console.log("✅ 筑梦AI支教API工具(含AI功能)已加载");
