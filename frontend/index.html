@@ -16,66 +16,201 @@
             --bg-light: #f4f7f5;
             --danger-red: #991b1b;
             --card-shadow: 0 10px 30px rgba(45, 106, 79, 0.08);
+
             --sunrise-gold: #fff7ed;
             --sunrise-amber: #ffedd5;
             --sunrise-text: #451a03;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; }
+
         html { scroll-behavior: smooth; }
-        body { background: var(--bg-light); color: var(--text-main); overflow-x: hidden; line-height: 1.6; }
 
-        /* 背景特效 */
+        body {
+            background: var(--bg-light);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+            cursor: default;
+        }
+
         .bg-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        .firefly { position: absolute; width: 4px; height: 4px; background: var(--accent-orange); border-radius: 50%; filter: blur(2px); opacity: 0.3; animation: move 20s infinite linear; }
-        @keyframes move { 0% { transform: translate(0, 0); opacity: 0; } 50% { opacity: 0.6; } 100% { transform: translate(100vw, 100vh); opacity: 0; } }
+        .firefly {
+            position: absolute; width: 4px; height: 4px; background: var(--accent-orange);
+            border-radius: 50%; filter: blur(2px); opacity: 0.3; animation: move 20s infinite linear;
+        }
+        @keyframes move {
+            0% { transform: translate(0, 0); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translate(100vw, 100vh); opacity: 0; }
+        }
 
-        /* 导航栏 */
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 8%; background: var(--glass); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(45, 106, 79, 0.05); }
+        nav {
+            display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 8%;
+            background: var(--glass); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 100;
+            border-bottom: 1px solid rgba(45, 106, 79, 0.05);
+        }
         .brand { font-size: 1.5rem; font-weight: 800; color: var(--primary-green); letter-spacing: 1px; }
         .nav-links { display: flex; align-items: center; }
         .nav-links a { text-decoration: none; color: var(--text-main); margin-left: 2rem; font-weight: 500; transition: 0.3s; }
         .nav-links a:hover { color: var(--accent-orange); }
 
-        /* Hero 区域 */
-        .hero-section { min-height: 85vh; padding: 100px 8%; display: flex; align-items: center; justify-content: center; text-align: center; position: relative; background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none"><path fill="%23ffedd5" fill-opacity="0.4" d="M0,224L60,202.7C120,181,240,139,360,138.7C480,139,600,181,720,208C840,235,960,245,1080,224C1200,203,1320,149,1380,122.7L1440,96L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>'), linear-gradient(180deg, var(--sunrise-gold) 0%, #ffffff 100%); background-position: bottom; background-repeat: no-repeat; background-size: 100% 400px, 100% 100%; overflow: hidden; }
-        .hero-main-title { font-size: 3.8rem; font-weight: 900; color: var(--sunrise-text); margin-bottom: 25px; }
+        .hero-section {
+            min-height: 85vh;
+            padding: 100px 8%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            background: 
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none"><path fill="%23ffedd5" fill-opacity="0.4" d="M0,224L60,202.7C120,181,240,139,360,138.7C480,139,600,181,720,208C840,235,960,245,1080,224C1200,203,1320,149,1380,122.7L1440,96L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>'),
+                linear-gradient(180deg, var(--sunrise-gold) 0%, #ffffff 100%);
+            background-position: bottom;
+            background-repeat: no-repeat;
+            background-size: 100% 400px, 100% 100%;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            right: -5%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 159, 28, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+        }
+
+        .hero-main-title {
+            font-size: 3.8rem;
+            font-weight: 900;
+            color: var(--sunrise-text);
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
+
         .hero-main-title span { color: var(--primary-green); }
-        .hero-btn { display: inline-block; padding: 1.1rem 3.5rem; border-radius: 50px; background: var(--primary-green); color: white; text-decoration: none; font-weight: 700; transition: 0.4s; box-shadow: 0 15px 35px rgba(45,106,79,0.2); border: none; cursor: pointer; }
-        .hero-btn:hover { transform: scale(1.05); background: var(--accent-orange); }
 
-        /* 容器与卡片 */
-        .container { max-width: 1300px; margin: 0 auto; padding: 100px 5%; }
+        .hero-subtitle {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #78350f;
+            margin-bottom: 50px;
+            opacity: 0.8;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            padding: 1.1rem 3.5rem;
+            border-radius: 50px;
+            background: var(--primary-green);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 35px rgba(45, 106, 79, 0.2);
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hero-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 45px rgba(45, 106, 79, 0.3);
+            background: var(--accent-orange);
+        }
+
         .section-header { text-align: center; margin-bottom: 60px; }
-        .section-header h2 { font-size: 2.4rem; color: var(--primary-green); }
-        .portal-grid, .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
-        .portal-card, .tool-card { background: white; border-radius: 2.5rem; padding: 3rem 2rem; text-align: center; transition: 0.5s; box-shadow: var(--card-shadow); border: 1px solid rgba(45,106,79,0.05); }
-        .portal-card:hover, .tool-card:hover { transform: translateY(-15px); border-color: var(--accent-orange); }
-        
-        /* 岗位列表 */
+        .section-header h2 { font-size: 2.4rem; color: var(--primary-green); margin-bottom: 15px; font-weight: 800; }
+        .section-header .line { width: 60px; height: 4px; background: var(--accent-orange); margin: 0 auto; border-radius: 2px; }
+        .section-header p { color: #666; margin-top: 20px; font-size: 1.1rem; }
+
+        .container { max-width: 1300px; margin: 0 auto; padding: 100px 5%; }
+
+        .portal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
+        .portal-card {
+            background: white; border-radius: 2.5rem; padding: 4rem 2rem; text-align: center;
+            transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: 1px solid rgba(45, 106, 79, 0.05); box-shadow: var(--card-shadow);
+        }
+        .portal-card:hover { transform: translateY(-15px) scale(1.02); box-shadow: 0 30px 60px rgba(45, 106, 79, 0.15); border-color: var(--accent-orange); }
+
+        .jobs-section { background: white; border-radius: 4rem 4rem 0 0; }
         .jobs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
-        .job-card { background: var(--bg-light); border-radius: 20px; padding: 35px; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid var(--danger-red); transition: 0.4s; }
-        .apply-btn { padding: 12px 28px; background: var(--danger-red); color: white; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
+        .job-card {
+            background: var(--bg-light); border-radius: 20px; padding: 35px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-left: 6px solid var(--danger-red); transition: 0.4s;
+        }
+        .apply-btn {
+            padding: 12px 28px; background: var(--danger-red); color: white;
+            border-radius: 10px; text-decoration: none; font-weight: bold; transition: 0.3s;
+            border: none; cursor: pointer;
+        }
 
-        /* 下拉选择框美化 */
-        select { appearance: none; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-7.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 12px top 50%; background-size: 12px auto; padding-right: 30px !important; }
+        .tools-section { background: linear-gradient(180deg, #fff 0%, var(--soft-green) 100%); }
+        .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 35px; }
+        .tool-card {
+            background: rgba(255,255,255,0.7); backdrop-filter: blur(10px);
+            border-radius: 30px; padding: 30px; text-align: center;
+            border: 1px solid white; transition: 0.4s;
+        }
+        .tool-preview {
+            width: 100%; height: 200px; border-radius: 20px; margin-bottom: 25px;
+            display: flex; align-items: center; justify-content: center;
+            background: radial-gradient(circle at center, #fff 0%, #ffe4e4 100%);
+            position: relative; overflow: hidden;
+        }
+        .tool-btn { 
+            padding: 10px 25px; border: 2px solid var(--danger-red); color: var(--danger-red);
+            border-radius: 8px; text-decoration: none; font-weight: bold; transition: 0.3s;
+            cursor: pointer; background: transparent;
+        }
 
-        /* 弹窗基础 */
-        .identity-modal, .apply-modal, .model-viewer-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); z-index: 2000; justify-content: center; align-items: center; }
-        .identity-modal.active, .apply-modal.active, .model-viewer-modal.active { display: flex; }
-        .modal-content { background: white; border-radius: 20px; padding: 30px; width: 90%; max-width: 450px; text-align: center; }
-        
-        /* 3D 查看器 */
-        .model-viewer-content { background: white; border-radius: 20px; width: 90%; max-width: 1000px; height: 80vh; display: flex; flex-direction: column; overflow: hidden; }
-        model-viewer { width: 100%; flex: 1; background: #eee; }
-
-        /* AI 助手窗口 */
-        .ai-assistant-window { position: fixed; bottom: 100px; right: 30px; width: 350px; height: 500px; background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); display: none; flex-direction: column; overflow: hidden; z-index: 3000; }
-        .ai-assistant-window.active { display: flex; }
+        /* 专门为身份选择下拉框美化 */
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-7.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%0-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px top 50%;
+            background-size: 12px auto;
+            padding-right: 30px !important;
+        }
 
         footer { text-align: center; padding: 5rem; background: var(--text-main); color: #88bd9e; font-size: 0.9rem; }
+
         .reveal { opacity: 0; transform: translateY(50px); transition: 1s cubic-bezier(0.165, 0.84, 0.44, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .identity-modal, .apply-modal, .model-viewer-modal { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); z-index: 2000; 
+            justify-content: center; align-items: center; 
+        }
+        .identity-modal.active, .apply-modal.active, .model-viewer-modal.active { display: flex; }
+        .modal-content, .apply-modal-content, .model-viewer-content { 
+            background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); padding: 30px; 
+        }
+        model-viewer { width: 100%; height: 60vh; display: block; background: #f0f0f0; }
+
+        .ai-assistant-window {
+            position: fixed; bottom: 100px; right: 30px; width: 350px; height: 500px;
+            background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: none; flex-direction: column; z-index: 3000; border: 1px solid #eee;
+        }
+        .ai-assistant-window.active { display: flex; }
     </style>
 </head>
 <body>
@@ -86,112 +221,115 @@
         <div class="firefly" style="top: 75%; left: 12%;"></div>
     </div>
 
-    <!-- 导航栏 -->
     <nav>
         <div class="brand">微光循迹</div>
         <div class="nav-links">
             <a href="#">首页</a>
             <a href="#jobs">寻找岗位</a>
             <a href="#tools">3D教具库</a>
+            
+            <!-- 未登录状态 -->
             <div id="guestNav">
-                <button class="hero-btn" style="padding: 0.5rem 1.5rem; margin-left: 20px;" onclick="openModal('loginModal')">登录</button>
-                <button class="hero-btn" style="padding: 0.5rem 1.5rem; background: var(--accent-orange);" onclick="openModal('registerModal')">注册</button>
+                <button class="hero-btn" style="padding: 6px 20px; font-size: 0.9rem; margin-left: 20px;" onclick="openModal('loginModal')">登录</button>
+                <button class="hero-btn" style="padding: 6px 20px; font-size: 0.9rem; background: var(--accent-orange);" onclick="openModal('registerModal')">注册</button>
             </div>
+            
+            <!-- 已登录状态 -->
             <div id="userNav" style="display: none; align-items:center; gap:10px; margin-left:20px;">
-                <span class="user-name" style="font-weight:bold; color:var(--primary-green);"></span>
-                <button onclick="logout()" style="cursor:pointer; border:1px solid #ccc; background:none; padding:3px 8px; border-radius:5px;">退出</button>
+                <span class="user-name" style="font-weight:bold; color:var(--primary-green);">用户</span>
+                <button onclick="logout()" style="cursor:pointer; border:1px solid #ccc; background:none; padding:3px 8px; border-radius:5px; font-size: 0.8rem;">退出</button>
             </div>
         </div>
     </nav>
 
-    <!-- Hero -->
     <section class="hero-section">
         <div class="hero-content">
             <h1 class="hero-main-title">用<span>科技</span>点亮<span>大山</span>的晨曦</h1>
             <p class="hero-subtitle">微光循迹：赋能乡村振兴的数字化志愿服务交互平台</p>
-            <a href="#portals" class="hero-btn">开启支教之旅</a>
+            <a href="#portals" class="hero-btn magnetic-btn">开启支教之旅</a>
         </div>
     </section>
 
-    <!-- 入口选择 -->
     <section id="portals" class="container">
         <div class="section-header reveal">
             <h2>谁在参与微光？</h2>
             <div class="line"></div>
+            <p>连接城乡教育，让每一个梦想都能在科技的羽翼下起飞</p>
         </div>
         <div class="portal-grid">
             <div class="portal-card reveal">
                 <h3>志愿者入口</h3>
-                <p>匹配支教岗位，记录公益里程。</p>
-                <a href="volunteer.html" class="hero-btn" style="margin-top:20px;">进入工作台</a>
+                <p>提供专业支教岗位匹配，记录您的公益里程。</p>
+                <a href="volunteer.html" class="portal-btn hero-btn" style="margin-top:20px; padding: 10px 30px;">进入工作台</a>
             </div>
             <div class="portal-card reveal">
                 <h3>教师管理端</h3>
-                <p>发布教学需求，管理支教资源。</p>
-                <a href="teacher.html" class="hero-btn" style="margin-top:20px;">管理中心</a>
+                <p>发布教学需求，管理支教老师，获取数字化实验资源。</p>
+                <a href="teacher.html" class="portal-btn hero-btn" style="margin-top:20px; padding: 10px 30px;">管理中心</a>
             </div>
             <div class="portal-card reveal">
                 <h3>学生学习端</h3>
-                <p>云端课堂，互动实验预览。</p>
-                <a href="learning.html" class="hero-btn" style="margin-top:20px;">开启学习</a>
+                <p>开启云端沉浸式课堂，参与互动实验，连接广阔世界。</p>
+                <a href="learning.html" class="portal-btn hero-btn" style="margin-top:20px; padding: 10px 30px;">开启学习</a>
             </div>
         </div>
     </section>
 
-    <!-- 岗位列表 -->
-    <section id="jobs" class="container">
-        <div class="section-header reveal"><h2>最新支教岗位</h2></div>
+    <section id="jobs" class="jobs-section container">
+        <div class="section-header reveal"><h2>最新支教岗位</h2><div class="line"></div></div>
         <div class="jobs-grid">
             <div class="job-card reveal">
-                <div><h4>贵州大山镇希望小学</h4><p>英语教学 · 2024秋季</p></div>
+                <div class="job-info"><h4>贵州大山镇希望小学</h4><p>📍 贵州 · 英语教学</p></div>
                 <button class="apply-btn" onclick="openModal('applyModal')">立即申请</button>
             </div>
             <div class="job-card reveal">
-                <div><h4>凉山州美姑县小学</h4><p>艺术支教 · 全年岗位</p></div>
+                <div class="job-info"><h4>凉山州美姑县小学</h4><p>📍 四川 · 艺术支教</p></div>
                 <button class="apply-btn" onclick="openModal('applyModal')">立即申请</button>
             </div>
         </div>
     </section>
 
-    <!-- 3D 教具库 -->
-    <section id="tools" class="container">
-        <div class="section-header reveal"><h2>数字化教具库</h2></div>
+    <section id="tools" class="tools-section container">
+        <div class="section-header reveal"><h2>数字化教具库</h2><div class="line"></div></div>
         <div class="tools-grid">
             <div class="tool-card reveal">
                 <h3>斯特林发动机</h3><br>
-                <button class="hero-btn" onclick="open3D('斯特林发动机')">3D 互动预览</button>
+                <button class="tool-btn hero-btn" onclick="open3D('斯特林发动机')">3D 互动预览</button>
             </div>
             <div class="tool-card reveal">
                 <h3>平面四连杆机构</h3><br>
-                <button class="hero-btn" onclick="open3D('平面四连杆机构')">3D 互动预览</button>
+                <button class="tool-btn hero-btn" onclick="open3D('平面四连杆机构')">3D 互动预览</button>
             </div>
             <div class="tool-card reveal">
                 <h3>AI 巡检机器人</h3><br>
-                <button class="hero-btn" onclick="open3D('AI 巡检机器人')">3D 互动预览</button>
+                <button class="tool-btn hero-btn" onclick="open3D('AI 巡检机器人')">3D 互动预览</button>
             </div>
         </div>
     </section>
+
+    <footer><p>© 2026 微光循迹 · 用科技点亮大山的晨曦 </p></footer>
 
     <!-- 登录弹窗 -->
     <div class="identity-modal" id="loginModal">
         <div class="modal-content">
             <h3>用户登录</h3><br>
-            <input type="text" id="loginEmail" placeholder="邮箱或用户名" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
-            <input type="password" id="loginPassword" placeholder="密码" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
-            <button class="hero-btn" id="btnLocalLogin" style="width:100%;">登录</button>
+            <input type="text" id="loginAccount" placeholder="邮箱或用户名" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
+            <input type="password" id="loginPass" placeholder="密码" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
+            <button class="hero-btn" id="btnDoLogin" style="width:100%;">登录</button>
             <button onclick="closeModal('loginModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer; color:#666;">取消</button>
         </div>
     </div>
 
-    <!-- 注册弹窗 (已加身份选择) -->
+    <!-- 注册弹窗 (已增加身份选择) -->
     <div class="identity-modal" id="registerModal">
         <div class="modal-content">
             <h3>用户注册</h3><br>
-            <input type="text" id="regUsername" placeholder="用户名" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
+            <input type="text" id="regUser" placeholder="用户名" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
             <input type="email" id="regEmail" placeholder="邮箱" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
-            <input type="password" id="regPassword" placeholder="密码" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
+            <input type="password" id="regPass" placeholder="密码" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
             
-            <select id="regRole" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd; background: white; color: #666; cursor: pointer;">
+            <!-- 新增身份选择 -->
+            <select id="regRole" style="width:100%; padding:10px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd; background: white; color: #666; cursor: pointer;">
                 <option value="" disabled selected>请选择您的身份</option>
                 <option value="student">学生</option>
                 <option value="volunteer">志愿者</option>
@@ -199,163 +337,142 @@
                 <option value="admin">管理员</option>
             </select>
 
-            <button class="hero-btn" id="btnLocalRegister" style="width:100%;">注册</button>
+            <button class="hero-btn" id="btnDoRegister" style="width:100%;">注册</button>
             <button onclick="closeModal('registerModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer; color:#666;">取消</button>
         </div>
     </div>
 
-    <!-- 申请弹窗 -->
+    <!-- 岗位申请弹窗 -->
     <div class="apply-modal" id="applyModal">
-        <div class="modal-content">
+        <div class="apply-modal-content" style="padding:30px; background:white; border-radius:20px; text-align: center;">
             <h3>志愿者岗位正式申请</h3><br>
-            <input type="text" id="applyName" placeholder="真实姓名" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;">
+            <input type="text" id="applyRealName" placeholder="真实姓名" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;">
             <input type="tel" id="applyPhone" placeholder="联系电话" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;">
-            <textarea id="applyBio" placeholder="个人简介 (选填)" style="width:100%; height:100px; padding:10px; border-radius:8px; border:1px solid #ddd; margin-bottom:10px;"></textarea>
+            <textarea id="applyBio" placeholder="个人简介" style="width:100%; height:100px; padding:10px; border-radius:8px; border:1px solid #ddd; margin-bottom: 10px;"></textarea>
             <button class="hero-btn" id="btnSubmitApply" style="width:100%;">提交申请</button>
             <button onclick="closeModal('applyModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer;">取消</button>
         </div>
     </div>
 
-    <!-- 3D 模型预览弹窗 -->
+    <!-- 3D 查看器弹窗 -->
     <div class="model-viewer-modal" id="modelViewerModal">
-        <div class="model-viewer-content">
-            <div style="padding: 20px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #eee;">
+        <div class="model-viewer-content" style="max-width: 800px; width: 90%;">
+            <div style="display:flex; justify-content: space-between; padding: 15px;">
                 <h3 id="modelName">模型查看器</h3>
-                <button onclick="closeModal('modelViewerModal')" style="font-size:24px; border:none; background:none; cursor:pointer;">&times;</button>
+                <button onclick="closeModal('modelViewerModal')" style="border:none; background:none; font-size: 1.5rem; cursor:pointer;">&times;</button>
             </div>
-            <model-viewer id="modelViewer" src="" auto-rotate camera-controls shadow-intensity="1" exposure="1"></model-viewer>
-            <div style="padding:15px; background:var(--sunrise-gold); font-size:14px; color:#666;">操作提示：左键旋转 | 滚轮缩放 | 右键平移</div>
+            <model-viewer id="modelViewer" src="" auto-rotate camera-controls shadow-intensity="1"></model-viewer>
+            <div style="padding:15px; font-size: 0.8rem; color: #888;">提示：左键旋转，滚轮缩放</div>
         </div>
     </div>
 
-    <footer><p>© 2026 微光循迹 · 用科技点亮大山的晨曦 </p></footer>
+    <!-- AI 助手 -->
+    <div id="aiAssistantBtn" onclick="openModal('aiAssistantWindow')" style="position:fixed; bottom:30px; right:30px; background:var(--primary-green); width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:999;"><i class="fas fa-comment-dots" style="color:white; font-size:1.5rem;"></i></div>
+    <div class="ai-assistant-window" id="aiAssistantWindow">
+        <div style="background:var(--primary-green); color:white; padding:15px; display:flex; justify-content:space-between; border-radius: 20px 20px 0 0;"><h3>AI 助手</h3><button onclick="closeModal('aiAssistantWindow')" style="background:none; border:none; color:white; cursor:pointer;">✕</button></div>
+        <div id="aiAssistantContent" style="flex:1; padding:15px; overflow-y:auto; background:#f9f9f9; font-size: 0.9rem;"><div>你好！我是微光AI助理。</div></div>
+        <div style="padding:10px; border-top:1px solid #eee; display:flex; gap:5px;"><input type="text" id="aiAssistantInput" style="flex:1; padding:8px; border-radius:8px; border:1px solid #ddd;" placeholder="问点什么..."><button id="aiAssistantSubmit" style="background:var(--primary-green); color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer;">发送</button></div>
+    </div>
 
-    <!-- 核心脚本引用 -->
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <script src="api.js?v=999"></script>
     <script src="auth.js?v=999"></script>
     <script src="script.js?v=2026_final"></script>
 
-    <!-- 业务逻辑处理脚本 -->
+    <!-- 功能逻辑脚本 -->
     <script>
         const API_URL = 'https://cghsdcnklsd-dream-ai-api.hf.space/api';
 
         // 1. 处理注册
-        document.getElementById('btnLocalRegister').onclick = async function() {
-            const username = document.getElementById('regUsername').value;
-            const email = document.getElementById('regEmail').value;
-            const password = document.getElementById('regPassword').value;
-            const role = document.getElementById('regRole').value;
-
-            if (!username || !email || !password || !role) {
-                alert("请填写完整信息并选择身份！");
-                return;
-            }
+        document.getElementById('btnDoRegister').onclick = async () => {
+            const payload = {
+                username: document.getElementById('regUser').value,
+                email: document.getElementById('regEmail').value,
+                password: document.getElementById('regPass').value,
+                role: document.getElementById('regRole').value
+            };
+            if(!payload.role) return alert("请选择注册身份！");
 
             try {
                 const res = await fetch(`${API_URL}/auth/register`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, email, password, role })
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
                 });
-                const data = await res.json();
-                if (res.ok) {
-                    alert("注册成功！请登录");
-                    closeModal('registerModal');
-                } else {
-                    alert("注册失败：" + (data.detail || "未知错误"));
-                }
-            } catch (e) { alert("服务器连接失败"); }
+                if(res.ok) { alert("注册成功！请登录"); closeModal('registerModal'); }
+                else { const err = await res.json(); alert("注册失败：" + (err.detail || "格式错误")); }
+            } catch (e) { alert("连接后端失败"); }
         };
 
         // 2. 处理登录
-        document.getElementById('btnLocalLogin').onclick = async function() {
-            const username = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
+        document.getElementById('btnDoLogin').onclick = async () => {
+            const formData = new FormData();
+            formData.append('username', document.getElementById('loginAccount').value);
+            formData.append('password', document.getElementById('loginPass').value);
 
             try {
-                // 后端是 OAuth2 格式，使用 FormData
-                const formData = new FormData();
-                formData.append('username', username);
-                formData.append('password', password);
-
                 const res = await fetch(`${API_URL}/auth/login`, {
                     method: 'POST',
                     body: formData
                 });
                 const data = await res.json();
-
-                if (res.ok) {
+                if(res.ok) {
                     localStorage.setItem('token', data.access_token);
                     alert("登录成功！");
-                    location.reload(); // 刷新页面以更新导航栏状态
-                } else {
-                    alert("登录失败：" + (data.detail || "用户名或密码错误"));
-                }
-            } catch (e) { alert("登录过程出错"); }
+                    location.reload();
+                } else { alert("账号或密码错误"); }
+            } catch (e) { alert("登录异常"); }
         };
 
-        // 3. 提交申请
-        document.getElementById('btnSubmitApply').onclick = async function() {
+        // 3. 处理申请
+        document.getElementById('btnSubmitApply').onclick = async () => {
             const token = localStorage.getItem('token');
-            if (!token) { alert("请先登录！"); return; }
+            if(!token) return alert("请先登录账号！");
 
             const payload = {
                 type: "volunteer",
-                title: "志愿者岗位申请 - " + document.getElementById('applyName').value,
-                description: document.getElementById('applyBio').value,
+                title: "志愿者申请 - " + document.getElementById('applyRealName').value,
+                description: document.getElementById('applyBio').value || "无简介",
                 contact_phone: document.getElementById('applyPhone').value
             };
 
             try {
                 const res = await fetch(`${API_URL}/applications/`, {
                     method: 'POST',
-                    headers: { 
+                    headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
                     body: JSON.stringify(payload)
                 });
-                if (res.ok) {
-                    alert("申请已提交，等待审核！");
-                    closeModal('applyModal');
-                } else {
-                    alert("提交失败，请检查登录状态");
-                }
-            } catch (e) { alert("提交出错"); }
+                if(res.ok) { alert("申请提交成功！"); closeModal('applyModal'); }
+                else { alert("提交失败，请重试或检查登录"); }
+            } catch (e) { alert("后端连接异常"); }
         };
 
         // 4. 退出登录
-        function logout() {
+        window.logout = () => {
             localStorage.removeItem('token');
             location.reload();
-        }
+        };
 
-        // 5. 检查登录状态更新 UI
-        window.onload = async function() {
+        // 5. 页面初始化检查登录态
+        window.addEventListener('DOMContentLoaded', async () => {
             const token = localStorage.getItem('token');
-            if (token) {
+            if(token) {
                 try {
                     const res = await fetch(`${API_URL}/auth/me`, {
-                        headers: { 'Authorization': `Bearer ${token}` }
+                        headers: {'Authorization': `Bearer ${token}`}
                     });
-                    if (res.ok) {
+                    if(res.ok) {
                         const user = await res.json();
                         document.getElementById('guestNav').style.display = 'none';
                         document.getElementById('userNav').style.display = 'flex';
                         document.querySelector('.user-name').innerText = user.username;
                     }
-                } catch (e) { localStorage.removeItem('token'); }
+                } catch(e) { localStorage.removeItem('token'); }
             }
-            
-            // 启动 Reveal 动画
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) entry.target.classList.add('active');
-                });
-            }, { threshold: 0.1 });
-            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-        };
+        });
     </script>
 </body>
 </html>
