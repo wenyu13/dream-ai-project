@@ -23,53 +23,216 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; }
-        html { scroll-behavior: smooth; }
-        body { background: var(--bg-light); color: var(--text-main); overflow-x: hidden; line-height: 1.6; cursor: default; }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg-light);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+            cursor: default;
+        }
 
         .bg-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        .firefly { position: absolute; width: 4px; height: 4px; background: var(--accent-orange); border-radius: 50%; filter: blur(2px); opacity: 0.3; animation: move 20s infinite linear; }
-        @keyframes move { 0% { transform: translate(0, 0); opacity: 0; } 50% { opacity: 0.6; } 100% { transform: translate(100vw, 100vh); opacity: 0; } }
+        .firefly {
+            position: absolute; width: 4px; height: 4px; background: var(--accent-orange);
+            border-radius: 50%; filter: blur(2px); opacity: 0.3; animation: move 20s infinite linear;
+        }
+        @keyframes move {
+            0% { transform: translate(0, 0); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translate(100vw, 100vh); opacity: 0; }
+        }
 
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 8%; background: var(--glass); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(45, 106, 79, 0.05); }
+        nav {
+            display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 8%;
+            background: var(--glass); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 100;
+            border-bottom: 1px solid rgba(45, 106, 79, 0.05);
+        }
         .brand { font-size: 1.5rem; font-weight: 800; color: var(--primary-green); letter-spacing: 1px; }
         .nav-links { display: flex; align-items: center; }
         .nav-links a { text-decoration: none; color: var(--text-main); margin-left: 2rem; font-weight: 500; transition: 0.3s; }
         .nav-links a:hover { color: var(--accent-orange); }
 
-        .hero-section { min-height: 85vh; padding: 100px 8%; display: flex; align-items: center; justify-content: center; text-align: center; position: relative; background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none"><path fill="%23ffedd5" fill-opacity="0.4" d="M0,224L60,202.7C120,181,240,139,360,138.7C480,139,600,181,720,208C840,235,960,245,1080,224C1200,203,1320,149,1380,122.7L1440,96L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>'), linear-gradient(180deg, var(--sunrise-gold) 0%, #ffffff 100%); background-position: bottom; background-repeat: no-repeat; background-size: 100% 400px, 100% 100%; overflow: hidden; }
-        .hero-main-title { font-size: 3.8rem; font-weight: 900; color: var(--sunrise-text); margin-bottom: 25px; letter-spacing: 2px; line-height: 1.2; }
-        .hero-main-title span { color: var(--primary-green); }
-        .hero-subtitle { font-size: 1.5rem; font-weight: 500; color: #78350f; margin-bottom: 50px; opacity: 0.8; }
-        .hero-btn { display: inline-block; padding: 1.1rem 3.5rem; border-radius: 50px; background: var(--primary-green); color: white; text-decoration: none; font-weight: 700; font-size: 1.2rem; transition: 0.4s; box-shadow: 0 15px 35px rgba(45, 106, 79, 0.2); border: none; cursor: pointer; }
-        .hero-btn:hover { transform: scale(1.05); background: var(--accent-orange); }
+        .hero-section {
+            min-height: 85vh;
+            padding: 100px 8%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            background: 
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none"><path fill="%23ffedd5" fill-opacity="0.4" d="M0,224L60,202.7C120,181,240,139,360,138.7C480,139,600,181,720,208C840,235,960,245,1080,224C1200,203,1320,149,1380,122.7L1440,96L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>'),
+                linear-gradient(180deg, var(--sunrise-gold) 0%, #ffffff 100%);
+            background-position: bottom;
+            background-repeat: no-repeat;
+            background-size: 100% 400px, 100% 100%;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            right: -5%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 159, 28, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+        }
+
+        .hero-main-title {
+            font-size: 3.8rem;
+            font-weight: 900;
+            color: var(--sunrise-text);
+            margin-bottom: 25px;
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
+
+        .hero-main-title span {
+            color: var(--primary-green);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #78350f;
+            margin-bottom: 50px;
+            opacity: 0.8;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            padding: 1.1rem 3.5rem;
+            border-radius: 50px;
+            background: var(--primary-green);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 35px rgba(45, 106, 79, 0.2);
+            position: relative;
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hero-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 45px rgba(45, 106, 79, 0.3);
+            background: var(--accent-orange);
+        }
+
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 2.4rem; color: var(--primary-green); margin-bottom: 15px; font-weight: 800; }
+        .section-header .line { width: 60px; height: 4px; background: var(--accent-orange); margin: 0 auto; border-radius: 2px; }
+        .section-header p { color: #666; margin-top: 20px; font-size: 1.1rem; }
 
         .container { max-width: 1300px; margin: 0 auto; padding: 100px 5%; }
-        .section-header { text-align: center; margin-bottom: 60px; }
+
         .portal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
-        .portal-card { background: white; border-radius: 2.5rem; padding: 4rem 2rem; text-align: center; transition: 0.5s; border: 1px solid rgba(45, 106, 79, 0.05); box-shadow: var(--card-shadow); }
-        .portal-card:hover { transform: translateY(-15px); border-color: var(--accent-orange); }
+        .portal-card {
+            background: white; border-radius: 2.5rem; padding: 4rem 2rem; text-align: center;
+            transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border: 1px solid rgba(45, 106, 79, 0.05); box-shadow: var(--card-shadow);
+        }
+        .portal-card:hover { transform: translateY(-15px) scale(1.02); box-shadow: 0 30px 60px rgba(45, 106, 79, 0.15); border-color: var(--accent-orange); }
+        .icon-box {
+            width: 90px; height: 90px; background: var(--soft-green); border-radius: 2rem;
+            display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; transition: 0.5s;
+        }
+        .portal-card:hover .icon-box { background: var(--primary-green); transform: rotate(-5deg); }
+        .icon-box svg { width: 45px; height: 45px; fill: var(--primary-green); transition: 0.5s; }
+        .portal-card:hover svg { fill: white; }
+        .portal-btn { 
+            display: inline-block; margin-top: 2rem; padding: 0.8rem 2.5rem; border-radius: 50px; 
+            background: var(--primary-green); color: white; text-decoration: none; font-weight: 600; transition: 0.3s;
+        }
+        .portal-card:hover .portal-btn { background: var(--accent-orange); box-shadow: 0 10px 20px rgba(255, 159, 28, 0.3); }
 
         .jobs-section { background: white; border-radius: 4rem 4rem 0 0; }
         .jobs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
-        .job-card { background: var(--bg-light); border-radius: 20px; padding: 35px; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid var(--danger-red); transition: 0.4s; }
-        .apply-btn { padding: 12px 28px; background: var(--danger-red); color: white; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
+        .job-card {
+            background: var(--bg-light); border-radius: 20px; padding: 35px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-left: 6px solid var(--danger-red); transition: 0.4s;
+        }
+        .job-card:hover { background: white; transform: scale(1.02) translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        .job-info h4 { font-size: 1.4rem; margin-bottom: 12px; color: var(--text-main); }
+        .job-tag { 
+            display: inline-block; padding: 4px 15px; border-radius: 6px; background: #fff1f2; 
+            color: var(--danger-red); font-size: 0.85rem; font-weight: bold; margin-top: 10px;
+        }
+        .apply-btn {
+            padding: 12px 28px; background: var(--danger-red); color: white;
+            border-radius: 10px; text-decoration: none; font-weight: bold; transition: 0.3s;
+            border: none; cursor: pointer;
+        }
+        .apply-btn:hover { opacity: 0.9; transform: translateY(-2px); }
 
+        .tools-section { background: linear-gradient(180deg, #fff 0%, var(--soft-green) 100%); }
         .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 35px; }
-        .tool-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); border-radius: 30px; padding: 30px; text-align: center; border: 1px solid white; transition: 0.4s; }
-        .tool-card:hover { transform: translateY(-10px); border-color: var(--accent-orange); }
+        .tool-card {
+            background: rgba(255,255,255,0.7); backdrop-filter: blur(10px);
+            border-radius: 30px; padding: 30px; text-align: center;
+            border: 1px solid white; transition: 0.4s;
+        }
+        .tool-card:hover { transform: translateY(-10px) scale(1.03); background: white; border-color: var(--accent-orange); }
+        .tool-preview {
+            width: 100%; height: 200px; border-radius: 20px; margin-bottom: 25px;
+            display: flex; align-items: center; justify-content: center;
+            background: radial-gradient(circle at center, #fff 0%, #ffe4e4 100%);
+            position: relative; overflow: hidden;
+        }
+        .tool-preview svg { width: 60px; height: 60px; fill: var(--danger-red); z-index: 1; transition: 0.5s; }
+        .tool-card:hover .tool-preview svg { transform: scale(1.25) rotate(10deg); }
+        .tool-card h3 { font-size: 1.3rem; margin-bottom: 20px; }
+        .tool-btn { 
+            padding: 10px 25px; border: 2px solid var(--danger-red); color: var(--danger-red);
+            border-radius: 8px; text-decoration: none; font-weight: bold; transition: 0.3s;
+            cursor: pointer; background: transparent;
+        }
+        .tool-btn:hover { background: var(--danger-red); color: white; }
 
         footer { text-align: center; padding: 5rem; background: var(--text-main); color: #88bd9e; font-size: 0.9rem; }
+
+        @media (max-width: 992px) { 
+            .portal-grid, .jobs-grid, .tools-grid { grid-template-columns: 1fr; } 
+            .hero-main-title { font-size: 2.8rem; }
+        }
+
+        /* --- 动态揭幕基础状态 --- */
         .reveal { opacity: 0; transform: translateY(50px); transition: 1s cubic-bezier(0.165, 0.84, 0.44, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        .identity-modal, .apply-modal, .model-viewer-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); z-index: 2000; justify-content: center; align-items: center; }
+        /* --- 弹窗样式 --- */
+        .identity-modal, .apply-modal, .model-viewer-modal { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); z-index: 2000; 
+            justify-content: center; align-items: center; 
+        }
         .identity-modal.active, .apply-modal.active, .model-viewer-modal.active { display: flex; }
-        .modal-content, .apply-modal-content, .model-viewer-content { background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); padding: 30px; }
+        .modal-content, .apply-modal-content, .model-viewer-content { 
+            background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); padding: 30px; 
+        }
         model-viewer { width: 100%; height: 60vh; }
         
-        /* 针对身份选择下拉框的小优化 */
-        select { appearance: none; cursor: pointer; outline: none; }
-        select:focus { border-color: var(--accent-orange) !important; }
+        /* 仅针对下拉框的小美化 */
+        select { appearance: none; cursor: pointer; border: 1px solid #ddd; outline: none; }
+        select:focus { border-color: var(--accent-orange); }
     </style>
 </head>
 <body>
@@ -95,276 +258,245 @@
                 </div>
             </div>
             
-            <!-- 未登录状态显示的导航 -->
             <div class="guest-nav" id="guestNav">
-                <button class="login-btn" style="padding: 5px 15px; margin-left: 20px; border: 1px solid #ddd; border-radius: 5px; cursor: pointer;" onclick="openModal('loginModal')">登录</button>
-                <button class="register-btn" style="padding: 5px 15px; background: var(--primary-green); color: white; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px;" onclick="openModal('registerModal')">注册</button>
+                <button class="login-btn" onclick="openModal('loginModal')">登录</button>
+                <button class="register-btn" onclick="openModal('registerModal')">注册</button>
             </div>
             
-            <!-- 登录后显示的导航 -->
             <div id="userNav" style="display: none; align-items:center; gap:10px; margin-left:20px;">
                 <span class="user-name" style="font-weight:bold; color:var(--primary-green);"></span>
-                <button onclick="logout()" style="cursor:pointer; border:1px solid #ccc; background:none; padding:3px 8px; border-radius:5px;">退出</button>
+                <button onclick="logoutNow()" style="cursor:pointer; border:1px solid #ccc; background:none; padding:3px 8px; border-radius:5px;">退出</button>
             </div>
         </div>
     </nav>
 
+    <!-- 保持 Hero 和 Portals 结构不变 -->
     <section class="hero-section">
         <div class="hero-content">
             <h1 class="hero-main-title">用<span>科技</span>点亮<span>大山</span>的晨曦</h1>
             <p class="hero-subtitle">微光循迹：赋能乡村振兴的数字化志愿服务交互平台</p>
             <a href="#portals" class="hero-btn magnetic-btn">开启支教之旅</a>
         </div>
+        <div class="wave-container">
+            <div class="wave"></div><div class="wave"></div><div class="wave"></div>
+        </div>
     </section>
 
-    <!-- 入口选择 -->
     <section id="portals" class="container">
         <div class="section-header reveal">
             <h2>谁在参与微光？</h2>
             <div class="line"></div>
+            <p>连接城乡教育，让每一个梦想都能在科技的羽翼下起飞</p>
         </div>
         <div class="portal-grid">
             <div class="portal-card reveal">
+                <div class="icon-box" style="margin: 0 auto 2rem;"><svg viewBox="0 0 24 24"><path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.41,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.59,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"/></svg></div>
                 <h3>志愿者入口</h3>
-                <p>提供专业支教岗位匹配，记录您的公益里程。</p>
-                <a href="volunteer.html" class="hero-btn" style="margin-top:20px; font-size:1rem; padding:10px 20px;">进入工作台</a>
+                <p>提供专业支教岗位匹配，记录您的公益里程，让奉献更具价值。</p>
+                <a href="volunteer.html" class="portal-btn magnetic-btn">进入工作台</a>
             </div>
             <div class="portal-card reveal">
+                <div class="icon-box" style="margin: 0 auto 2rem;"><svg viewBox="0 0 24 24"><path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z"/></svg></div>
                 <h3>教师管理端</h3>
                 <p>发布教学需求，管理支教老师，获取数字化实验资源。</p>
-                <a href="teacher.html" class="hero-btn" style="margin-top:20px; font-size:1rem; padding:10px 20px;">管理中心</a>
+                <a href="teacher.html" class="portal-btn magnetic-btn">管理中心</a>
             </div>
             <div class="portal-card reveal">
+                <div class="icon-box" style="margin: 0 auto 2rem;"><svg viewBox="0 0 24 24"><path d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"/></svg></div>
                 <h3>学生学习端</h3>
                 <p>开启云端沉浸式课堂，参与互动实验，连接大山外的广阔世界。</p>
-                <a href="learning.html" class="hero-btn" style="margin-top:20px; font-size:1rem; padding:10px 20px;">开启学习</a>
+                <a href="learning.html" class="portal-btn magnetic-btn">开启学习</a>
             </div>
         </div>
     </section>
 
-    <!-- 岗位列表 -->
+    <!-- 保持成就、岗位和 3D 部分不变 -->
+    <section id="stats" class="container" style="background: linear-gradient(135deg, var(--soft-green) 0%, #fff 100%); border-radius: 3rem; padding: 80px 5%;">
+        <div class="section-header reveal"><h2>微光成就</h2><div class="line"></div></div>
+        <div class="portal-grid">
+            <div class="counter-wrapper reveal"><div class="counter" data-target="1520">0</div><div class="counter-label">志愿者参与</div></div>
+            <div class="counter-wrapper reveal"><div class="counter" data-target="86">0</div><div class="counter-label">合作学校</div></div>
+            <div class="counter-wrapper reveal"><div class="counter" data-target="12500">0</div><div class="counter-label">受益学生</div></div>
+        </div>
+    </section>
+
     <section id="jobs" class="jobs-section container">
-        <div class="section-header reveal"><h2>最新支教岗位</h2></div>
+        <div class="section-header reveal"><h2>最新支教岗位</h2><div class="line"></div></div>
         <div class="jobs-grid">
             <div class="job-card reveal">
-                <div class="job-info"><h4>贵州大山镇希望小学</h4><p>英语教学 · 2024秋季</p></div>
+                <div class="job-info"><h4>贵州大山镇希望小学</h4><p>📍 2024秋季 · 英语教学</p></div>
                 <button class="apply-btn" onclick="openModal('applyModal')">立即申请</button>
             </div>
             <div class="job-card reveal">
-                <div class="job-info"><h4>凉山州美姑县小学</h4><p>艺术支教 · 全年岗位</p></div>
+                <div class="job-info"><h4>凉山州美姑县小学</h4><p>📍 全年岗位 · 艺术支教</p></div>
                 <button class="apply-btn" onclick="openModal('applyModal')">立即申请</button>
             </div>
         </div>
     </section>
 
-    <!-- 3D 预览部分 -->
-    <section id="tools" class="container">
+    <section id="tools" class="tools-section container">
         <div class="section-header reveal"><h2>数字化教具库</h2></div>
         <div class="tools-grid">
-            <div class="tool-card reveal">
-                <h3>斯特林发动机</h3><br>
-                <button class="hero-btn" style="font-size:1rem; padding:10px 20px;" onclick="open3D('斯特林发动机')">3D 互动预览</button>
-            </div>
-            <div class="tool-card reveal">
-                <h3>平面四连杆机构</h3><br>
-                <button class="hero-btn" style="font-size:1rem; padding:10px 20px;" onclick="open3D('平面四连杆机构')">3D 互动预览</button>
-            </div>
-            <div class="tool-card reveal">
-                <h3>AI 巡检机器人</h3><br>
-                <button class="hero-btn" style="font-size:1rem; padding:10px 20px;" onclick="open3D('AI 巡检机器人')">3D 互动预览</button>
-            </div>
+            <div class="tool-card reveal"><h3>斯特林发动机</h3><br><button class="tool-btn" onclick="open3D('斯特林发动机')">3D 互动预览</button></div>
+            <div class="tool-card reveal"><h3>平面四连杆机构</h3><br><button class="tool-btn" onclick="open3D('平面四连杆机构')">3D 互动预览</button></div>
+            <div class="tool-card reveal"><h3>AI 巡检机器人</h3><br><button class="tool-btn" onclick="open3D('AI 巡检机器人')">3D 互动预览</button></div>
         </div>
     </section>
 
-    <footer>
-        <p>© 2026 微光循迹 · 用科技点亮大山的晨曦 </p>
-    </footer>
+    <footer><p>© 2026 微光循迹 · 用科技点亮大山的晨曦 </p></footer>
 
-    <!-- 登录弹窗 -->
+    <!-- 以下是手术式修改：弹窗部分 -->
     <div class="identity-modal" id="loginModal">
-        <div class="modal-content" style="max-width:400px; width:90%; text-align:center;">
+        <div class="modal-content">
             <h3>用户登录</h3><br>
-            <input type="email" id="loginEmail" placeholder="邮箱/用户名" style="width:100%; padding:10px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
-            <input type="password" id="loginPassword" placeholder="密码" style="width:100%; padding:10px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
-            <button class="hero-btn" id="doLogin" style="width:100%;">登录</button>
+            <input type="email" id="loginUser" placeholder="邮箱或用户名" style="width:100%; padding:10px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
+            <input type="password" id="loginPass" placeholder="密码" style="width:100%; padding:10px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
+            <button class="hero-btn" id="btnGoLogin" style="width:100%;">登录</button>
             <button onclick="closeModal('loginModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer; color:#666;">取消</button>
         </div>
     </div>
 
-    <!-- 注册弹窗 -->
     <div class="identity-modal" id="registerModal">
-        <div class="modal-content" style="max-width:400px; width:90%; text-align:center;">
+        <div class="modal-content">
             <h3>用户注册</h3><br>
-            <input type="text" id="regUsername" placeholder="用户名" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
+            <input type="text" id="regUser" placeholder="用户名" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
             <input type="email" id="regEmail" placeholder="邮箱" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
-            <input type="password" id="regPassword" placeholder="密码" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
-            
-            <select id="regRole" style="width:100%; padding:10px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd; background:white; color:#666;">
-                <option value="" disabled selected>请选择身份</option>
+            <input type="password" id="regPass" placeholder="密码 (需含字母+数字且>8位)" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
+            <!-- 增加身份选择 -->
+            <select id="regRole" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd; background:white; color:#666;">
+                <option value="" disabled selected>请选择您的身份</option>
                 <option value="student">学生</option>
                 <option value="volunteer">志愿者</option>
                 <option value="teacher">老师</option>
                 <option value="admin">管理员</option>
             </select>
-
-            <button class="hero-btn" id="doRegister" style="width:100%;">注册</button>
+            <button class="hero-btn" id="btnGoRegister" style="width:100%;">注册</button>
             <button onclick="closeModal('registerModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer; color:#666;">取消</button>
         </div>
     </div>
 
-    <!-- 申请弹窗 -->
     <div class="apply-modal" id="applyModal">
-        <div class="apply-modal-content" style="padding:30px; background:white; border-radius:20px; max-width:500px; width:90%; text-align:center;">
+        <div class="apply-modal-content" style="padding:30px; background:white; border-radius:20px;">
             <h3>志愿者岗位正式申请</h3><br>
-            <input type="text" id="applyRealName" placeholder="真实姓名" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;">
+            <input type="text" id="applyName" placeholder="真实姓名" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;">
             <input type="tel" id="applyPhone" placeholder="联系电话" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;">
-            <textarea id="applyBio" placeholder="个人简介" style="width:100%; height:100px; padding:10px; border-radius:8px; border:1px solid #ddd; margin-bottom:10px;"></textarea>
-            <button class="hero-btn" id="doApply" style="width:100%;">提交申请</button>
+            <textarea id="applyBio" placeholder="个人简介" style="width:100%; height:100px; padding:10px; border-radius:8px; border:1px solid #ddd;"></textarea>
+            <button class="hero-btn" id="btnGoApply" style="width:100%; margin-top:10px;">提交申请</button>
             <button onclick="closeModal('applyModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer;">取消</button>
         </div>
     </div>
 
-    <!-- 3D 模型弹窗 -->
+    <!-- 保持查看器和助手结构不变 -->
     <div class="model-viewer-modal" id="modelViewerModal">
-        <div class="model-viewer-content" style="width:90%; max-width:900px;">
-            <div style="display:flex; justify-content:space-between; padding-bottom:15px; border-bottom:1px solid #eee;">
-                <h3 id="modelName">-</h3>
-                <button onclick="closeModal('modelViewerModal')" style="border:none; background:none; font-size:2rem; cursor:pointer;">✕</button>
+        <div class="model-viewer-content">
+            <div class="model-viewer-header"><h3>3D 模型查看器</h3><button onclick="closeModal('modelViewerModal')" style="background:none; border:none; font-size:2rem; cursor:pointer;">✕</button></div>
+            <div class="model-viewer-body">
+                <model-viewer id="modelViewer" src="" auto-rotate camera-controls exposure="1.2"></model-viewer>
+                <div style="padding:20px; background:var(--sunrise-gold);">模型名称：<span id="modelName">-</span></div>
             </div>
-            <model-viewer id="modelViewer" src="" auto-rotate camera-controls shadow-intensity="1"></model-viewer>
         </div>
     </div>
 
     <!-- AI 助手 -->
     <div id="aiAssistantBtn" onclick="openModal('aiAssistantWindow')" style="position:fixed; bottom:30px; right:30px; background:var(--primary-green); width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:999;"><i class="fas fa-comment-dots" style="color:white; font-size:1.5rem;"></i></div>
     <div class="ai-assistant-window" id="aiAssistantWindow">
-        <div style="background:var(--primary-green); color:white; padding:15px; display:flex; justify-content:space-between;"><h3>AI 助手</h3><button onclick="closeModal('aiAssistantWindow')" style="background:none; border:none; color:white; cursor:pointer;">✕</button></div>
-        <div id="aiAssistantContent" style="flex:1; padding:20px; overflow-y:auto; background:#f9f9f9; text-align:left; font-size:0.9rem;"><div>你好！我是微光AI助理。</div></div>
-        <div style="padding:10px; border-top:1px solid #eee; display:flex; gap:5px;"><input type="text" id="aiAssistantInput" style="flex:1; padding:8px; border-radius:10px; border:1px solid #ddd;" placeholder="问点什么..."><button id="aiAssistantSubmit" style="background:var(--primary-green); color:white; border:none; padding:8px 12px; border-radius:10px; cursor:pointer;">发送</button></div>
+        <div style="background:var(--primary-green); color:white; padding:20px; display:flex; justify-content:space-between;"><h3>AI 助手</h3><button onclick="closeModal('aiAssistantWindow')" style="background:none; border:none; color:white; cursor:pointer;">✕</button></div>
+        <div id="aiAssistantContent" style="flex:1; padding:20px; overflow-y:auto; background:#f9f9f9; text-align:left;"><div>你好！我是微光AI助理。</div></div>
+        <div style="padding:15px; border-top:1px solid #eee; display:flex; gap:10px;"><input type="text" id="aiAssistantInput" style="flex:1; padding:10px; border-radius:10px; border:1px solid #ddd;" placeholder="问点什么..."><button id="aiAssistantSubmit" style="background:var(--primary-green); color:white; border:none; padding:10px; border-radius:10px; cursor:pointer;">发送</button></div>
     </div>
 
+    <!-- 脚本引用 -->
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <script src="api.js?v=999"></script>
     <script src="auth.js?v=999"></script>
     <script src="script.js?v=2026_final"></script>
 
-    <!-- 核心业务逻辑 -->
+    <!-- 功能对接脚本 -->
     <script>
-        const BASE_URL = 'https://cghsdcnklsd-dream-ai-api.hf.space/api';
+        const HF_URL = 'https://cghsdcnklsd-dream-ai-api.hf.space/api';
 
         // 1. 注册逻辑
-        document.getElementById('doRegister').onclick = async () => {
-            const username = document.getElementById('regUsername').value;
-            const email = document.getElementById('regEmail').value;
-            const password = document.getElementById('regPassword').value;
+        document.getElementById('btnGoRegister').onclick = async () => {
             const role = document.getElementById('regRole').value;
+            const payload = {
+                username: document.getElementById('regUser').value,
+                email: document.getElementById('regEmail').value,
+                password: document.getElementById('regPass').value,
+                role: role,
+                full_name: document.getElementById('regUser').value
+            };
+            if(!role) return alert("请先选择身份");
 
-            if(!role) return alert("请选择您的身份（学生/老师等）");
-            if(password.length < 8) return alert("密码必须至少8位且包含字母数字");
-
-            const payload = { username, email, password, role, full_name: username };
-
-            try {
-                const res = await fetch(`${BASE_URL}/auth/register`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
-                });
-                const data = await res.json();
-                if(res.ok) {
-                    alert("注册成功！即将为你打开登录框");
-                    closeModal('registerModal');
-                    openModal('loginModal');
-                } else {
-                    alert("注册失败：" + (data.detail || "请检查输入格式"));
-                }
-            } catch(e) { alert("服务器连接超时，请检查后端运行状态"); }
+            const res = await fetch(`${HF_URL}/auth/register`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if(res.ok) { alert("注册成功，请登录！"); closeModal('registerModal'); openModal('loginModal'); }
+            else { alert("注册失败：" + (data.detail || "请检查格式")); }
         };
 
-        // 2. 登录逻辑 + 自动跳转
-        document.getElementById('doLogin').onclick = async () => {
+        // 2. 登录与跳转逻辑
+        document.getElementById('btnGoLogin').onclick = async () => {
             const formData = new FormData();
-            formData.append('username', document.getElementById('loginEmail').value);
-            formData.append('password', document.getElementById('loginPassword').value);
+            formData.append('username', document.getElementById('loginUser').value);
+            formData.append('password', document.getElementById('loginPass').value);
 
-            try {
-                const res = await fetch(`${BASE_URL}/auth/login`, { method: 'POST', body: formData });
-                const data = await res.json();
+            const res = await fetch(`${HF_URL}/auth/login`, { method: 'POST', body: formData });
+            const data = await res.json();
 
-                if(res.ok) {
-                    localStorage.setItem('token', data.access_token);
-                    
-                    // 登录成功后获取详细角色进行跳转
-                    const userRes = await fetch(`${BASE_URL}/auth/me`, {
-                        headers: { 'Authorization': `Bearer ${data.access_token}` }
-                    });
-                    const user = await userRes.json();
-                    
-                    alert(`登录成功！欢迎回来，${user.username}`);
-                    
-                    // 根据角色跳转页面
-                    if(user.role === 'student') window.location.href = 'learning.html';
-                    else if(user.role === 'teacher') window.location.href = 'teacher.html';
-                    else if(user.role === 'volunteer') window.location.href = 'volunteer.html';
-                    else if(user.role === 'admin') window.location.href = 'admin.html';
-                    else location.reload();
-                    
-                } else {
-                    alert("账号或密码错误");
-                }
-            } catch(e) { alert("登录异常，请检查网络"); }
+            if(res.ok) {
+                localStorage.setItem('token', data.access_token);
+                // 获取用户信息判断身份
+                const userRes = await fetch(`${HF_URL}/auth/me`, {
+                    headers: {'Authorization': `Bearer ${data.access_token}`}
+                });
+                const user = await userRes.json();
+                alert(`欢迎回来 ${user.username}！`);
+
+                // 跳转逻辑
+                if(user.role === 'student') window.location.href = 'learning.html';
+                else if(user.role === 'teacher') window.location.href = 'teacher.html';
+                else if(user.role === 'volunteer') window.location.href = 'volunteer.html';
+                else if(user.role === 'admin') window.location.href = 'admin.html';
+                else location.reload();
+            } else { alert("账号或密码错误"); }
         };
 
         // 3. 申请逻辑
-        document.getElementById('doApply').onclick = async () => {
+        document.getElementById('btnGoApply').onclick = async () => {
             const token = localStorage.getItem('token');
-            if(!token) return alert("请先登录账号后再提交申请");
-
+            if(!token) return alert("请先登录账户");
             const payload = {
                 type: "volunteer",
-                title: "正式岗位申请-" + document.getElementById('applyRealName').value,
-                description: document.getElementById('applyBio').value || "无简介",
+                title: "岗位申请-" + document.getElementById('applyName').value,
+                description: document.getElementById('applyBio').value,
                 contact_phone: document.getElementById('applyPhone').value
             };
-
-            const res = await fetch(`${BASE_URL}/applications/`, {
+            const res = await fetch(`${HF_URL}/applications/`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
+                headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
                 body: JSON.stringify(payload)
             });
-
-            if(res.ok) {
-                alert("申请已成功发送至后台，请等待审核！");
-                closeModal('applyModal');
-            } else {
-                alert("申请提交失败，请确保已登录并填写完整");
-            }
+            if(res.ok) { alert("申请提交成功，请等待审核！"); closeModal('applyModal'); }
+            else { alert("提交失败，请重试"); }
         };
 
         // 4. 退出登录
-        window.logout = () => {
-            localStorage.removeItem('token');
-            location.href = 'index.html';
-        };
+        window.logoutNow = () => { localStorage.removeItem('token'); location.reload(); };
 
-        // 5. 初始化检查
+        // 5. 初始化：检查 Token 显示用户名
         window.addEventListener('DOMContentLoaded', async () => {
             const token = localStorage.getItem('token');
             if(token) {
-                try {
-                    const res = await fetch(`${BASE_URL}/auth/me`, {
-                        headers: { 'Authorization': `Bearer ${token}` }
-                    });
-                    if(res.ok) {
-                        const user = await res.json();
-                        document.getElementById('guestNav').style.display = 'none';
-                        document.getElementById('userNav').style.display = 'flex';
-                        document.querySelector('.user-name').innerText = user.username;
-                    }
-                } catch(e) { localStorage.removeItem('token'); }
+                const res = await fetch(`${HF_URL}/auth/me`, { headers: {'Authorization': `Bearer ${token}`} });
+                if(res.ok) {
+                    const user = await res.json();
+                    document.getElementById('guestNav').style.display = 'none';
+                    document.getElementById('userNav').style.display = 'flex';
+                    document.querySelector('.user-name').innerText = user.username;
+                }
             }
         });
     </script>
