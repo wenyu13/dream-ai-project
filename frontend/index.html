@@ -229,9 +229,9 @@
             background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); padding: 30px; 
         }
         model-viewer { width: 100%; height: 60vh; }
-
-        /* 下拉框样式修补 */
-        select { appearance: none; cursor: pointer; outline: none; }
+        
+        /* 下拉框专属样式，不改动其他代码 */
+        select { appearance: none; cursor: pointer; border: 1px solid #ddd; outline: none; }
         select:focus { border-color: var(--accent-orange) !important; }
     </style>
 </head>
@@ -259,13 +259,13 @@
             </div>
             
             <div class="guest-nav" id="guestNav">
-                <button class="login-btn" style="padding:5px 15px; margin-left:15px; border:1px solid #ddd; border-radius:5px; cursor:pointer;" onclick="openModal('loginModal')">登录</button>
-                <button class="register-btn" style="padding:5px 15px; margin-left:10px; background:var(--primary-green); color:white; border:none; border-radius:5px; cursor:pointer;" onclick="openModal('registerModal')">注册</button>
+                <button class="login-btn" onclick="openModal('loginModal')">登录</button>
+                <button class="register-btn" onclick="openModal('registerModal')">注册</button>
             </div>
             
             <div id="userNav" style="display: none; align-items:center; gap:10px; margin-left:20px;">
                 <span class="user-name" style="font-weight:bold; color:var(--primary-green);"></span>
-                <button onclick="logoutNow()" style="cursor:pointer; border:1px solid #ccc; background:none; padding:3px 8px; border-radius:5px; font-size:0.8rem;">退出</button>
+                <button onclick="logoutUser()" style="cursor:pointer; border:1px solid #ccc; background:none; padding:3px 8px; border-radius:5px;">退出</button>
             </div>
         </div>
     </nav>
@@ -309,7 +309,102 @@
         </div>
     </section>
 
-    <!-- 此处省略了一些不需改动的 Stats、Jobs、Tools 区域内容 -->
+    <section id="stats" class="container" style="background: linear-gradient(135deg, var(--soft-green) 0%, #fff 100%); border-radius: 3rem; padding: 80px 5%;">
+        <div class="section-header reveal">
+            <h2>微光成就</h2>
+            <div class="line"></div>
+            <p>用数据见证每一次改变</p>
+        </div>
+        <div class="portal-grid">
+            <div class="counter-wrapper reveal">
+                <div class="counter" data-target="1520">0</div>
+                <div class="counter-label">志愿者参与</div>
+            </div>
+            <div class="counter-wrapper reveal">
+                <div class="counter" data-target="86">0</div>
+                <div class="counter-label">合作学校</div>
+            </div>
+            <div class="counter-wrapper reveal">
+                <div class="counter" data-target="12500">0</div>
+                <div class="counter-label">受益学生</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="jobs" class="jobs-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>最新支教岗位</h2>
+                <div class="line"></div>
+            </div>
+            <div class="jobs-grid">
+                <div class="job-card reveal">
+                    <div class="job-info">
+                        <h4>贵州大山镇希望小学</h4>
+                        <div style="color: #888; font-size: 0.9rem;">📍 贵州省黔东南州 · 2024秋季</div>
+                        <div class="job-tag">英语教学</div>
+                    </div>
+                    <button class="apply-btn" onclick="openModal('applyModal')">立即申请</button>
+                </div>
+                <div class="job-card reveal">
+                    <div class="job-info">
+                        <h4>凉山州美姑县小学</h4>
+                        <div style="color: #888; font-size: 0.9rem;">📍 四川省凉山州 · 全年岗位</div>
+                        <div class="job-tag">艺术支教</div>
+                    </div>
+                    <button class="apply-btn" onclick="openModal('applyModal')">立即申请</button>
+                </div>
+                <div class="job-card reveal">
+                    <div class="job-info">
+                        <h4>怒江州中心小学</h4>
+                        <div style="color: #888; font-size: 0.9rem;">📍 云南省怒江州 · 1学期</div>
+                        <div class="job-tag">数学科普</div>
+                    </div>
+                    <button class="apply-btn" onclick="openModal('applyModal')">立即申请</button>
+                </div>
+                <div class="job-card reveal">
+                    <div class="job-info">
+                        <h4>陇南市乡村教学点</h4>
+                        <div style="color: #888; font-size: 0.9rem;">📍 甘肃省陇南市 · 3个月</div>
+                        <div class="job-tag">手工机械</div>
+                    </div>
+                    <button class="apply-btn" onclick="openModal('applyModal')">立即申请</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="tools" class="tools-section">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>数字化教具共享中心</h2>
+                <div class="line"></div>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card reveal">
+                    <div class="tool-preview">
+                        <svg viewBox="0 0 24 24"><path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/></svg>
+                    </div>
+                    <h3>斯特林发动机</h3>
+                    <button class="tool-btn" onclick="open3D('斯特林发动机')">3D 互动预览</button>
+                </div>
+                <div class="tool-card reveal">
+                    <div class="tool-preview" style="background: radial-gradient(circle at center, #fff 0%, #e0f2fe 100%);">
+                        <svg viewBox="0 0 24 24" style="fill: #0284c7;"><path d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19C20.92,17.39 19.61,16.08 18,16.08Z"/></svg>
+                    </div>
+                    <h3>平面四连杆机构</h3>
+                    <button class="tool-btn" onclick="open3D('平面四连杆机构')">3D 互动预览</button>
+                </div>
+                <div class="tool-card reveal">
+                    <div class="tool-preview" style="background: radial-gradient(circle at center, #fff 0%, #f0fdf4 100%);">
+                        <svg viewBox="0 0 24 24" style="fill: #16a34a;"><path d="M21,16.5C21,16.88 20.79,17.21 20.47,17.38L12.57,21.82C12.41,21.94 12.21,22 12,22C11.79,22 11.59,21.94 11.43,21.82L3.53,17.38C3.21,17.21 3,16.88 3,16.5V7.5C3,7.12 3.21,6.79 3.53,6.62L11.43,2.18C11.59,2.06 11.79,2 12,2C12.21,2 12.41,2.06 12.57,2.18L20.47,6.62C20.79,6.79 21,7.12 21,7.5V16.5M12,4.15L5,8.09V15.91L12,19.85L19,15.91V8.09L12,4.15Z"/></svg>
+                    </div>
+                    <h3>AI 巡检机器人</h3>
+                    <button class="tool-btn" onclick="open3D('AI 巡检机器人')">3D 互动预览</button>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <footer>
         <p>© 2026 微光循迹 · 用科技点亮大山的晨曦 </p>
@@ -317,22 +412,22 @@
 
     <!-- 登录弹窗 -->
     <div class="identity-modal" id="loginModal">
-        <div class="modal-content" style="max-width:400px;">
+        <div class="modal-content">
             <h3>用户登录</h3><br>
-            <input type="email" id="loginAccount" placeholder="邮箱/用户名" style="width:100%; padding:10px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
-            <input type="password" id="loginPass" placeholder="密码" style="width:100%; padding:10px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
-            <button class="hero-btn" id="btn_doLogin" style="width:100%;">登录</button>
+            <input type="email" id="loginEmail" placeholder="邮箱" style="width:100%; padding:10px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
+            <input type="password" id="loginPassword" placeholder="密码" style="width:100%; padding:10px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
+            <button class="hero-btn" id="doLogin">登录</button>
             <button onclick="closeModal('loginModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer; color:#666;">取消</button>
         </div>
     </div>
 
     <!-- 注册弹窗 -->
     <div class="identity-modal" id="registerModal">
-        <div class="modal-content" style="max-width:400px;">
+        <div class="modal-content">
             <h3>用户注册</h3><br>
             <input type="text" id="regUsername" placeholder="用户名" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
             <input type="email" id="regEmail" placeholder="邮箱" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
-            <input type="password" id="regPassword" placeholder="密码 (需8位以上含字母+数字)" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
+            <input type="password" id="regPassword" placeholder="密码" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
             
             <select id="regRole" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd; background:white; color:#666;">
                 <option value="" disabled selected>请选择身份</option>
@@ -342,7 +437,7 @@
                 <option value="admin">管理员</option>
             </select>
 
-            <button class="hero-btn" id="btn_doRegister" style="width:100%;">注册</button>
+            <button class="hero-btn" id="doRegister">注册</button>
             <button onclick="closeModal('registerModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer; color:#666;">取消</button>
         </div>
     </div>
@@ -354,17 +449,16 @@
             <input type="text" id="applyRealName" placeholder="真实姓名" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;">
             <input type="tel" id="applyPhone" placeholder="联系电话" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;">
             <textarea id="applyBio" placeholder="个人简介" style="width:100%; height:100px; padding:10px; border-radius:8px; border:1px solid #ddd;"></textarea>
-            <button class="hero-btn" id="btn_doApply" style="width:100%; margin-top:10px;">提交申请</button>
+            <button class="hero-btn" id="doApply" style="width:100%; margin-top:10px;">提交申请</button>
             <button onclick="closeModal('applyModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer;">取消</button>
         </div>
     </div>
 
-    <!-- 保持查看器和助手不变 -->
     <div class="model-viewer-modal" id="modelViewerModal">
         <div class="model-viewer-content">
             <div class="model-viewer-header"><h3>3D 模型查看器</h3><button onclick="closeModal('modelViewerModal')" style="background:none; border:none; font-size:2rem; cursor:pointer;">✕</button></div>
             <div class="model-viewer-body">
-                <model-viewer id="modelViewer" src="" auto-rotate camera-controls exposure="1.2"></model-viewer>
+                <model-viewer id="modelViewer" src="" auto-rotate camera-controls camera-orbit="45deg 75deg 150%" min-camera-orbit="auto auto 0.05m" max-camera-orbit="auto auto 50m" field-of-view="auto" exposure="1.2"></model-viewer>
                 <div style="padding:20px; background:var(--sunrise-gold);">模型名称：<span id="modelName">-</span></div>
             </div>
         </div>
@@ -383,115 +477,84 @@
     <script src="auth.js?v=999"></script>
     <script src="script.js?v=2026_final"></script>
 
-    <!-- 这里是让前后端对接并自动跳转的核心逻辑 -->
     <script>
-        const API_URL = 'https://cghsdcnklsd-dream-ai-api.hf.space/api';
+        const BASE_URL = 'https://cghsdcnklsd-dream-ai-api.hf.space/api';
 
-        // 1. 实现成功注册 (发往后端)
-        document.getElementById('btn_doRegister').onclick = async () => {
-            const role = document.getElementById('regRole').value;
+        // 1. 注册逻辑
+        document.getElementById('doRegister').onclick = async () => {
             const payload = {
                 username: document.getElementById('regUsername').value,
                 email: document.getElementById('regEmail').value,
                 password: document.getElementById('regPassword').value,
-                role: role, // 发送给后端的必须是英文 student/teacher 等
-                full_name: document.getElementById('regUsername').value
+                role: document.getElementById('regRole').value
             };
-            if(!role) return alert("请先选择注册身份！");
-
-            try {
-                const res = await fetch(`${API_URL}/auth/register`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
-                });
-                const data = await res.json();
-                if(res.ok) { 
-                    alert("注册成功！即将为你打开登录框。你的密码必须包含数字和字母且大于8位，否则登录会失败。"); 
-                    closeModal('registerModal'); 
-                    openModal('loginModal'); 
-                } else { 
-                    alert("注册失败：" + (data.detail || "请检查密码格式（至少8位，包含字母和数字）")); 
-                }
-            } catch (e) { alert("服务器连接失败，请点开后端Huggingface页面唤醒它。"); }
+            if(!payload.role) return alert("请选择身份");
+            const res = await fetch(`${BASE_URL}/auth/register`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+            if(res.ok) { alert("注册成功！"); closeModal('registerModal'); }
+            else { alert("注册失败，请检查输入"); }
         };
 
-        // 2. 实现登录 + 保留信息 + 身份跳转
-        document.getElementById('btn_doLogin').onclick = async () => {
+        // 2. 登录逻辑
+        document.getElementById('doLogin').onclick = async () => {
             const formData = new FormData();
-            formData.append('username', document.getElementById('loginAccount').value);
-            formData.append('password', document.getElementById('loginPass').value);
-
-            try {
-                const res = await fetch(`${API_URL}/auth/login`, { method: 'POST', body: formData });
-                const data = await res.json();
-
-                if(res.ok) {
-                    localStorage.setItem('token', data.access_token);
-                    
-                    // 登录成功后立即获取用户信息以确定身份跳转
-                    const userRes = await fetch(`${API_URL}/auth/me`, {
-                        headers: {'Authorization': `Bearer ${data.access_token}`}
-                    });
-                    const user = await userRes.json();
-                    
-                    alert(`登录成功！欢迎回来，${user.username}`);
-
-                    // 根据身份跳转到相应页面
-                    const role = user.role;
-                    if (role === 'student') window.location.href = 'learning.html';
-                    else if (role === 'teacher') window.location.href = 'teacher.html';
-                    else if (role === 'volunteer') window.location.href = 'volunteer.html';
-                    else if (role === 'admin') window.location.href = 'admin.html';
-                    else location.reload();
-                    
-                } else {
-                    alert("账号或密码错误");
-                }
-            } catch (e) { alert("连接异常，请检查网络"); }
+            formData.append('username', document.getElementById('loginEmail').value);
+            formData.append('password', document.getElementById('loginPassword').value);
+            const res = await fetch(`${BASE_URL}/auth/login`, { method: 'POST', body: formData });
+            const data = await res.json();
+            if(res.ok) {
+                localStorage.setItem('token', data.access_token);
+                alert("登录成功！");
+                location.reload(); 
+            } else { alert("用户名或密码错误"); }
         };
 
-        // 3. 实现申请对接后端
-        document.getElementById('btn_doApply').onclick = async () => {
+        // 3. 申请逻辑
+        document.getElementById('doApply').onclick = async () => {
             const token = localStorage.getItem('token');
-            if(!token) return alert("请先登录账户后再申请岗位");
+            if(!token) return alert("请先登录");
             const payload = {
                 type: "volunteer",
-                title: "正式申请-" + document.getElementById('applyRealName').value,
-                description: document.getElementById('applyBio').value || "无简介",
+                title: "岗位申请：" + document.getElementById('applyRealName').value,
+                description: document.getElementById('applyBio').value,
                 contact_phone: document.getElementById('applyPhone').value
             };
-            try {
-                const res = await fetch(`${API_URL}/applications/`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
-                    body: JSON.stringify(payload)
-                });
-                if(res.ok) { alert("申请成功已存入后端数据库，请等待审核！"); closeModal('applyModal'); }
-                else { alert("提交失败，请检查是否已登录"); }
-            } catch(e) { alert("后端连接异常"); }
+            const res = await fetch(`${BASE_URL}/applications/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(payload)
+            });
+            if(res.ok) { alert("申请已提交后台！"); closeModal('applyModal'); }
+            else { alert("提交失败，请重试"); }
         };
 
-        // 4. 退出登录功能
-        window.logoutNow = () => { localStorage.removeItem('token'); location.reload(); };
+        // 退出登录函数
+        window.logoutUser = () => {
+            localStorage.removeItem('token');
+            location.reload();
+        };
 
-        // 5. 初始化检查登录态
-        window.addEventListener('load', async () => {
+        // 页面加载检查登录状态
+        window.onload = async () => {
             const token = localStorage.getItem('token');
             if(token) {
-                try {
-                    const res = await fetch(`${API_URL}/auth/me`, {
-                        headers: {'Authorization': `Bearer ${token}`}
-                    });
-                    if(res.ok) {
-                        const user = await res.json();
-                        document.getElementById('guestNav').style.display = 'none';
-                        document.getElementById('userNav').style.display = 'flex';
-                        document.querySelector('.user-name').innerText = user.username;
-                    }
-                } catch(e) { localStorage.removeItem('token'); }
+                const res = await fetch(`${BASE_URL}/auth/me`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if(res.ok) {
+                    const user = await res.json();
+                    document.getElementById('guestNav').style.display = 'none';
+                    document.getElementById('userNav').style.display = 'flex';
+                    document.querySelector('.user-name').innerText = user.username;
+                }
             }
-        });
+        };
     </script>
 </body>
-</html>
+</html>这是我现在最新的完整代码，帮我修改一下，让我可以直接复制，还是原来我说的那个问题，要跳转相应页面，要在后端保留信息
