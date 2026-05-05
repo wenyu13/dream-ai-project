@@ -16,227 +16,66 @@
             --bg-light: #f4f7f5;
             --danger-red: #991b1b;
             --card-shadow: 0 10px 30px rgba(45, 106, 79, 0.08);
-
             --sunrise-gold: #fff7ed;
             --sunrise-amber: #ffedd5;
             --sunrise-text: #451a03;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; }
+        html { scroll-behavior: smooth; }
+        body { background: var(--bg-light); color: var(--text-main); overflow-x: hidden; line-height: 1.6; }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background: var(--bg-light);
-            color: var(--text-main);
-            overflow-x: hidden;
-            line-height: 1.6;
-            cursor: default;
-        }
-
+        /* 背景特效 */
         .bg-glow { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        .firefly {
-            position: absolute; width: 4px; height: 4px; background: var(--accent-orange);
-            border-radius: 50%; filter: blur(2px); opacity: 0.3; animation: move 20s infinite linear;
-        }
-        @keyframes move {
-            0% { transform: translate(0, 0); opacity: 0; }
-            50% { opacity: 0.6; }
-            100% { transform: translate(100vw, 100vh); opacity: 0; }
-        }
+        .firefly { position: absolute; width: 4px; height: 4px; background: var(--accent-orange); border-radius: 50%; filter: blur(2px); opacity: 0.3; animation: move 20s infinite linear; }
+        @keyframes move { 0% { transform: translate(0, 0); opacity: 0; } 50% { opacity: 0.6; } 100% { transform: translate(100vw, 100vh); opacity: 0; } }
 
-        nav {
-            display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 8%;
-            background: var(--glass); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 100;
-            border-bottom: 1px solid rgba(45, 106, 79, 0.05);
-        }
+        /* 导航栏 */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 8%; background: var(--glass); backdrop-filter: blur(15px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(45, 106, 79, 0.05); }
         .brand { font-size: 1.5rem; font-weight: 800; color: var(--primary-green); letter-spacing: 1px; }
         .nav-links { display: flex; align-items: center; }
         .nav-links a { text-decoration: none; color: var(--text-main); margin-left: 2rem; font-weight: 500; transition: 0.3s; }
         .nav-links a:hover { color: var(--accent-orange); }
 
-        .hero-section {
-            min-height: 85vh;
-            padding: 100px 8%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            position: relative;
-            background: 
-                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none"><path fill="%23ffedd5" fill-opacity="0.4" d="M0,224L60,202.7C120,181,240,139,360,138.7C480,139,600,181,720,208C840,235,960,245,1080,224C1200,203,1320,149,1380,122.7L1440,96L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>'),
-                linear-gradient(180deg, var(--sunrise-gold) 0%, #ffffff 100%);
-            background-position: bottom;
-            background-repeat: no-repeat;
-            background-size: 100% 400px, 100% 100%;
-            overflow: hidden;
-        }
+        /* Hero 区域 */
+        .hero-section { min-height: 85vh; padding: 100px 8%; display: flex; align-items: center; justify-content: center; text-align: center; position: relative; background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none"><path fill="%23ffedd5" fill-opacity="0.4" d="M0,224L60,202.7C120,181,240,139,360,138.7C480,139,600,181,720,208C840,235,960,245,1080,224C1200,203,1320,149,1380,122.7L1440,96L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>'), linear-gradient(180deg, var(--sunrise-gold) 0%, #ffffff 100%); background-position: bottom; background-repeat: no-repeat; background-size: 100% 400px, 100% 100%; overflow: hidden; }
+        .hero-main-title { font-size: 3.8rem; font-weight: 900; color: var(--sunrise-text); margin-bottom: 25px; }
+        .hero-main-title span { color: var(--primary-green); }
+        .hero-btn { display: inline-block; padding: 1.1rem 3.5rem; border-radius: 50px; background: var(--primary-green); color: white; text-decoration: none; font-weight: 700; transition: 0.4s; box-shadow: 0 15px 35px rgba(45,106,79,0.2); border: none; cursor: pointer; }
+        .hero-btn:hover { transform: scale(1.05); background: var(--accent-orange); }
 
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: -10%;
-            right: -5%;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(255, 159, 28, 0.1) 0%, transparent 70%);
-            border-radius: 50%;
-            z-index: 0;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 900px;
-        }
-
-        .hero-main-title {
-            font-size: 3.8rem;
-            font-weight: 900;
-            color: var(--sunrise-text);
-            margin-bottom: 25px;
-            letter-spacing: 2px;
-            line-height: 1.2;
-        }
-
-        .hero-main-title span {
-            color: var(--primary-green);
-        }
-
-        .hero-subtitle {
-            font-size: 1.5rem;
-            font-weight: 500;
-            color: #78350f;
-            margin-bottom: 50px;
-            opacity: 0.8;
-        }
-
-        .hero-btn {
-            display: inline-block;
-            padding: 1.1rem 3.5rem;
-            border-radius: 50px;
-            background: var(--primary-green);
-            color: white;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1.2rem;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 15px 35px rgba(45, 106, 79, 0.2);
-            position: relative;
-            overflow: hidden;
-            border: none;
-            cursor: pointer;
-        }
-
-        .hero-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 20px 45px rgba(45, 106, 79, 0.3);
-            background: var(--accent-orange);
-        }
-
-        .section-header { text-align: center; margin-bottom: 60px; }
-        .section-header h2 { font-size: 2.4rem; color: var(--primary-green); margin-bottom: 15px; font-weight: 800; }
-        .section-header .line { width: 60px; height: 4px; background: var(--accent-orange); margin: 0 auto; border-radius: 2px; }
-        .section-header p { color: #666; margin-top: 20px; font-size: 1.1rem; }
-
+        /* 容器与卡片 */
         .container { max-width: 1300px; margin: 0 auto; padding: 100px 5%; }
-
-        .portal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
-        .portal-card {
-            background: white; border-radius: 2.5rem; padding: 4rem 2rem; text-align: center;
-            transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-            border: 1px solid rgba(45, 106, 79, 0.05); box-shadow: var(--card-shadow);
-        }
-        .portal-card:hover { transform: translateY(-15px) scale(1.02); box-shadow: 0 30px 60px rgba(45, 106, 79, 0.15); border-color: var(--accent-orange); }
-        .icon-box {
-            width: 90px; height: 90px; background: var(--soft-green); border-radius: 2rem;
-            display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; transition: 0.5s;
-        }
-        .portal-card:hover .icon-box { background: var(--primary-green); transform: rotate(-5deg); }
-        .icon-box svg { width: 45px; height: 45px; fill: var(--primary-green); transition: 0.5s; }
-        .portal-card:hover svg { fill: white; }
-        .portal-btn { 
-            display: inline-block; margin-top: 2rem; padding: 0.8rem 2.5rem; border-radius: 50px; 
-            background: var(--primary-green); color: white; text-decoration: none; font-weight: 600; transition: 0.3s;
-        }
-        .portal-card:hover .portal-btn { background: var(--accent-orange); box-shadow: 0 10px 20px rgba(255, 159, 28, 0.3); }
-
-        .jobs-section { background: white; border-radius: 4rem 4rem 0 0; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 2.4rem; color: var(--primary-green); }
+        .portal-grid, .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
+        .portal-card, .tool-card { background: white; border-radius: 2.5rem; padding: 3rem 2rem; text-align: center; transition: 0.5s; box-shadow: var(--card-shadow); border: 1px solid rgba(45,106,79,0.05); }
+        .portal-card:hover, .tool-card:hover { transform: translateY(-15px); border-color: var(--accent-orange); }
+        
+        /* 岗位列表 */
         .jobs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
-        .job-card {
-            background: var(--bg-light); border-radius: 20px; padding: 35px;
-            display: flex; justify-content: space-between; align-items: center;
-            border-left: 6px solid var(--danger-red); transition: 0.4s;
-        }
-        .job-card:hover { background: white; transform: scale(1.02) translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
-        .job-info h4 { font-size: 1.4rem; margin-bottom: 12px; color: var(--text-main); }
-        .job-tag { 
-            display: inline-block; padding: 4px 15px; border-radius: 6px; background: #fff1f2; 
-            color: var(--danger-red); font-size: 0.85rem; font-weight: bold; margin-top: 10px;
-        }
-        .apply-btn {
-            padding: 12px 28px; background: var(--danger-red); color: white;
-            border-radius: 10px; text-decoration: none; font-weight: bold; transition: 0.3s;
-            border: none; cursor: pointer;
-        }
-        .apply-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+        .job-card { background: var(--bg-light); border-radius: 20px; padding: 35px; display: flex; justify-content: space-between; align-items: center; border-left: 6px solid var(--danger-red); transition: 0.4s; }
+        .apply-btn { padding: 12px 28px; background: var(--danger-red); color: white; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
 
-        .tools-section { background: linear-gradient(180deg, #fff 0%, var(--soft-green) 100%); }
-        .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 35px; }
-        .tool-card {
-            background: rgba(255,255,255,0.7); backdrop-filter: blur(10px);
-            border-radius: 30px; padding: 30px; text-align: center;
-            border: 1px solid white; transition: 0.4s;
-        }
-        .tool-card:hover { transform: translateY(-10px) scale(1.03); background: white; border-color: var(--accent-orange); }
-        .tool-preview {
-            width: 100%; height: 200px; border-radius: 20px; margin-bottom: 25px;
-            display: flex; align-items: center; justify-content: center;
-            background: radial-gradient(circle at center, #fff 0%, #ffe4e4 100%);
-            position: relative; overflow: hidden;
-        }
-        .tool-preview svg { width: 60px; height: 60px; fill: var(--danger-red); z-index: 1; transition: 0.5s; }
-        .tool-card:hover .tool-preview svg { transform: scale(1.25) rotate(10deg); }
-        .tool-card h3 { font-size: 1.3rem; margin-bottom: 20px; }
-        .tool-btn { 
-            padding: 10px 25px; border: 2px solid var(--danger-red); color: var(--danger-red);
-            border-radius: 8px; text-decoration: none; font-weight: bold; transition: 0.3s;
-            cursor: pointer; background: transparent;
-        }
-        .tool-btn:hover { background: var(--danger-red); color: white; }
+        /* 下拉选择框美化 */
+        select { appearance: none; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-7.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 12px top 50%; background-size: 12px auto; padding-right: 30px !important; }
 
-        /* 新增：美化下拉选择框 */
-        select {
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23666%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-7.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px top 50%;
-            background-size: 12px auto;
-            padding-right: 30px !important;
-        }
+        /* 弹窗基础 */
+        .identity-modal, .apply-modal, .model-viewer-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); z-index: 2000; justify-content: center; align-items: center; }
+        .identity-modal.active, .apply-modal.active, .model-viewer-modal.active { display: flex; }
+        .modal-content { background: white; border-radius: 20px; padding: 30px; width: 90%; max-width: 450px; text-align: center; }
+        
+        /* 3D 查看器 */
+        .model-viewer-content { background: white; border-radius: 20px; width: 90%; max-width: 1000px; height: 80vh; display: flex; flex-direction: column; overflow: hidden; }
+        model-viewer { width: 100%; flex: 1; background: #eee; }
+
+        /* AI 助手窗口 */
+        .ai-assistant-window { position: fixed; bottom: 100px; right: 30px; width: 350px; height: 500px; background: white; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); display: none; flex-direction: column; overflow: hidden; z-index: 3000; }
+        .ai-assistant-window.active { display: flex; }
 
         footer { text-align: center; padding: 5rem; background: var(--text-main); color: #88bd9e; font-size: 0.9rem; }
-
-        @media (max-width: 992px) { 
-            .portal-grid, .jobs-grid, .tools-grid { grid-template-columns: 1fr; } 
-            .hero-main-title { font-size: 2.8rem; }
-        }
-
         .reveal { opacity: 0; transform: translateY(50px); transition: 1s cubic-bezier(0.165, 0.84, 0.44, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
-
-        .identity-modal, .apply-modal, .model-viewer-modal { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px); z-index: 2000; 
-            justify-content: center; align-items: center; 
-        }
-        .identity-modal.active, .apply-modal.active, .model-viewer-modal.active { display: flex; }
-        .modal-content, .apply-modal-content, .model-viewer-content { 
-            background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); padding: 30px; 
-        }
-        model-viewer { width: 100%; height: 60vh; }
     </style>
 </head>
 <body>
@@ -247,85 +86,104 @@
         <div class="firefly" style="top: 75%; left: 12%;"></div>
     </div>
 
+    <!-- 导航栏 -->
     <nav>
         <div class="brand">微光循迹</div>
         <div class="nav-links">
             <a href="#">首页</a>
             <a href="#jobs">寻找岗位</a>
             <a href="#tools">3D教具库</a>
-            <div class="dropdown">
-                <a href="javascript:void(0)" class="dropdown-toggle">更多 ▼</a>
-                <div class="dropdown-menu">
-                    <a href="#about">关于我们</a>
-                    <a href="javascript:void(0)" onclick="openModal('aiAssistantWindow')">AI咨询</a>
-                    <a href="admin.html">系统后台</a>
-                </div>
+            <div id="guestNav">
+                <button class="hero-btn" style="padding: 0.5rem 1.5rem; margin-left: 20px;" onclick="openModal('loginModal')">登录</button>
+                <button class="hero-btn" style="padding: 0.5rem 1.5rem; background: var(--accent-orange);" onclick="openModal('registerModal')">注册</button>
             </div>
-            
-            <div class="guest-nav" id="guestNav">
-                <button class="login-btn" onclick="openModal('loginModal')">登录</button>
-                <button class="register-btn" onclick="openModal('registerModal')">注册</button>
-            </div>
-            
             <div id="userNav" style="display: none; align-items:center; gap:10px; margin-left:20px;">
                 <span class="user-name" style="font-weight:bold; color:var(--primary-green);"></span>
-                <button onclick="localStorage.clear(); location.reload();" style="cursor:pointer; border:1px solid #ccc; background:none; padding:3px 8px; border-radius:5px;">退出</button>
+                <button onclick="logout()" style="cursor:pointer; border:1px solid #ccc; background:none; padding:3px 8px; border-radius:5px;">退出</button>
             </div>
         </div>
     </nav>
 
+    <!-- Hero -->
     <section class="hero-section">
         <div class="hero-content">
             <h1 class="hero-main-title">用<span>科技</span>点亮<span>大山</span>的晨曦</h1>
             <p class="hero-subtitle">微光循迹：赋能乡村振兴的数字化志愿服务交互平台</p>
-            <a href="#portals" class="hero-btn magnetic-btn">开启支教之旅</a>
-        </div>
-        <div class="wave-container">
-            <div class="wave"></div><div class="wave"></div><div class="wave"></div>
+            <a href="#portals" class="hero-btn">开启支教之旅</a>
         </div>
     </section>
 
+    <!-- 入口选择 -->
     <section id="portals" class="container">
-        <!-- 保持原有内容不变... -->
         <div class="section-header reveal">
             <h2>谁在参与微光？</h2>
             <div class="line"></div>
-            <p>连接城乡教育，让每一个梦想都能在科技的羽翼下起飞</p>
         </div>
         <div class="portal-grid">
             <div class="portal-card reveal">
-                <div class="icon-box" style="margin: 0 auto 2rem;"><svg viewBox="0 0 24 24"><path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.41,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.59,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"/></svg></div>
                 <h3>志愿者入口</h3>
-                <p>提供专业支教岗位匹配，记录您的公益里程，让奉献更具价值。</p>
-                <a href="volunteer.html" class="portal-btn magnetic-btn">进入工作台</a>
+                <p>匹配支教岗位，记录公益里程。</p>
+                <a href="volunteer.html" class="hero-btn" style="margin-top:20px;">进入工作台</a>
             </div>
             <div class="portal-card reveal">
-                <div class="icon-box" style="margin: 0 auto 2rem;"><svg viewBox="0 0 24 24"><path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z"/></svg></div>
                 <h3>教师管理端</h3>
-                <p>发布教学需求，管理支教老师，获取数字化实验资源。</p>
-                <a href="teacher.html" class="portal-btn magnetic-btn">管理中心</a>
+                <p>发布教学需求，管理支教资源。</p>
+                <a href="teacher.html" class="hero-btn" style="margin-top:20px;">管理中心</a>
             </div>
             <div class="portal-card reveal">
-                <div class="icon-box" style="margin: 0 auto 2rem;"><svg viewBox="0 0 24 24"><path d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"/></svg></div>
                 <h3>学生学习端</h3>
-                <p>开启云端沉浸式课堂，参与互动实验，连接大山外的广阔世界。</p>
-                <a href="learning.html" class="portal-btn magnetic-btn">开启学习</a>
+                <p>云端课堂，互动实验预览。</p>
+                <a href="learning.html" class="hero-btn" style="margin-top:20px;">开启学习</a>
             </div>
         </div>
     </section>
 
-    <!-- 底部弹窗修改 -->
+    <!-- 岗位列表 -->
+    <section id="jobs" class="container">
+        <div class="section-header reveal"><h2>最新支教岗位</h2></div>
+        <div class="jobs-grid">
+            <div class="job-card reveal">
+                <div><h4>贵州大山镇希望小学</h4><p>英语教学 · 2024秋季</p></div>
+                <button class="apply-btn" onclick="openModal('applyModal')">立即申请</button>
+            </div>
+            <div class="job-card reveal">
+                <div><h4>凉山州美姑县小学</h4><p>艺术支教 · 全年岗位</p></div>
+                <button class="apply-btn" onclick="openModal('applyModal')">立即申请</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3D 教具库 -->
+    <section id="tools" class="container">
+        <div class="section-header reveal"><h2>数字化教具库</h2></div>
+        <div class="tools-grid">
+            <div class="tool-card reveal">
+                <h3>斯特林发动机</h3><br>
+                <button class="hero-btn" onclick="open3D('斯特林发动机')">3D 互动预览</button>
+            </div>
+            <div class="tool-card reveal">
+                <h3>平面四连杆机构</h3><br>
+                <button class="hero-btn" onclick="open3D('平面四连杆机构')">3D 互动预览</button>
+            </div>
+            <div class="tool-card reveal">
+                <h3>AI 巡检机器人</h3><br>
+                <button class="hero-btn" onclick="open3D('AI 巡检机器人')">3D 互动预览</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 登录弹窗 -->
     <div class="identity-modal" id="loginModal">
         <div class="modal-content">
             <h3>用户登录</h3><br>
-            <input type="email" id="loginEmail" placeholder="邮箱/用户名" style="width:100%; padding:10px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
-            <input type="password" id="loginPassword" placeholder="密码" style="width:100%; padding:10px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
-            <button class="hero-btn" id="doLogin" style="width:100%;">登录</button>
+            <input type="text" id="loginEmail" placeholder="邮箱或用户名" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
+            <input type="password" id="loginPassword" placeholder="密码" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd;">
+            <button class="hero-btn" id="btnLocalLogin" style="width:100%;">登录</button>
             <button onclick="closeModal('loginModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer; color:#666;">取消</button>
         </div>
     </div>
 
-    <!-- 注册弹窗修改版（直接复制此处） -->
+    <!-- 注册弹窗 (已加身份选择) -->
     <div class="identity-modal" id="registerModal">
         <div class="modal-content">
             <h3>用户注册</h3><br>
@@ -333,8 +191,7 @@
             <input type="email" id="regEmail" placeholder="邮箱" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
             <input type="password" id="regPassword" placeholder="密码" style="width:100%; padding:10px; margin-bottom:10px; border-radius:10px; border:1px solid #ddd;">
             
-            <!-- 身份选择 -->
-            <select id="regRole" style="width:100%; padding:10px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd; background: white; color: #666; cursor: pointer;">
+            <select id="regRole" style="width:100%; padding:12px; margin-bottom:15px; border-radius:10px; border:1px solid #ddd; background: white; color: #666; cursor: pointer;">
                 <option value="" disabled selected>请选择您的身份</option>
                 <option value="student">学生</option>
                 <option value="volunteer">志愿者</option>
@@ -342,20 +199,49 @@
                 <option value="admin">管理员</option>
             </select>
 
-            <button class="hero-btn" id="doRegister" style="width:100%;">注册</button>
+            <button class="hero-btn" id="btnLocalRegister" style="width:100%;">注册</button>
             <button onclick="closeModal('registerModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer; color:#666;">取消</button>
         </div>
     </div>
 
-    <!-- 保持原有 JS 引用不变 -->
+    <!-- 申请弹窗 -->
+    <div class="apply-modal" id="applyModal">
+        <div class="modal-content">
+            <h3>志愿者岗位正式申请</h3><br>
+            <input type="text" id="applyName" placeholder="真实姓名" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;">
+            <input type="tel" id="applyPhone" placeholder="联系电话" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;">
+            <textarea id="applyBio" placeholder="个人简介 (选填)" style="width:100%; height:100px; padding:10px; border-radius:8px; border:1px solid #ddd; margin-bottom:10px;"></textarea>
+            <button class="hero-btn" id="btnSubmitApply" style="width:100%;">提交申请</button>
+            <button onclick="closeModal('applyModal')" style="width:100%; margin-top:10px; border:none; background:none; cursor:pointer;">取消</button>
+        </div>
+    </div>
+
+    <!-- 3D 模型预览弹窗 -->
+    <div class="model-viewer-modal" id="modelViewerModal">
+        <div class="model-viewer-content">
+            <div style="padding: 20px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #eee;">
+                <h3 id="modelName">模型查看器</h3>
+                <button onclick="closeModal('modelViewerModal')" style="font-size:24px; border:none; background:none; cursor:pointer;">&times;</button>
+            </div>
+            <model-viewer id="modelViewer" src="" auto-rotate camera-controls shadow-intensity="1" exposure="1"></model-viewer>
+            <div style="padding:15px; background:var(--sunrise-gold); font-size:14px; color:#666;">操作提示：左键旋转 | 滚轮缩放 | 右键平移</div>
+        </div>
+    </div>
+
+    <footer><p>© 2026 微光循迹 · 用科技点亮大山的晨曦 </p></footer>
+
+    <!-- 核心脚本引用 -->
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <script src="api.js?v=999"></script>
     <script src="auth.js?v=999"></script>
     <script src="script.js?v=2026_final"></script>
 
-    <!-- 新增：处理注册点击逻辑 -->
+    <!-- 业务逻辑处理脚本 -->
     <script>
-        document.getElementById('doRegister').onclick = async function() {
+        const API_URL = 'https://cghsdcnklsd-dream-ai-api.hf.space/api';
+
+        // 1. 处理注册
+        document.getElementById('btnLocalRegister').onclick = async function() {
             const username = document.getElementById('regUsername').value;
             const email = document.getElementById('regEmail').value;
             const password = document.getElementById('regPassword').value;
@@ -367,25 +253,108 @@
             }
 
             try {
-                const userData = {
-                    username: username,
-                    email: email,
-                    password: password,
-                    role: role
-                };
-
-                // 调用 api.js 中的注册方法
-                const res = await window.DreamAI.Auth.register(userData);
-                
-                if(res.id || res.username) {
-                    alert("注册成功！身份为：" + role);
+                const res = await fetch(`${API_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, email, password, role })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    alert("注册成功！请登录");
                     closeModal('registerModal');
                 } else {
-                    alert("注册失败：" + (res.detail || "未知错误"));
+                    alert("注册失败：" + (data.detail || "未知错误"));
                 }
-            } catch (e) {
-                alert("连接服务器失败，请稍后重试");
+            } catch (e) { alert("服务器连接失败"); }
+        };
+
+        // 2. 处理登录
+        document.getElementById('btnLocalLogin').onclick = async function() {
+            const username = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                // 后端是 OAuth2 格式，使用 FormData
+                const formData = new FormData();
+                formData.append('username', username);
+                formData.append('password', password);
+
+                const res = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    localStorage.setItem('token', data.access_token);
+                    alert("登录成功！");
+                    location.reload(); // 刷新页面以更新导航栏状态
+                } else {
+                    alert("登录失败：" + (data.detail || "用户名或密码错误"));
+                }
+            } catch (e) { alert("登录过程出错"); }
+        };
+
+        // 3. 提交申请
+        document.getElementById('btnSubmitApply').onclick = async function() {
+            const token = localStorage.getItem('token');
+            if (!token) { alert("请先登录！"); return; }
+
+            const payload = {
+                type: "volunteer",
+                title: "志愿者岗位申请 - " + document.getElementById('applyName').value,
+                description: document.getElementById('applyBio').value,
+                contact_phone: document.getElementById('applyPhone').value
+            };
+
+            try {
+                const res = await fetch(`${API_URL}/applications/`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) {
+                    alert("申请已提交，等待审核！");
+                    closeModal('applyModal');
+                } else {
+                    alert("提交失败，请检查登录状态");
+                }
+            } catch (e) { alert("提交出错"); }
+        };
+
+        // 4. 退出登录
+        function logout() {
+            localStorage.removeItem('token');
+            location.reload();
+        }
+
+        // 5. 检查登录状态更新 UI
+        window.onload = async function() {
+            const token = localStorage.getItem('token');
+            if (token) {
+                try {
+                    const res = await fetch(`${API_URL}/auth/me`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (res.ok) {
+                        const user = await res.json();
+                        document.getElementById('guestNav').style.display = 'none';
+                        document.getElementById('userNav').style.display = 'flex';
+                        document.querySelector('.user-name').innerText = user.username;
+                    }
+                } catch (e) { localStorage.removeItem('token'); }
             }
+            
+            // 启动 Reveal 动画
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('active');
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
         };
     </script>
 </body>
